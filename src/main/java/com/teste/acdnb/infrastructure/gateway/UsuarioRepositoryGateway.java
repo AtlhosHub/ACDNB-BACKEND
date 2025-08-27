@@ -1,0 +1,28 @@
+package com.teste.acdnb.infrastructure.gateway;
+
+import com.teste.acdnb.core.application.gateway.UsuarioGateway;
+import com.teste.acdnb.core.domain.usuario.Usuario;
+import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
+import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
+import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UsuarioRepositoryGateway implements UsuarioGateway {
+    private final UsuarioRepository usuarioRepository;
+    private final UsuarioEntityMapper usuarioEntityMapper;
+
+    public UsuarioRepositoryGateway(UsuarioRepository usuarioRepository, UsuarioEntityMapper usuarioEntityMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioEntityMapper = usuarioEntityMapper;
+    }
+
+
+    @Override
+    public Usuario adicionarUsuario(Usuario usuario) {
+        UsuarioEntity usuarioEntity = usuarioEntityMapper.toEntity(usuario);
+        UsuarioEntity novoUsuario = usuarioRepository.save(usuarioEntity);
+
+        return usuarioEntityMapper.toDomain(novoUsuario);
+    }
+}
