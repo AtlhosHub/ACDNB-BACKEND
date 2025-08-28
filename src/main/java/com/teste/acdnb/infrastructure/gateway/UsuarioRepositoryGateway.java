@@ -7,6 +7,8 @@ import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMappe
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UsuarioRepositoryGateway implements UsuarioGateway {
     private final UsuarioRepository usuarioRepository;
@@ -24,5 +26,24 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
         UsuarioEntity novoUsuario = usuarioRepository.save(usuarioEntity);
 
         return usuarioEntityMapper.toDomain(novoUsuario);
+    }
+
+    @Override
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll().stream()
+                .map(usuarioEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public Usuario buscarUsuarioPorId(int id) {
+        return usuarioRepository.findById(id)
+                .map(usuarioEntityMapper::toDomain)
+                .orElse(null);
+    }
+
+    @Override
+    public Usuario removerUsuarioPorId(int id) {
+        return null;
     }
 }

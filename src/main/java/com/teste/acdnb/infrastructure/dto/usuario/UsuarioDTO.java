@@ -1,4 +1,4 @@
-package com.teste.acdnb.infrastructure.dto;
+package com.teste.acdnb.infrastructure.dto.usuario;
 
 import java.time.LocalDateTime;
 

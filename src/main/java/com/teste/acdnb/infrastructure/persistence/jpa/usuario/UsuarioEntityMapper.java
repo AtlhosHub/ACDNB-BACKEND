@@ -37,7 +37,6 @@ public class UsuarioEntityMapper {
 
     public Usuario toDomain(UsuarioEntity entity) {
         if (entity == null) return null;
-
         return new Usuario(
                 entity.getId(),
                 entity.getNome() != null ? Nome.of(entity.getNome()) : null,

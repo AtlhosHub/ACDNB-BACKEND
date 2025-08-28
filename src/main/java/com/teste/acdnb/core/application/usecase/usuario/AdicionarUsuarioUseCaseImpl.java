@@ -4,7 +4,7 @@ import com.teste.acdnb.core.application.gateway.UsuarioGateway;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.core.domain.usuario.valueobject.Senha;
-import com.teste.acdnb.infrastructure.dto.UsuarioDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioDTO;
 
 public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
 
@@ -22,7 +22,7 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
         usuarioParaRegistrar.setSenha(Senha.of(usuarioDTO.senha()));
         usuarioParaRegistrar.setCelular(Celular.of(usuarioDTO.celular()));
         usuarioParaRegistrar.setDataNascimento(DataInclusao.of(usuarioDTO.dataNascimento()));
-        usuarioParaRegistrar.setNomeSocial(Nome.of(usuarioDTO.nome()));
+        usuarioParaRegistrar.setNomeSocial(Nome.of(usuarioDTO.nomeSocial()));
         usuarioParaRegistrar.setGenero(usuarioDTO.genero());
         usuarioParaRegistrar.setTelefone(Telefone.of(usuarioDTO.telefone()));
         usuarioParaRegistrar.setCargo(usuarioDTO.cargo());
