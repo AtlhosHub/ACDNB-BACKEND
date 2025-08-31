@@ -62,7 +62,7 @@ public class ListaEsperaEntityMapper {
                 entity.getHorarioPreferencia() != null ? buildHorarioPrefFromString(entity.getHorarioPreferencia()) : null
         );
     }
-
+    //vou isso aqui??? depois eu vejo
     private List<ListaEspera> toDomainList(List<ListaEsperaEntity> entities) {
         if (entities == null) return null;
         return entities.stream()
