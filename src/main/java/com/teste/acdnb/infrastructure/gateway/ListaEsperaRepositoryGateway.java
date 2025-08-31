@@ -7,6 +7,8 @@ import com.teste.acdnb.infrastructure.persistence.jpa.listaEspera.ListaEsperaEnt
 import com.teste.acdnb.infrastructure.persistence.jpa.listaEspera.ListaEsperaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
     private final ListaEsperaRepository listaEsperaRepository;
@@ -23,5 +25,13 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
         ListaEsperaEntity entity = listaEsperaEntityMapper.toEntity(listaEspera);
         ListaEsperaEntity novoEntity = listaEsperaRepository.save(entity);
         return listaEsperaEntityMapper.toDomain(novoEntity);
+    }
+
+    @Override
+    public List<ListaEspera> listarTodos() {
+        return listaEsperaRepository.findAll()
+                .stream()
+                .map(listaEsperaEntityMapper::toDomain)
+                .toList();
     }
 }
