@@ -1,9 +1,6 @@
 package com.teste.acdnb.infrastructure.web;
 
-import com.teste.acdnb.core.application.usecase.listaEspera.AdicionarInteressadoUseCase;
-import com.teste.acdnb.core.application.usecase.listaEspera.BuscarInteressadoUseCase;
-import com.teste.acdnb.core.application.usecase.listaEspera.DeletarInteressadoUseCase;
-import com.teste.acdnb.core.application.usecase.listaEspera.ListarInteressadosUseCase;
+import com.teste.acdnb.core.application.usecase.listaEspera.*;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
 import com.teste.acdnb.infrastructure.dto.ListaEsperaDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,18 +17,21 @@ public class ListaEsperaController {
     private final ListarInteressadosUseCase listarInteressadosUseCase;
     private final BuscarInteressadoUseCase buscarInteressadoUseCase;
     private final DeletarInteressadoUseCase deletarInteressadoUseCase;
+    private final AtualizarInteressadoUseCase atualizarInteressadoUseCase;
 
 
     public ListaEsperaController(
             AdicionarInteressadoUseCase adicionarInteressadoUseCase,
             ListarInteressadosUseCase listarInteressadosUseCase,
             BuscarInteressadoUseCase buscarInteressadoUseCase,
-            DeletarInteressadoUseCase deletarInteressadoUseCase
+            DeletarInteressadoUseCase deletarInteressadoUseCase,
+            AtualizarInteressadoUseCase atualizarInteressadoUseCase
     ) {
         this.adicionarInteressadoUseCase = adicionarInteressadoUseCase;
         this.listarInteressadosUseCase = listarInteressadosUseCase;
         this.buscarInteressadoUseCase = buscarInteressadoUseCase;
         this.deletarInteressadoUseCase = deletarInteressadoUseCase;
+        this.atualizarInteressadoUseCase = atualizarInteressadoUseCase;
     }
 
     @PostMapping
@@ -56,6 +56,15 @@ public class ListaEsperaController {
     public ResponseEntity<Void> deletarInteressado(@PathVariable int id) {
         deletarInteressadoUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ListaEspera> atualizarInteressado(
+            @PathVariable int id,
+            @RequestBody ListaEsperaDTO dto
+    ) {
+        ListaEspera atualizado = atualizarInteressadoUseCase.execute(id, dto);
+        return ResponseEntity.ok(atualizado);
     }
 
 }

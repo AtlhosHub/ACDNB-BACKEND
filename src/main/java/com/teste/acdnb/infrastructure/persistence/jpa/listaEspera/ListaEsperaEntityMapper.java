@@ -37,13 +37,6 @@ public class ListaEsperaEntityMapper {
         );
     }
 
-    private List<ListaEsperaEntity> toEntityList(List<ListaEspera> listas) {
-        if (listas == null) return null;
-        return listas.stream()
-                .map(this::toEntity)
-                .toList();
-    }
-
     public ListaEspera toDomain(ListaEsperaEntity entity) {
         if (entity == null) return null;
 
@@ -62,12 +55,21 @@ public class ListaEsperaEntityMapper {
                 entity.getHorarioPreferencia() != null ? buildHorarioPrefFromString(entity.getHorarioPreferencia()) : null
         );
     }
-    //vou isso aqui??? depois eu vejo
-    private List<ListaEspera> toDomainList(List<ListaEsperaEntity> entities) {
-        if (entities == null) return null;
-        return entities.stream()
-                .map(this::toDomain)
-                .toList();
+
+    public void updateEntityFromDomain(ListaEspera domain, ListaEsperaEntity entity) {
+        if (domain == null || entity == null) return;
+
+        if (domain.getNome() != null) entity.setNome(domain.getNome().getValue());
+        if (domain.getEmail() != null) entity.setEmail(domain.getEmail().getValue());
+        if (domain.getCelular() != null) entity.setCelular(domain.getCelular().getValue());
+        if (domain.getNomeSocial() != null) entity.setNomeSocial(domain.getNomeSocial().getValue());
+        if (domain.getGenero() != null) entity.setGenero(domain.getGenero());
+        if (domain.getTelefone() != null) entity.setTelefone(domain.getTelefone().getValue());
+        if (domain.getDataInclusao() != null) entity.setDataInclusao(domain.getDataInclusao().getValue());
+        if (domain.getDataInteresse() != null) entity.setDataInteresse(domain.getDataInteresse().getValue());
+        if (domain.getDataNascimento() != null) entity.setDataNascimento(domain.getDataNascimento().getValue());
+        if (domain.getHorarioPref() != null) entity.setHorarioPreferencia(domain.getHorarioPref().getDiaSemana());
+        if (domain.getUsuarioInclusao() != null) entity.setUsuarioInclusao(usuarioEntityMapper.toEntity(domain.getUsuarioInclusao()));
     }
 
     private HorarioPreferencia buildHorarioPrefFromString(String diaSemana) {

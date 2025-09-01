@@ -8,4 +8,5 @@ public interface ListaEsperaGateway {
     List<ListaEspera> listarTodos();
     ListaEspera buscarPorId(int id);
     void deletarInteressado(int id);
+    ListaEspera atualizarInteressado(ListaEspera listaEspera);
 }

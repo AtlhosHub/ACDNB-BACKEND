@@ -41,4 +41,18 @@ public class ListaEsperaBeanConfig {
         return new DeletarInteressadoUseCaseImpl(listaEsperaGateway);
     }
 
+    @Bean
+    public AtualizarInteressadoUseCase atualizarInteressadoUseCase(
+            ListaEsperaGateway listaEsperaGateway,
+            UsuarioRepository usuarioRepository,
+            UsuarioEntityMapper usuarioEntityMapper
+    ) {
+        return new AtualizarInteressadoUseCaseImpl(
+                listaEsperaGateway,
+                usuarioRepository,
+                usuarioEntityMapper
+        );
+    }
+
+
 }

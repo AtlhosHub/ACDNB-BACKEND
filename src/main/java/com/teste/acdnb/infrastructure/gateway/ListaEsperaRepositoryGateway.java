@@ -49,4 +49,16 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
         }
         listaEsperaRepository.deleteById(id);
     }
+
+    @Override
+    public ListaEspera atualizarInteressado(ListaEspera listaEspera) {
+        ListaEsperaEntity entity = listaEsperaRepository.findById(listaEspera.getId())
+                .orElseThrow(() -> new RuntimeException("Interessado não encontrado"));
+
+        listaEsperaEntityMapper.updateEntityFromDomain(listaEspera, entity);
+
+        ListaEsperaEntity updated = listaEsperaRepository.save(entity);
+        return listaEsperaEntityMapper.toDomain(updated);
+    }
+
 }
