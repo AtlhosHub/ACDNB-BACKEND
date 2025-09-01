@@ -2,6 +2,7 @@ package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.listaEspera.AdicionarInteressadoUseCase;
 import com.teste.acdnb.core.application.usecase.listaEspera.BuscarInteressadoUseCase;
+import com.teste.acdnb.core.application.usecase.listaEspera.DeletarInteressadoUseCase;
 import com.teste.acdnb.core.application.usecase.listaEspera.ListarInteressadosUseCase;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
 import com.teste.acdnb.infrastructure.dto.ListaEsperaDTO;
@@ -18,16 +19,19 @@ public class ListaEsperaController {
     private final AdicionarInteressadoUseCase adicionarInteressadoUseCase;
     private final ListarInteressadosUseCase listarInteressadosUseCase;
     private final BuscarInteressadoUseCase buscarInteressadoUseCase;
+    private final DeletarInteressadoUseCase deletarInteressadoUseCase;
 
 
     public ListaEsperaController(
             AdicionarInteressadoUseCase adicionarInteressadoUseCase,
             ListarInteressadosUseCase listarInteressadosUseCase,
-            BuscarInteressadoUseCase buscarInteressadoUseCase
+            BuscarInteressadoUseCase buscarInteressadoUseCase,
+            DeletarInteressadoUseCase deletarInteressadoUseCase
     ) {
         this.adicionarInteressadoUseCase = adicionarInteressadoUseCase;
         this.listarInteressadosUseCase = listarInteressadosUseCase;
         this.buscarInteressadoUseCase = buscarInteressadoUseCase;
+        this.deletarInteressadoUseCase = deletarInteressadoUseCase;
     }
 
     @PostMapping
@@ -46,6 +50,12 @@ public class ListaEsperaController {
     public ResponseEntity<ListaEspera> buscarInteressado(@PathVariable int id) {
         ListaEspera interessado = buscarInteressadoUseCase.execute(id);
         return ResponseEntity.ok(interessado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarInteressado(@PathVariable int id) {
+        deletarInteressadoUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

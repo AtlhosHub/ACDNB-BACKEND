@@ -35,4 +35,10 @@ public class ListaEsperaBeanConfig {
     ) {
         return new BuscarInteressadoUseCaseImpl(listaEsperaGateway);
     }
+
+    @Bean
+    public DeletarInteressadoUseCase deletarInteressadoUseCase(ListaEsperaGateway listaEsperaGateway) {
+        return new DeletarInteressadoUseCaseImpl(listaEsperaGateway);
+    }
+
 }

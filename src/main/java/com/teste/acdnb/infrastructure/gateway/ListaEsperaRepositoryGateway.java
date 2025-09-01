@@ -41,4 +41,12 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
                 .orElseThrow(() -> new RuntimeException("Interessado não encontrado com ID: " + id));
         return listaEsperaEntityMapper.toDomain(entity);
     }
+
+    @Override
+    public void deletarInteressado(int id) {
+        if (!listaEsperaRepository.existsById(id)) {
+            throw new RuntimeException("Interessado não encontrado com id: " + id);
+        }
+        listaEsperaRepository.deleteById(id);
+    }
 }
