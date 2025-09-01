@@ -6,4 +6,5 @@ import java.util.List;
 public interface ListaEsperaGateway {
     ListaEspera adicionarInteressado(ListaEspera listaEspera);
     List<ListaEspera> listarTodos();
+    ListaEspera buscarPorId(int id);
 }

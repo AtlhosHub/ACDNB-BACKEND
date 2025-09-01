@@ -34,4 +34,11 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
                 .map(listaEsperaEntityMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public ListaEspera buscarPorId(int id) {
+        var entity = listaEsperaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Interessado não encontrado com ID: " + id));
+        return listaEsperaEntityMapper.toDomain(entity);
+    }
 }
