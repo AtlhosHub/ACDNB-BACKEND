@@ -8,6 +8,7 @@ import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UsuarioRepositoryGateway implements UsuarioGateway {
@@ -45,5 +46,11 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
     @Override
     public Usuario removerUsuarioPorId(int id) {
         return null;
+    }
+
+    @Override
+    public Optional buscarUsuarioPorEmail(String email) {
+        return usuarioRepository.existsByEmailIgnoreCase(email)
+                .map(usuarioEntityMapper::toDomain);
     }
 }

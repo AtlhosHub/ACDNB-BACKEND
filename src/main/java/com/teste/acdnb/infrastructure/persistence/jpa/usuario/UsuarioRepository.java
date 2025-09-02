@@ -14,5 +14,4 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     Optional<UsuarioEntity> findById(int id);
 
-    
 }

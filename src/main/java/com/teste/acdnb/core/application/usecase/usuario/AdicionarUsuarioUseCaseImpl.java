@@ -1,6 +1,7 @@
 package com.teste.acdnb.core.application.usecase.usuario;
 
 import com.teste.acdnb.core.application.gateway.UsuarioGateway;
+import com.teste.acdnb.core.application.exception.DataConflictException;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.core.domain.usuario.valueobject.Senha;
@@ -15,6 +16,11 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
 
     @Override
     public Usuario execute(UsuarioDTO usuarioDTO) {
+
+        usuarioGateway.buscarUsuarioPorEmail(usuarioDTO.email())
+                .ifPresent(usuarioExistente -> {
+                    throw new DataConflictException("E-mail de usuário já cadastrado");
+                });
         // colocar as validações ai pae
         var usuarioParaRegistrar = new Usuario();
         usuarioParaRegistrar.setNome(Nome.of(usuarioDTO.nome()));
