@@ -66,6 +66,10 @@ public class UsuarioEntity {
     @Schema(description = "Data de inclusão do usuário no sistema", example = "2025-04-21T10:15:30")
     private LocalDateTime dataInclusao;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_inclusao_id")
+    private UsuarioEntity usuarioInclusao;
+
 //    @ManyToOne
 //    @JoinColumn(name = "usuario_inclusao_id")
 //    @JsonIgnoreProperties({"usuarioInclusao", "usuariosCadastrados", "alunos", "interessados"})

@@ -59,4 +59,12 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
         UsuarioEntity atualizado = usuarioRepository.save(entity);
         return usuarioEntityMapper.toDomain(atualizado);
     }
+
+    @Override
+    public List<Usuario> buscarUsuariosPorUsuarioInclusao(Usuario usuario) {
+        return usuarioRepository.findByUsuarioInclusaoId(usuario.getId())
+                .stream()
+                .map(usuarioEntityMapper::toDomain)
+                .toList();
+    }
 }

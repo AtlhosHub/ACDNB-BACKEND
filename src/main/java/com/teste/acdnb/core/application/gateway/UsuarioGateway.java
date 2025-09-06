@@ -12,4 +12,5 @@ public interface UsuarioGateway {
     void removerUsuarioPorId(int id);
     Optional<Usuario> buscarUsuarioPorEmail(String email);
     Usuario atualizarUsuario(Usuario usuario);
+    List<Usuario> buscarUsuariosPorUsuarioInclusao(Usuario usuario);
 }

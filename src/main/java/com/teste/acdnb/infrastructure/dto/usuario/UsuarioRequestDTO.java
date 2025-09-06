@@ -1,5 +1,7 @@
 package com.teste.acdnb.infrastructure.dto.usuario;
 
+import com.teste.acdnb.core.domain.usuario.Usuario;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -13,6 +15,7 @@ public record UsuarioRequestDTO(
         String senha,
         String telefone,
         String cargo,
-        LocalDateTime dataInclusao
+        LocalDateTime dataInclusao,
+        Integer usuarioInclusao
 ){
 }
