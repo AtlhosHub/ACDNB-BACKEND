@@ -2,6 +2,7 @@ package com.teste.acdnb.infrastructure.gateway;
 
 import com.teste.acdnb.core.application.gateway.UsuarioGateway;
 import com.teste.acdnb.core.domain.usuario.Usuario;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioFiltroDTO;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
@@ -63,6 +64,14 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
     @Override
     public List<Usuario> buscarUsuariosPorUsuarioInclusao(Usuario usuario) {
         return usuarioRepository.findByUsuarioInclusaoId(usuario.getId())
+                .stream()
+                .map(usuarioEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Usuario> buscarUsuariosPorNome(UsuarioFiltroDTO usuarioFiltroDTO) {
+        return usuarioRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(usuarioFiltroDTO.nome())
                 .stream()
                 .map(usuarioEntityMapper::toDomain)
                 .toList();

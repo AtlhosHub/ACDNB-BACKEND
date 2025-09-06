@@ -15,4 +15,6 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
     Optional<UsuarioEntity> findById(int id);
 
     List<UsuarioEntity> findByUsuarioInclusaoId(int id);
+
+    List<UsuarioEntity> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nome);
 }

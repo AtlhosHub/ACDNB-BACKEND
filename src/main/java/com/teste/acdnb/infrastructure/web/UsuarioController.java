@@ -2,6 +2,7 @@ package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.usuario.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioFiltroDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioRequestDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioResponseDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioListaDTO;
@@ -21,13 +22,15 @@ public class UsuarioController {
     private final BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
     private final RemoverUsuarioUseCase removerUsuarioUseCase;
     private final AtualizarUsuarioUseCase atualizarUsuarioUseCase;
+    private final BuscarUsuariosPorFiltroUseCase buscarUsuarioPorFiltroUseCase;
 
-    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, RemoverUsuarioUseCase removerUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase) {
+    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, RemoverUsuarioUseCase removerUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase, BuscarUsuariosPorFiltroUseCase buscarUsuarioPorFiltroUseCase) {
         this.adicionarUsuarioUseCase = adicionarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
         this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
         this.removerUsuarioUseCase = removerUsuarioUseCase;
         this.atualizarUsuarioUseCase = atualizarUsuarioUseCase;
+        this.buscarUsuarioPorFiltroUseCase = buscarUsuarioPorFiltroUseCase;
     }
 
     @PostMapping
@@ -66,5 +69,13 @@ public class UsuarioController {
     ) {
         UsuarioResponseDTO usuarioAtualizado = atualizarUsuarioUseCase.execute(id, usuarioRequestDTO);
         return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    @PostMapping("/filtro")
+    public ResponseEntity<List<UsuarioResponseDTO>> listarUsuariosPorNome(
+            @RequestBody UsuarioFiltroDTO usuarioFiltroDTO) {
+
+        List<UsuarioResponseDTO> usuarios = buscarUsuarioPorFiltroUseCase.execute(usuarioFiltroDTO);
+        return ResponseEntity.ok(usuarios);
     }
 }

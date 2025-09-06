@@ -30,4 +30,8 @@ public class UsuarioBeanConfig {
     @Bean AtualizarUsuarioUseCase atualizarUsuarioUseCase(UsuarioGateway usuarioGateway) {
         return new AtualizarUsuarioUseCaseImpl(usuarioGateway);
     }
+
+    @Bean BuscarUsuariosPorFiltroUseCase buscarUsuariosPorFiltroUseCase(UsuarioGateway usuarioGateway) {
+        return new BuscarUsuariosPorFiltroUseCaseImpl(usuarioGateway);
+    }
 }
