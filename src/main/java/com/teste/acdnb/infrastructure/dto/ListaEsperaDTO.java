@@ -10,6 +10,6 @@ String dataNascimento,
 String telefone,
 String dataInclusao,
 Integer usuarioInclusao,
-String horarioPref
-){
+ Integer horarioPrefId)
+{
 }

@@ -1,5 +1,6 @@
 package com.teste.acdnb.infrastructure.di;
 
+import com.teste.acdnb.core.application.gateway.HorarioPreferenciaGateway;
 import com.teste.acdnb.core.application.gateway.ListaEsperaGateway;
 import com.teste.acdnb.core.application.usecase.listaEspera.*;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
@@ -13,12 +14,14 @@ public class ListaEsperaBeanConfig {
     public AdicionarInteressadoUseCase adicionarInteressadoUseCase(
             ListaEsperaGateway listaEsperaGateway,
             UsuarioRepository usuarioRepository,
-            UsuarioEntityMapper usuarioEntityMapper
+            UsuarioEntityMapper usuarioEntityMapper,
+            HorarioPreferenciaGateway horarioPreferenciaGateway
     ) {
         return new AdicionarInteressadoUseCaseImpl(
                 listaEsperaGateway,
                 usuarioRepository,
-                usuarioEntityMapper
+                usuarioEntityMapper,
+                horarioPreferenciaGateway
         );
     }
 
@@ -45,12 +48,14 @@ public class ListaEsperaBeanConfig {
     public AtualizarInteressadoUseCase atualizarInteressadoUseCase(
             ListaEsperaGateway listaEsperaGateway,
             UsuarioRepository usuarioRepository,
-            UsuarioEntityMapper usuarioEntityMapper
+            UsuarioEntityMapper usuarioEntityMapper,
+            HorarioPreferenciaGateway horarioPreferenciaGateway
     ) {
         return new AtualizarInteressadoUseCaseImpl(
                 listaEsperaGateway,
                 usuarioRepository,
-                usuarioEntityMapper
+                usuarioEntityMapper,
+                horarioPreferenciaGateway
         );
     }
 

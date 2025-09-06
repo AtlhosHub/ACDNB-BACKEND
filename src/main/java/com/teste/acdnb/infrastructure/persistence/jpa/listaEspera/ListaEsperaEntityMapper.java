@@ -2,24 +2,25 @@ package com.teste.acdnb.infrastructure.persistence.jpa.listaEspera;
 
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
-import com.teste.acdnb.core.domain.listaEspera.HorarioPreferencia;
+import com.teste.acdnb.core.domain.horarioPreferencia.HorarioPreferencia;
+import com.teste.acdnb.infrastructure.persistence.jpa.horarioPreferencia.HorarioPreferenciaEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class ListaEsperaEntityMapper {
 
     private final UsuarioEntityMapper usuarioEntityMapper;
+    private final HorarioPreferenciaEntityMapper horarioPreferenciaEntityMapper;
 
-    public ListaEsperaEntityMapper(UsuarioEntityMapper usuarioEntityMapper) {
+    public ListaEsperaEntityMapper(UsuarioEntityMapper usuarioEntityMapper,
+                                   HorarioPreferenciaEntityMapper horarioPreferenciaEntityMapper) {
         this.usuarioEntityMapper = usuarioEntityMapper;
+        this.horarioPreferenciaEntityMapper = horarioPreferenciaEntityMapper;
     }
 
     public ListaEsperaEntity toEntity(ListaEspera listaEspera) {
         if (listaEspera == null) return null;
-
 
         return new ListaEsperaEntity(
                 listaEspera.getId(),
@@ -32,7 +33,7 @@ public class ListaEsperaEntityMapper {
                 listaEspera.getTelefone() != null ? listaEspera.getTelefone().getValue() : null,
                 listaEspera.getDataInclusao() != null ? listaEspera.getDataInclusao().getValue() : null,
                 listaEspera.getDataInteresse() != null ? listaEspera.getDataInteresse().getValue() : null,
-                listaEspera.getHorarioPref() != null ? listaEspera.getHorarioPref().getDiaSemana() : null,
+                listaEspera.getHorarioPref() != null ? horarioPreferenciaEntityMapper.toEntity(listaEspera.getHorarioPref()) : null,
                 listaEspera.getUsuarioInclusao() != null ? usuarioEntityMapper.toEntity(listaEspera.getUsuarioInclusao()) : null
         );
     }
@@ -52,7 +53,7 @@ public class ListaEsperaEntityMapper {
                 entity.getTelefone() != null ? Telefone.of(entity.getTelefone()) : null,
                 entity.getDataInclusao() != null ? DataInclusao.of(entity.getDataInclusao()) : null,
                 usuarioEntityMapper.toDomain(entity.getUsuarioInclusao()),
-                entity.getHorarioPreferencia() != null ? buildHorarioPrefFromString(entity.getHorarioPreferencia()) : null
+                entity.getHorarioPreferencia() != null ? horarioPreferenciaEntityMapper.toDomain(entity.getHorarioPreferencia()) : null
         );
     }
 
@@ -68,14 +69,7 @@ public class ListaEsperaEntityMapper {
         if (domain.getDataInclusao() != null) entity.setDataInclusao(domain.getDataInclusao().getValue());
         if (domain.getDataInteresse() != null) entity.setDataInteresse(domain.getDataInteresse().getValue());
         if (domain.getDataNascimento() != null) entity.setDataNascimento(domain.getDataNascimento().getValue());
-        if (domain.getHorarioPref() != null) entity.setHorarioPreferencia(domain.getHorarioPref().getDiaSemana());
+        if (domain.getHorarioPref() != null) entity.setHorarioPreferencia(horarioPreferenciaEntityMapper.toEntity(domain.getHorarioPref()));
         if (domain.getUsuarioInclusao() != null) entity.setUsuarioInclusao(usuarioEntityMapper.toEntity(domain.getUsuarioInclusao()));
-    }
-
-    private HorarioPreferencia buildHorarioPrefFromString(String diaSemana) {
-        if (diaSemana == null) return null;
-        HorarioPreferencia hp = new HorarioPreferencia();
-        hp.setDiaSemana(diaSemana);
-        return hp;
     }
 }

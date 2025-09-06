@@ -1,5 +1,6 @@
 package com.teste.acdnb.core.domain.listaEspera;
 
+import com.teste.acdnb.core.domain.horarioPreferencia.HorarioPreferencia;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 

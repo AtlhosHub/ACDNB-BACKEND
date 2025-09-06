@@ -1,5 +1,6 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.listaEspera;
 
+import com.teste.acdnb.infrastructure.persistence.jpa.horarioPreferencia.HorarioPreferenciaEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -57,8 +58,10 @@ public class ListaEsperaEntity {
     @Schema(description = "Data de interesse do usuário", example = "2025-04-21T14:30:00")
     private LocalDateTime dataInteresse;
 
-    @Schema(description = "Preferência de horário do usuário", example = "Manhã")
-    private String horarioPreferencia;
+    @ManyToOne
+    @JoinColumn(name = "horario_preferencia_id")
+    private HorarioPreferenciaEntity horarioPreferencia;
+
 
     @ManyToOne
     @JoinColumn(name = "usuario_inclusao_id")

@@ -1,8 +1,9 @@
 package com.teste.acdnb.core.application.usecase.listaEspera;
 
+import com.teste.acdnb.core.application.gateway.HorarioPreferenciaGateway;
 import com.teste.acdnb.core.application.gateway.ListaEsperaGateway;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
-import com.teste.acdnb.core.domain.listaEspera.HorarioPreferencia;
+import com.teste.acdnb.core.domain.horarioPreferencia.HorarioPreferencia;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.infrastructure.dto.ListaEsperaDTO;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
@@ -15,12 +16,14 @@ public class AdicionarInteressadoUseCaseImpl implements AdicionarInteressadoUseC
     private final ListaEsperaGateway listaEsperaGateway;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioEntityMapper usuarioEntityMapper;
+    private final HorarioPreferenciaGateway horarioPreferenciaGateway;
 
 
-    public AdicionarInteressadoUseCaseImpl(ListaEsperaGateway listaEsperaGateway, UsuarioRepository usuarioRepository, UsuarioEntityMapper usuarioEntityMapper) {
+    public AdicionarInteressadoUseCaseImpl(ListaEsperaGateway listaEsperaGateway, UsuarioRepository usuarioRepository, UsuarioEntityMapper usuarioEntityMapper, HorarioPreferenciaGateway horarioPreferenciaGateway) {
         this.listaEsperaGateway = listaEsperaGateway;
         this.usuarioRepository = usuarioRepository;
         this.usuarioEntityMapper = usuarioEntityMapper;
+        this.horarioPreferenciaGateway = horarioPreferenciaGateway;
     }
 
     @Override
@@ -45,10 +48,9 @@ public class AdicionarInteressadoUseCaseImpl implements AdicionarInteressadoUseC
         }
 
 
-        if (dto.horarioPref() != null && !dto.horarioPref().isBlank()) {
-            HorarioPreferencia horarioPref = new HorarioPreferencia();
-            horarioPref.setDiaSemana(dto.horarioPref());
-            interessado.setHorarioPref(horarioPref);
+        if (dto.horarioPrefId() != null) {
+            HorarioPreferencia horarioPrefExistente = horarioPreferenciaGateway.buscarPorId(dto.horarioPrefId());
+            interessado.setHorarioPref(horarioPrefExistente);
         }
 
         return listaEsperaGateway.adicionarInteressado(interessado);
