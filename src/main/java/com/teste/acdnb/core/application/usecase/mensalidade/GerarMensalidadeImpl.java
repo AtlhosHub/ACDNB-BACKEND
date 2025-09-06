@@ -1,6 +1,6 @@
 package com.teste.acdnb.core.application.usecase.mensalidade;
 
-import com.teste.acdnb.core.application.gateway.MensalidadeGateway;
+import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
@@ -28,7 +28,7 @@ public class GerarMensalidadeImpl implements GerarMensalidade {
 
         List<Mensalidade> mensalidades = mensalidadeFactory.gerarMensalidades(aluno, valor, dataReferencia, NUMERO_PARCELAS);
 
-        long pendentes = mensalidadeGateway.contarPendentesOuAtrasadas(aluno);
+        long pendentes = mensalidadeGateway.contarMensalidadePendentesOuAtrasadas(aluno);
         if (pendentes <= 2) {
             mensalidades.addAll(mensalidadeFactory.gerarMensalidades(aluno, valor, dataReferencia.plusMonths(NUMERO_PARCELAS), NUMERO_PARCELAS));
         }

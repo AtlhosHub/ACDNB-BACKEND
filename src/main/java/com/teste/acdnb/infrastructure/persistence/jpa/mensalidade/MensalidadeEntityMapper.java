@@ -3,9 +3,11 @@ package com.teste.acdnb.infrastructure.persistence.jpa.mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.comprovante.ComprovanteEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeEntityMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class MensalidadeEntityMapper {
     public static MensalidadeEntity toEntity(Mensalidade mensalidade) {
         if (mensalidade == null) return null;
