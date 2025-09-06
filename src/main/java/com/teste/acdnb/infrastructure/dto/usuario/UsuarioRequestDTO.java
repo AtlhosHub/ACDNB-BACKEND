@@ -1,12 +1,13 @@
 package com.teste.acdnb.infrastructure.dto.usuario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record UsuarioDTO (
+public record UsuarioRequestDTO(
         String nome,
         String email,
         String celular,
-        LocalDateTime dataNascimento,
+        LocalDate dataNascimento,
         String nomeSocial,
         String genero,
         String senha,

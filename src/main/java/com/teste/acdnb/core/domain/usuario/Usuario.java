@@ -11,8 +11,8 @@ public class Usuario{
     private Email email;
     private Senha senha;
     private Celular celular;
-    private DataInclusao dataNascimento;
-    private Nome nomeSocial;
+    private DataNascimento dataNascimento;
+    private NomeSocial nomeSocial;
     private String genero;
     private Telefone telefone;
     private String cargo;
@@ -26,7 +26,7 @@ public class Usuario{
     public Usuario() {
     }
 
-    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataInclusao dataNascimento, Nome nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao) {
+    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataNascimento dataNascimento, NomeSocial nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -82,19 +82,19 @@ public class Usuario{
         this.celular = celular;
     }
 
-    public DataInclusao getDataNascimento() {
+    public DataNascimento getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(DataInclusao dataNascimento) {
+    public void setDataNascimento(DataNascimento dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public Nome getNomeSocial() {
+    public NomeSocial getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(Nome nomeSocial) {
+    public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 

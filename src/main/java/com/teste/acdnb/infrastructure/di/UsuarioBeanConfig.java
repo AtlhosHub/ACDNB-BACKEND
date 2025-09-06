@@ -21,4 +21,13 @@ public class UsuarioBeanConfig {
     public BuscarUsuarioPorIdUseCase buscarUsuarioPorId(UsuarioGateway usuarioGateway) {
         return new BuscarUsuarioPorIdUseCaseImpl(usuarioGateway);
     }
+
+    @Bean
+    public RemoverUsuarioUseCase removerUsuarioUseCase(UsuarioGateway usuarioGateway) {
+        return new RemoverUsuarioUseCaseImpl(usuarioGateway);
+    }
+
+    @Bean AtualizarUsuarioUseCase atualizarUsuarioUseCase(UsuarioGateway usuarioGateway) {
+        return new AtualizarUsuarioUseCaseImpl(usuarioGateway);
+    }
 }

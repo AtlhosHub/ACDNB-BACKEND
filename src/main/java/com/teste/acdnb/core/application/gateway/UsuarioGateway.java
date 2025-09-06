@@ -8,7 +8,8 @@ import java.util.Optional;
 public interface UsuarioGateway {
     Usuario adicionarUsuario(Usuario usuario);
     List<Usuario> listarUsuarios();
-    Usuario buscarUsuarioPorId(int id);
-    Usuario removerUsuarioPorId(int id);
-    Optional buscarUsuarioPorEmail(String email);
+    Optional <Usuario> buscarUsuarioPorId(int id);
+    void removerUsuarioPorId(int id);
+    Optional<Usuario> buscarUsuarioPorEmail(String email);
+    Usuario atualizarUsuario(Usuario usuario);
 }

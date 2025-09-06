@@ -1,14 +1,11 @@
 package com.teste.acdnb.infrastructure.web;
 
-import com.teste.acdnb.core.application.usecase.usuario.AdicionarUsuarioUseCase;
-import com.teste.acdnb.core.application.usecase.usuario.BuscarUsuarioPorIdUseCase;
-import com.teste.acdnb.core.application.usecase.usuario.ListarUsuariosUseCase;
+import com.teste.acdnb.core.application.usecase.usuario.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
-import com.teste.acdnb.infrastructure.dto.usuario.UsuarioDTO;
-import com.teste.acdnb.infrastructure.dto.usuario.UsuarioInfoDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioRequestDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioResponseDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioListaDTO;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioDTOMapper;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +19,20 @@ public class UsuarioController {
     private final AdicionarUsuarioUseCase adicionarUsuarioUseCase;
     private final ListarUsuariosUseCase listarUsuariosUseCase;
     private final BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase;
+    private final RemoverUsuarioUseCase removerUsuarioUseCase;
+    private final AtualizarUsuarioUseCase atualizarUsuarioUseCase;
 
-    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase) {
+    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, RemoverUsuarioUseCase removerUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase) {
         this.adicionarUsuarioUseCase = adicionarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
         this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
+        this.removerUsuarioUseCase = removerUsuarioUseCase;
+        this.atualizarUsuarioUseCase = atualizarUsuarioUseCase;
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> adicionarUsuario(@RequestBody UsuarioDTO usuario) {
-        Usuario executar = adicionarUsuarioUseCase.execute(usuario);
+    public ResponseEntity<UsuarioResponseDTO> adicionarUsuario(@RequestBody UsuarioRequestDTO usuario) {
+        UsuarioResponseDTO executar = adicionarUsuarioUseCase.execute(usuario);
         return ResponseEntity.ok(executar);
     }
 
@@ -45,10 +46,25 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioInfoDTO> buscarUsuarioPorId(@PathVariable int id) {
+    public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable int id) {
         Usuario usuario = buscarUsuarioPorIdUseCase.execute(id);
         return usuario == null
                 ? ResponseEntity.notFound().build()
                 : ResponseEntity.ok(UsuarioDTOMapper.toInfoDTO(usuario));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable int id) {
+        removerUsuarioUseCase.execute(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(
+            @PathVariable int id,
+            @RequestBody UsuarioRequestDTO usuarioRequestDTO
+    ) {
+        UsuarioResponseDTO usuarioAtualizado = atualizarUsuarioUseCase.execute(id, usuarioRequestDTO);
+        return ResponseEntity.ok(usuarioAtualizado);
     }
 }

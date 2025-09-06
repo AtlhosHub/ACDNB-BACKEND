@@ -37,20 +37,26 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
     }
 
     @Override
-    public Usuario buscarUsuarioPorId(int id) {
+    public Optional<Usuario> buscarUsuarioPorId(int id) {
         return usuarioRepository.findById(id)
-                .map(usuarioEntityMapper::toDomain)
-                .orElse(null);
-    }
-
-    @Override
-    public Usuario removerUsuarioPorId(int id) {
-        return null;
-    }
-
-    @Override
-    public Optional buscarUsuarioPorEmail(String email) {
-        return usuarioRepository.existsByEmailIgnoreCase(email)
                 .map(usuarioEntityMapper::toDomain);
+    }
+
+    @Override
+    public void removerUsuarioPorId(int id) {
+        usuarioRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Usuario> buscarUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmailIgnoreCase(email)
+                .map(usuarioEntityMapper::toDomain);
+    }
+
+    @Override
+    public Usuario atualizarUsuario(Usuario usuario) {
+        UsuarioEntity entity = usuarioEntityMapper.toEntity(usuario);
+        UsuarioEntity atualizado = usuarioRepository.save(entity);
+        return usuarioEntityMapper.toDomain(atualizado);
     }
 }

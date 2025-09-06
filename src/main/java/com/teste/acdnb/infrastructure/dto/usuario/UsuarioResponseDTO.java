@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "DTO que representa informações detalhadas de um usuário")
-public class UsuarioInfoDTO {
+public class UsuarioResponseDTO {
     @Schema(description = "Nome completo do usuário", example = "João Silva")
     private String nome;
 
@@ -25,7 +25,7 @@ public class UsuarioInfoDTO {
     private String celular;
 
     @Schema(description = "Data de nascimento do usuário", example = "1990-05-15")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @Schema(description = "Nome social do usuário, caso aplicável", example = "Joana Silva")
     private String nomeSocial;

@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer> {
-    Optional<UsuarioEntity> existsByEmailIgnoreCase(String email);
+    Optional<UsuarioEntity> findByEmailIgnoreCase(String email);
 
     List<UsuarioEntity> findAll();
 
     Optional<UsuarioEntity> findById(int id);
+
 
 }

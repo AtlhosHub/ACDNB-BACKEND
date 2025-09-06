@@ -5,7 +5,8 @@ import com.teste.acdnb.core.application.exception.DataConflictException;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.core.domain.usuario.valueobject.Senha;
-import com.teste.acdnb.infrastructure.dto.usuario.UsuarioDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioRequestDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.UsuarioResponseDTO;
 
 public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
 
@@ -15,27 +16,39 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
     }
 
     @Override
-    public Usuario execute(UsuarioDTO usuarioDTO) {
+    public UsuarioResponseDTO execute(UsuarioRequestDTO usuarioRequestDTO) {
 
-        usuarioGateway.buscarUsuarioPorEmail(usuarioDTO.email())
+        usuarioGateway.buscarUsuarioPorEmail(usuarioRequestDTO.email())
                 .ifPresent(usuarioExistente -> {
                     throw new DataConflictException("E-mail de usuário já cadastrado");
                 });
-        // colocar as validações ai pae
+
         var usuarioParaRegistrar = new Usuario();
-        usuarioParaRegistrar.setNome(Nome.of(usuarioDTO.nome()));
-        usuarioParaRegistrar.setEmail(Email.of(usuarioDTO.email()));
-        usuarioParaRegistrar.setSenha(Senha.of(usuarioDTO.senha()));
-        usuarioParaRegistrar.setCelular(Celular.of(usuarioDTO.celular()));
-        usuarioParaRegistrar.setDataNascimento(DataInclusao.of(usuarioDTO.dataNascimento()));
-        usuarioParaRegistrar.setNomeSocial(Nome.of(usuarioDTO.nomeSocial()));
-        usuarioParaRegistrar.setGenero(usuarioDTO.genero());
-        usuarioParaRegistrar.setTelefone(Telefone.of(usuarioDTO.telefone()));
-        usuarioParaRegistrar.setCargo(usuarioDTO.cargo());
-        usuarioParaRegistrar.setDataInclusao(DataInclusao.of(usuarioDTO.dataInclusao()));
+        usuarioParaRegistrar.setNome(Nome.of(usuarioRequestDTO.nome()));
+        usuarioParaRegistrar.setEmail(Email.of(usuarioRequestDTO.email()));
+        usuarioParaRegistrar.setSenha(Senha.of(usuarioRequestDTO.senha()));
+        usuarioParaRegistrar.setCelular(Celular.of(usuarioRequestDTO.celular()));
+        usuarioParaRegistrar.setDataNascimento(DataNascimento.of(usuarioRequestDTO.dataNascimento()));
+        usuarioParaRegistrar.setNomeSocial(NomeSocial.of(usuarioRequestDTO.nomeSocial(), usuarioRequestDTO.nome()));
+        usuarioParaRegistrar.setGenero(usuarioRequestDTO.genero());
+        usuarioParaRegistrar.setTelefone(Telefone.of(usuarioRequestDTO.telefone()));
+        usuarioParaRegistrar.setCargo(usuarioRequestDTO.cargo());
+        usuarioParaRegistrar.setDataInclusao(DataInclusao.of(usuarioRequestDTO.dataInclusao()));
 //        usuarioParaRegistrar.setUsuarioInclusao();
 //                toDomain(entity.getUsuarioInclusao()),
 //                toDomainList(entity.getUsuariosCadastrados())
-        return usuarioGateway.adicionarUsuario(usuarioParaRegistrar);
+
+        Usuario usuarioCadastrado = usuarioGateway.adicionarUsuario(usuarioParaRegistrar);
+
+        return new UsuarioResponseDTO(
+                usuarioCadastrado.getNome().getValue(),
+                usuarioCadastrado.getEmail().getValue(),
+                usuarioCadastrado.getCelular().getValue(),
+                usuarioCadastrado.getDataNascimento().getValue(),
+                usuarioCadastrado.getNomeSocial().getValue(),
+                usuarioCadastrado.getGenero(),
+                usuarioCadastrado.getTelefone().getValue(),
+                usuarioCadastrado.getCargo()
+        );
     }
 }
