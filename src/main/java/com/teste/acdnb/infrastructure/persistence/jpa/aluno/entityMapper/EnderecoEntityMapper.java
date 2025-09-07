@@ -3,18 +3,15 @@ package com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.valueobject.Cep;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.EnderecoEntity;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EnderecoEntityMapper {
-    private AlunoEntityMapper alunoEntityMapper;
 
-    public EnderecoEntityMapper(@Lazy AlunoEntityMapper alunoEntityMapper) {
-        this.alunoEntityMapper = alunoEntityMapper;
+    public EnderecoEntityMapper() {
     }
 
-    public EnderecoEntity toEntity(Endereco endereco) {
+    public static EnderecoEntity toEntity(Endereco endereco) {
         return new EnderecoEntity(
             endereco.getId(),
             endereco.getLogradouro(),
@@ -22,12 +19,13 @@ public class EnderecoEntityMapper {
             endereco.getBairro(),
             endereco.getCidade(),
             endereco.getEstado(),
-            endereco.getCep().getValue()
-//            alunoEntityMapper.toEntityList(endereco.getAlunos())
+            endereco.getCep().getValue(),
+            null
+//            AlunoMapperUtil.toEntityList(endereco.getAlunos(), new AlunoEntityMapper(null, this, null))
         );
     }
 
-    public Endereco toDomain(EnderecoEntity enderecoEntity) {
+    public static Endereco toDomain(EnderecoEntity enderecoEntity) {
         return new Endereco(
             enderecoEntity.getId(),
             enderecoEntity.getLogradouro(),
@@ -35,8 +33,9 @@ public class EnderecoEntityMapper {
             enderecoEntity.getBairro(),
             enderecoEntity.getCidade(),
             enderecoEntity.getEstado(),
-            Cep.of(enderecoEntity.getCep())
-//            alunoEntityMapper.toDomainList(enderecoEntity.getAlunos())
+            Cep.of(enderecoEntity.getCep()),
+            null
+//            AlunoMapperUtil.toDomainList(enderecoEntity.getAlunos(), new AlunoEntityMapper(null, this, null))
         );
     }
 }

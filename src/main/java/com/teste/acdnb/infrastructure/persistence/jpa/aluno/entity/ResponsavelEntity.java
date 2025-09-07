@@ -48,8 +48,8 @@ public class ResponsavelEntity {
     @Schema(description = "Prossissão do responsável", example = "Engenheiro")
     private String profissao;
 
-//    @ManyToMany(mappedBy = "responsaveis")
-//    @JsonIgnoreProperties("responsaveis")
-//    @Schema(description = "Lista de alunos associados ao responsável")
-//    private List<AlunoEntity> alunos = new ArrayList<>();
+    @ManyToMany(mappedBy = "responsaveis")
+    @JsonIgnoreProperties("responsaveis")
+    @Schema(description = "Lista de alunos associados ao responsável")
+    private List<AlunoEntity> alunos = new ArrayList<>();
 }

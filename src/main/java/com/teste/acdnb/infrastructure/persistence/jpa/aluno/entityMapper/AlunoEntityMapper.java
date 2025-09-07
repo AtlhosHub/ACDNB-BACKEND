@@ -6,21 +6,15 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 public class AlunoEntityMapper {
-    private UsuarioEntityMapper usuarioEntityMapper;
-    private EnderecoEntityMapper enderecoEntityMapper;
-    private ResponsavelEntityMapper responsavelEntityMapper;
+    private final UsuarioEntityMapper usuarioEntityMapper;
 
     public AlunoEntityMapper(UsuarioEntityMapper usuarioEntityMapper, EnderecoEntityMapper enderecoEntityMapper, ResponsavelEntityMapper responsavelEntityMapper) {
         this.usuarioEntityMapper = usuarioEntityMapper;
-        this.enderecoEntityMapper = enderecoEntityMapper;
-        this.responsavelEntityMapper = responsavelEntityMapper;
     }
 
-    public AlunoEntity toEntity(Aluno aluno) {
+    public static AlunoEntity toEntity(Aluno aluno) {
         return new AlunoEntity(
             aluno.getId(),
             aluno.getNome().getValue(),
@@ -39,14 +33,14 @@ public class AlunoEntityMapper {
             aluno.isAtivo(),
             aluno.isAtestado(),
             aluno.isAutorizado(),
-            aluno.getDataInclusao().getValue()
-//            enderecoEntityMapper.toEntity(aluno.getEndereco()),
-//            aluno.getResponsaveis() != null ? responsavelEntityMapper.toEntity(aluno.getResponsaveis()) : null,
+            aluno.getDataInclusao().getValue(),
+            EnderecoEntityMapper.toEntity(aluno.getEndereco()),
+            aluno.isMenor() ? ResponsavelEntityMapper.toEntityList(aluno.getResponsaveis()) : null
 //            aluno.getUsuarioInclusao() != null ? usuarioEntityMapper.toEntity(aluno.getUsuarioInclusao()) : null
         );
     }
 
-    public Aluno toDomain(AlunoEntity entity) {
+    public static Aluno toDomain(AlunoEntity entity) {
         if (entity == null) return null;
 
         return new Aluno(
@@ -67,18 +61,10 @@ public class AlunoEntityMapper {
             entity.isAtivo(),
             entity.isAtestado(),
             entity.isAutorizado(),
-            DataInclusao.of(entity.getDataInclusao())
-//            enderecoEntityMapper.toDomain(entity.getEndereco()),
-//            responsavelEntityMapper.toDomain(entity.getResponsaveis()),
+            DataInclusao.of(entity.getDataInclusao()),
+            EnderecoEntityMapper.toDomain(entity.getEndereco()),
+            entity.isMenor() ? ResponsavelEntityMapper.toDomainList(entity.getResponsaveis()) : null
 //            usuarioEntityMapper.toDomain(entity.getUsuarioInclusao())
         );
-    }
-
-    public List<AlunoEntity> toEntityList(List<Aluno> alunos){
-        return alunos.stream().map(this::toEntity).toList();
-    }
-
-    public List<Aluno> toDomainList(List<AlunoEntity> alunos){
-        return alunos.stream().map(this::toDomain).toList();
     }
 }

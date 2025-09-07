@@ -16,11 +16,11 @@ public class Responsavel {
     private Nome nomeSocial;
     private String genero;
     private String profissao;
-//    private List<Aluno> alunos = new ArrayList<>();
+    private List<Aluno> alunos = new ArrayList<>();
 
     public Responsavel(){}
 
-    public Responsavel(int id, Nome nome, Cpf cpf, Celular celular, Email email, String rg, Telefone telefone, Nome nomeSocial, String genero, String profissao){//, List<Aluno> alunos) {
+    public Responsavel(int id, Nome nome, Cpf cpf, Celular celular, Email email, String rg, Telefone telefone, Nome nomeSocial, String genero, String profissao, List<Aluno> alunos) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -31,7 +31,7 @@ public class Responsavel {
         this.nomeSocial = nomeSocial;
         this.genero = genero;
         this.profissao = profissao;
-//        this.alunos = alunos;
+        this.alunos = alunos;
     }
 
     public int getId() {
@@ -114,11 +114,11 @@ public class Responsavel {
         this.profissao = profissao;
     }
 
-//    public List<Aluno> getAlunos() {
-//        return alunos;
-//    }
-//
-//    public void setAlunos(List<Aluno> alunos) {
-//        this.alunos = alunos;
-//    }
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
 }

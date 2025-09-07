@@ -2,26 +2,88 @@ package com.teste.acdnb.infrastructure.gateway;
 
 import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
-import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
+import com.teste.acdnb.core.domain.aluno.Endereco;
+import com.teste.acdnb.core.domain.aluno.Responsavel;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoMapperUtil;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.EnderecoEntityMapper;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.ResponsavelEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.AlunoRepository;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.EnderecoRepository;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.ResponsavelRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AlunoRepositoryGateway implements AlunoGateway {
     private final AlunoRepository alunoRepository;
-    private final AlunoEntityMapper alunoEntityMapper;
+    private final EnderecoRepository enderecoRepository;
+    private final ResponsavelRepository responsavelRepository;
 
-    public AlunoRepositoryGateway(AlunoRepository alunoRepository, AlunoEntityMapper alunoEntityMapper) {
+    private final AlunoEntityMapper alunoEntityMapper;
+    private final EnderecoEntityMapper enderecoEntityMapper;
+    private final ResponsavelEntityMapper responsavelEntityMapper;
+
+    public AlunoRepositoryGateway(AlunoRepository alunoRepository, EnderecoRepository enderecoRepository, ResponsavelRepository responsavelRepository, AlunoEntityMapper alunoEntityMapper, EnderecoEntityMapper enderecoEntityMapper, ResponsavelEntityMapper responsavelEntityMapper) {
         this.alunoRepository = alunoRepository;
+        this.enderecoRepository = enderecoRepository;
+        this.responsavelRepository = responsavelRepository;
         this.alunoEntityMapper = alunoEntityMapper;
+        this.enderecoEntityMapper = enderecoEntityMapper;
+        this.responsavelEntityMapper = responsavelEntityMapper;
     }
 
     @Override
-    public Aluno adicionarAluno(Aluno aluno) {
-        AlunoEntity alunoEntity = alunoEntityMapper.toEntity(aluno);
-        AlunoEntity novoAluno = alunoRepository.save(alunoEntity);
+    public Aluno adicionarAluno(Aluno aluno){
+        return alunoEntityMapper.toDomain(
+                alunoRepository.save(
+                        alunoEntityMapper.toEntity(aluno)
+                )
+        );
+    }
 
-        return alunoEntityMapper.toDomain(novoAluno);
+    @Override
+    public boolean existsByEmailIgnoreCaseOrCpfOrRg(String email, String cpf, String rg){
+        return alunoRepository.existsByEmailIgnoreCaseOrCpfOrRg(email, cpf, rg);
+    }
+
+    @Override
+    public boolean existsByCpfOrRg(String cpf, String rg){
+        return alunoRepository.existsByCpfOrRg(cpf, rg);
+    }
+
+    @Override
+    public Optional<Endereco> findEndereco(Endereco endereco){
+        return enderecoRepository.findByLogradouroAndNumLogAndBairroAndCidadeAndCepAndEstado(
+                endereco.getLogradouro(),
+                endereco.getNumLog(),
+                endereco.getBairro(),
+                endereco.getCidade(),
+                endereco.getCep().getValue(),
+                endereco.getEstado()
+        ).map(EnderecoEntityMapper::toDomain);
+    }
+
+    @Override
+    public Endereco saveEndereco(Endereco endereco){
+        return enderecoEntityMapper.toDomain(enderecoRepository.save(EnderecoEntityMapper.toEntity(endereco)));
+    }
+
+    @Override
+    public Optional<Responsavel> findResponsavelPorCpf(String cpf){
+        return responsavelRepository.findByCpf(cpf).map(ResponsavelEntityMapper::toDomain);
+    }
+
+    @Override
+    public Responsavel saveResponsavel(Responsavel responsavel){
+        return responsavelEntityMapper.toDomain(responsavelRepository.save(responsavelEntityMapper.toEntity(responsavel)));
+    }
+
+    @Override
+    public List<Aluno> listarAlunos(){
+        return AlunoMapperUtil.toDomainList(alunoRepository.findAll(Sort.by(Sort.Order.asc("nome").ignoreCase())), alunoEntityMapper);
     }
 }

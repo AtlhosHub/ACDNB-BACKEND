@@ -4,5 +4,5 @@ import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
 
 public interface AdicionarAlunoUseCase {
-    public Aluno execute(AlunoDTO aluno);
+    Aluno execute(AlunoDTO aluno);
 }

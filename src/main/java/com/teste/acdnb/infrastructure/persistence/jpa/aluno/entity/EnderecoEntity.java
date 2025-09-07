@@ -43,8 +43,8 @@ public class EnderecoEntity {
     @Schema(description = "CEP do endereço", example = "12345-678")
     private String cep;
 
-//    @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("endereco")
-//    @Schema(description = "Lista de alunos associados ao endereço")
-//    private List<AlunoEntity> alunos = new ArrayList<>();
+    @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("endereco")
+    @Schema(description = "Lista de alunos associados ao endereço")
+    private List<AlunoEntity> alunos = new ArrayList<>();
 }

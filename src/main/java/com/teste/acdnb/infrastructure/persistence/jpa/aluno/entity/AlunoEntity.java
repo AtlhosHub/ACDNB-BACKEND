@@ -1,6 +1,7 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+// import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -77,32 +78,27 @@ public class AlunoEntity {
     @Schema(description = "Data de inclusão do aluno no sistema", example = "2025-04-21T10:15:30")
     private LocalDateTime dataInclusao;
 
-//    @ManyToOne
-//    @JoinColumn(name = "endereco_id")
-//    @JsonIgnoreProperties("alunos")
-//    @Schema(description = "Endereço associado ao aluno")
-//    private EnderecoEntity endereco;
-//
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "responsavel_aluno",
-//            joinColumns = @JoinColumn(name = "aluno_id"),
-//            inverseJoinColumns = @JoinColumn(name = "responsavel_id")
-//    )
-//    @JsonIgnoreProperties({"alunos"})
-//    @Schema(description = "Lista de responsáveis associados ao aluno")
-//    private List<ResponsavelEntity> responsaveis;
-//
+    @ManyToOne
+    @JoinColumn(name = "endereco_id")
+    @JsonIgnoreProperties("alunos")
+    @Schema(description = "Endereço associado ao aluno")
+    private EnderecoEntity endereco;
+
+    @ManyToMany
+    @JoinTable(
+            name = "responsavel_aluno",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "responsavel_id")
+    )
+    @JsonIgnoreProperties({"alunos"})
+    @Schema(description = "Lista de responsáveis associados ao aluno")
+    private List<ResponsavelEntity> responsaveis;
+
 //    @ManyToOne
 //    @JoinColumn(name = "usuario_inclusao_id")
 //    @JsonIgnoreProperties({"usuarioInclusao", "alunos", "usuariosCadastrados", "interessados", "senha"})
 //    @Schema(description = "Usuário que incluiu o aluno no sistema")
 //    private UsuarioEntity usuarioInclusao;
-
-    @Schema(description = "Verifica se o aluno é menor de idade", example = "true")
-    public boolean isMenor(){
-        return Period.between(dataNascimento, LocalDate.now()).getYears() < 18;
-    }
 
 //    @OneToMany(
 //            mappedBy = "aluno",
@@ -111,5 +107,10 @@ public class AlunoEntity {
 //    )
 //    @JsonIgnoreProperties("comprovante")
 //    @Schema(description = "Mensalidades associadas ao aluno")
-//    private List<Mensalidade> mensalidades = new ArrayList<>();
+//    private List<MensalidadeEntity> mensalidades;
+
+    @Schema(description = "Verifica se o aluno é menor de idade", example = "true")
+    public boolean isMenor(){
+        return Period.between(dataNascimento, LocalDate.now()).getYears() < 18;
+    }
 }

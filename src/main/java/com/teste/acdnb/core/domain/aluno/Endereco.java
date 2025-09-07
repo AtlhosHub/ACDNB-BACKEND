@@ -13,11 +13,11 @@ public class Endereco {
     private String cidade;
     private String estado;
     private Cep cep;
-//    private List<Aluno> alunos = new ArrayList<>();
+    private List<Aluno> alunos = new ArrayList<>();
 
     public Endereco(){}
 
-    public Endereco(int id, String logradouro, String numLog, String bairro, String cidade, String estado, Cep cep){//, List<Aluno> alunos) {
+    public Endereco(int id, String logradouro, String numLog, String bairro, String cidade, String estado, Cep cep, List<Aluno> alunos) {
         if(logradouro == null || logradouro.isEmpty()){
             throw new IllegalArgumentException("O logradouro não pode ficar em branco");
         }
@@ -44,7 +44,7 @@ public class Endereco {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
-//        this.alunos = alunos;
+        this.alunos = alunos;
     }
 
     public int getId() {
@@ -103,11 +103,11 @@ public class Endereco {
         this.cep = cep;
     }
 
-//    public List<Aluno> getAlunos() {
-//        return alunos;
-//    }
-//
-//    public void setAlunos(List<Aluno> alunos) {
-//        this.alunos = alunos;
-//    }
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
 }

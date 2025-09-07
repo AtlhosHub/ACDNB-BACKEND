@@ -1,5 +1,6 @@
 package com.teste.acdnb.core.domain.aluno;
 
+// import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 
@@ -27,17 +28,18 @@ public class Aluno {
     private boolean atestado;
     private boolean autorizado;
     private DataInclusao dataInclusao;
-//    private Endereco endereco;
-//    private List<Responsavel> responsaveis = new ArrayList<>();
-//    private Usuario usuarioInclusao;
+    private Endereco endereco;
+    private List<Responsavel> responsaveis = new ArrayList<>();
+    private Usuario usuarioInclusao;
 //    private List<Mensalidade> mensalidades = new ArrayList<>();
 
     public Aluno() {}
 
-    public Aluno(int id, Nome nome, Email email, DataInclusao dataNascimento, Cpf cpf, String rg, Nome nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao){//, Endereco endereco, List<Responsavel> responsaveis, Usuario usuarioInclusao) {
-//        if(isMenor() && (responsaveis == null || responsaveis.isEmpty())){
-//            throw new IllegalArgumentException("Alunos menores de idade devem ter pelo menos um responsável.");
-//        }
+    public Aluno(int id, Nome nome, Email email, DataInclusao dataNascimento, Cpf cpf, String rg, Nome nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao, Endereco endereco, List<Responsavel> responsaveis) {
+        this.dataNascimento = dataNascimento;
+        if(isMenor() && (responsaveis == null || responsaveis.isEmpty())){
+            throw new IllegalArgumentException("Alunos menores de idade devem ter pelo menos um responsável.");
+        }
 
         if(rg.isEmpty()){
             throw new IllegalArgumentException("O RG não pode ficar em branco");
@@ -46,7 +48,6 @@ public class Aluno {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.rg = rg;
         this.nomeSocial = nomeSocial;
@@ -61,9 +62,10 @@ public class Aluno {
         this.atestado = atestado;
         this.autorizado = autorizado;
         this.dataInclusao = dataInclusao;
-//        this.endereco = endereco;
-//        this.responsaveis = responsaveis;
+        this.endereco = endereco;
+        this.responsaveis = responsaveis;
 //        this.usuarioInclusao = usuarioInclusao;
+//        this.mensalidades = mensalidades;
     }
 
     public boolean isMenor(){
@@ -214,27 +216,35 @@ public class Aluno {
         this.dataInclusao = dataInclusao;
     }
 
-//    public Endereco getEndereco() {
-//        return endereco;
-//    }
-//
-//    public void setEndereco(Endereco endereco) {
-//        this.endereco = endereco;
-//    }
-//
-//    public List<Responsavel> getResponsaveis() {
-//        return responsaveis;
-//    }
-//
-//    public void setResponsaveis(List<Responsavel> responsaveis) {
-//        this.responsaveis = responsaveis;
-//    }
-//
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<Responsavel> getResponsaveis() {
+        return responsaveis;
+    }
+
+    public void setResponsaveis(List<Responsavel> responsaveis) {
+        this.responsaveis = responsaveis;
+    }
+
 //    public Usuario getUsuarioInclusao() {
 //        return usuarioInclusao;
 //    }
 //
 //    public void setUsuarioInclusao(Usuario usuarioInclusao) {
 //        this.usuarioInclusao = usuarioInclusao;
+//    }
+
+//    public List<Mensalidade> getMensalidades() {
+//        return mensalidades;
+//    }
+//
+//    public void setMensalidades(List<Mensalidade> mensalidades) {
+//        this.mensalidades = mensalidades;
 //    }
 }
