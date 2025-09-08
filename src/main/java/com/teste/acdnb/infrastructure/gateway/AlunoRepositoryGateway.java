@@ -24,23 +24,19 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     private final ResponsavelRepository responsavelRepository;
 
     private final AlunoEntityMapper alunoEntityMapper;
-    private final EnderecoEntityMapper enderecoEntityMapper;
-    private final ResponsavelEntityMapper responsavelEntityMapper;
 
-    public AlunoRepositoryGateway(AlunoRepository alunoRepository, EnderecoRepository enderecoRepository, ResponsavelRepository responsavelRepository, AlunoEntityMapper alunoEntityMapper, EnderecoEntityMapper enderecoEntityMapper, ResponsavelEntityMapper responsavelEntityMapper) {
+    public AlunoRepositoryGateway(AlunoRepository alunoRepository, EnderecoRepository enderecoRepository, ResponsavelRepository responsavelRepository, AlunoEntityMapper alunoEntityMapper) {
         this.alunoRepository = alunoRepository;
         this.enderecoRepository = enderecoRepository;
         this.responsavelRepository = responsavelRepository;
         this.alunoEntityMapper = alunoEntityMapper;
-        this.enderecoEntityMapper = enderecoEntityMapper;
-        this.responsavelEntityMapper = responsavelEntityMapper;
     }
 
     @Override
     public Aluno adicionarAluno(Aluno aluno){
-        return alunoEntityMapper.toDomain(
+        return AlunoEntityMapper.toDomain(
                 alunoRepository.save(
-                        alunoEntityMapper.toEntity(aluno)
+                        AlunoEntityMapper.toEntity(aluno)
                 )
         );
     }
@@ -69,7 +65,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
 
     @Override
     public Endereco saveEndereco(Endereco endereco){
-        return enderecoEntityMapper.toDomain(enderecoRepository.save(EnderecoEntityMapper.toEntity(endereco)));
+        return EnderecoEntityMapper.toDomain(enderecoRepository.save(EnderecoEntityMapper.toEntity(endereco)));
     }
 
     @Override
@@ -79,11 +75,31 @@ public class AlunoRepositoryGateway implements AlunoGateway {
 
     @Override
     public Responsavel saveResponsavel(Responsavel responsavel){
-        return responsavelEntityMapper.toDomain(responsavelRepository.save(responsavelEntityMapper.toEntity(responsavel)));
+        return ResponsavelEntityMapper.toDomain(responsavelRepository.save(ResponsavelEntityMapper.toEntity(responsavel)));
     }
 
     @Override
     public List<Aluno> listarAlunos(){
         return AlunoMapperUtil.toDomainList(alunoRepository.findAll(Sort.by(Sort.Order.asc("nome").ignoreCase())), alunoEntityMapper);
+    }
+
+    @Override
+    public boolean existsById(int id){
+        return alunoRepository.existsById(id);
+    }
+
+    @Override
+    public void deletarAluno(int id){
+        alunoRepository.deleteById(id);
+    }
+
+    @Override
+    public Aluno buscarAlunoPorId(int id){
+        return AlunoEntityMapper.toDomain(alunoRepository.findById(id).get());
+    }
+
+    @Override
+    public Aluno atualizarAluno(Aluno aluno, int id) {
+        return new Aluno();
     }
 }

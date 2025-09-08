@@ -1,6 +1,7 @@
 package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.aluno.AdicionarAlunoUseCase;
+import com.teste.acdnb.core.application.usecase.aluno.DeletarAlunoUseCase;
 import com.teste.acdnb.core.application.usecase.aluno.ListarAlunosUseCase;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
@@ -19,10 +20,12 @@ import java.util.List;
 public class AlunoController {
     private final AdicionarAlunoUseCase adicionarAlunoUseCase;
     private final ListarAlunosUseCase listarAlunosUseCase;
+    private final DeletarAlunoUseCase deletarAlunoUseCase;
 
-    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase) {
+    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, DeletarAlunoUseCase deletarAlunoUseCase) {
         this.adicionarAlunoUseCase = adicionarAlunoUseCase;
         this.listarAlunosUseCase = listarAlunosUseCase;
+        this.deletarAlunoUseCase = deletarAlunoUseCase;
     }
 
     @PostMapping
@@ -35,5 +38,11 @@ public class AlunoController {
     public ResponseEntity<List<Aluno>> listarAlunos(){
         List<Aluno> executar = listarAlunosUseCase.execute();
         return ResponseEntity.ok(executar.isEmpty() ? List.of() : executar);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarAluno(@PathVariable int id){
+        deletarAlunoUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }

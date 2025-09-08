@@ -37,7 +37,7 @@ public class AlunoEntityMapper {
             aluno.getDataInclusao().getValue(),
             EnderecoEntityMapper.toEntity(aluno.getEndereco()),
             aluno.isMenor() ? ResponsavelEntityMapper.toEntityList(aluno.getResponsaveis()) : null,
-            MensalidadeEntityMapper.toEntityList(aluno.getMensalidades())
+            null
 //            aluno.getUsuarioInclusao() != null ? usuarioEntityMapper.toEntity(aluno.getUsuarioInclusao()) : null
         );
     }
@@ -66,7 +66,7 @@ public class AlunoEntityMapper {
             DataInclusao.of(entity.getDataInclusao()),
             EnderecoEntityMapper.toDomain(entity.getEndereco()),
             entity.isMenor() ? ResponsavelEntityMapper.toDomainList(entity.getResponsaveis()) : null,
-            MensalidadeEntityMapper.toDomainList(entity.getMensalidades())
+            null
 //            usuarioEntityMapper.toDomain(entity.getUsuarioInclusao())
         );
     }

@@ -19,4 +19,12 @@ public interface AlunoGateway {
     Responsavel saveResponsavel(Responsavel responsavel);
 
     List<Aluno> listarAlunos();
+
+    boolean existsById(int id);
+
+    Aluno buscarAlunoPorId(int id);
+
+    void deletarAluno(int id);
+
+    Aluno atualizarAluno(Aluno aluno, int id);
 }
