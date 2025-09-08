@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ValorMensalidadeGateway {
     Optional<ValorMensalidade> buscarValorMensalidadePorValorEManual(BigDecimal valor, boolean manual);
     ValorMensalidade adicionarValorMensalidade(ValorMensalidade valorMensalidade);
+    ValorMensalidade buscarValorMensalidadeAtual();
+
 }

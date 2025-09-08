@@ -1,19 +1,33 @@
 package com.teste.acdnb.core.application.usecase.aluno;
 
 import com.teste.acdnb.core.application.gateway.AlunoGateway;
+import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
+import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
+import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
+import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
+import com.teste.acdnb.core.domain.mensalidade.factory.MensalidadeFactory;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
     private final AlunoGateway alunoGateway;
-    public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway) {
+    private final ValorMensalidadeGateway valorMensalidadeGateway;
+    private final MensalidadeFactory mensalidadeFactory;
+    private final MensalidadeGateway mensalidadeGateway;
+    private final int NUMERO_PARCELAS = 12;
+    private final LocalDate DATA_REFERENCIA = LocalDate.now().withDayOfMonth(5);
+    public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway) {
         this.alunoGateway = alunoGateway;
+        this.valorMensalidadeGateway = valorMensalidadeGateway;
+        this.mensalidadeFactory = mensalidadeFactory;
+        this.mensalidadeGateway = mensalidadeGateway;
     }
 
     @Override
@@ -47,6 +61,10 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
         }
 
         Aluno alunoCadastrado = alunoGateway.adicionarAluno(alunoParaCadastrar);
+
+        ValorMensalidade valorMensalidade = valorMensalidadeGateway.buscarValorMensalidadeAtual();
+        List<Mensalidade> mensalidades = mensalidadeFactory.gerarMensalidades(alunoCadastrado, valorMensalidade, DATA_REFERENCIA, NUMERO_PARCELAS);
+        mensalidadeGateway.salvarTodas(mensalidades);
 
         return alunoCadastrado;
     }

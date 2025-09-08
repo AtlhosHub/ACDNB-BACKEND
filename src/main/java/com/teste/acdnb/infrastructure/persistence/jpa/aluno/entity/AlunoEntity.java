@@ -1,7 +1,7 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-// import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
+import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -100,14 +100,14 @@ public class AlunoEntity {
 //    @Schema(description = "Usuário que incluiu o aluno no sistema")
 //    private UsuarioEntity usuarioInclusao;
 
-//    @OneToMany(
-//            mappedBy = "aluno",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    @JsonIgnoreProperties("comprovante")
-//    @Schema(description = "Mensalidades associadas ao aluno")
-//    private List<MensalidadeEntity> mensalidades;
+    @OneToMany(
+            mappedBy = "aluno",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonIgnoreProperties("comprovante")
+    @Schema(description = "Mensalidades associadas ao aluno")
+    private List<MensalidadeEntity> mensalidades;
 
     @Schema(description = "Verifica se o aluno é menor de idade", example = "true")
     public boolean isMenor(){

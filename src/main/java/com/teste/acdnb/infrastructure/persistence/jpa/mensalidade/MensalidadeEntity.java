@@ -1,9 +1,9 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.mensalidade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.enums.FormaPagamento;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.comprovante.ComprovanteEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +29,7 @@ public class MensalidadeEntity {
     @JoinColumn(name = "aluno_id", nullable = false)
     @Schema(description = "Aluno associado à mensalidade")
     @JsonIgnore
-    private Aluno aluno;
+    private AlunoEntity aluno;
 
     @Schema(description = "Data de vencimento da mensalidade", example = "2025-05-01")
     private LocalDate dataVencimento;

@@ -1,10 +1,12 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.mensalidade;
 
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.comprovante.ComprovanteEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeEntityMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -13,7 +15,7 @@ public class MensalidadeEntityMapper {
         if (mensalidade == null) return null;
         return new MensalidadeEntity(
                 mensalidade.getId(),
-                mensalidade.getAluno(),
+                AlunoEntityMapper.toEntity(mensalidade.getAluno()),
                 mensalidade.getDataVencimento(),
                 mensalidade.getDataPagamento(),
                 mensalidade.getStatusPagamento(),
@@ -34,8 +36,16 @@ public class MensalidadeEntityMapper {
                 mensalidadeEntity.getStatusPagamento(),
                 mensalidadeEntity.getDataPagamento(),
                 mensalidadeEntity.getDataVencimento(),
-                mensalidadeEntity.getAluno(),
+                AlunoEntityMapper.toDomain(mensalidadeEntity.getAluno()),
                 Optional.of(ComprovanteEntityMapper.toDomain(mensalidadeEntity.getComprovante()))
         );
+    }
+
+    public static List<MensalidadeEntity> toEntityList(List<Mensalidade> mensalidades) {
+        return mensalidades.stream().map(MensalidadeEntityMapper::toEntity).toList();
+    }
+
+    public static List<Mensalidade> toDomainList(List<MensalidadeEntity> mensalidades) {
+        return mensalidades.stream().map(MensalidadeEntityMapper::toDomain).toList();
     }
 }

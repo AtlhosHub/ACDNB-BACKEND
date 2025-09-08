@@ -25,10 +25,7 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
 
     @Override
     public void salvarTodas(List<Mensalidade> mensalidades) {
-        for(int i = 0; i <= mensalidades.size(); i++) {
-            MensalidadeEntity mensalidadeEntity = MensalidadeEntityMapper.toEntity(mensalidades.get(0));
-            MensalidadeEntity novaMensalidade = mensalidadeRepository.save(mensalidadeEntity);
-        }
+        mensalidadeRepository.saveAll(MensalidadeEntityMapper.toEntityList(mensalidades));
     }
 
     @Override

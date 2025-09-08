@@ -1,6 +1,7 @@
 package com.teste.acdnb.core.domain.aluno;
 
 // import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
+import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 
@@ -31,11 +32,11 @@ public class Aluno {
     private Endereco endereco;
     private List<Responsavel> responsaveis = new ArrayList<>();
     private Usuario usuarioInclusao;
-//    private List<Mensalidade> mensalidades = new ArrayList<>();
+    private List<Mensalidade> mensalidades = new ArrayList<>();
 
     public Aluno() {}
 
-    public Aluno(int id, Nome nome, Email email, DataInclusao dataNascimento, Cpf cpf, String rg, Nome nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao, Endereco endereco, List<Responsavel> responsaveis) {
+    public Aluno(int id, Nome nome, Email email, DataInclusao dataNascimento, Cpf cpf, String rg, Nome nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao, Endereco endereco, List<Responsavel> responsaveis, List<Mensalidade> mensalidades) {
         this.dataNascimento = dataNascimento;
         if(isMenor() && (responsaveis == null || responsaveis.isEmpty())){
             throw new IllegalArgumentException("Alunos menores de idade devem ter pelo menos um responsável.");
@@ -65,7 +66,7 @@ public class Aluno {
         this.endereco = endereco;
         this.responsaveis = responsaveis;
 //        this.usuarioInclusao = usuarioInclusao;
-//        this.mensalidades = mensalidades;
+        this.mensalidades = mensalidades;
     }
 
     public boolean isMenor(){
@@ -240,11 +241,11 @@ public class Aluno {
 //        this.usuarioInclusao = usuarioInclusao;
 //    }
 
-//    public List<Mensalidade> getMensalidades() {
-//        return mensalidades;
-//    }
-//
-//    public void setMensalidades(List<Mensalidade> mensalidades) {
-//        this.mensalidades = mensalidades;
-//    }
+    public List<Mensalidade> getMensalidades() {
+        return mensalidades;
+    }
+
+    public void setMensalidades(List<Mensalidade> mensalidades) {
+        this.mensalidades = mensalidades;
+    }
 }

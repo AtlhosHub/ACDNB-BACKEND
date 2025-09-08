@@ -3,6 +3,7 @@ package com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
+import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class AlunoEntityMapper {
     private final UsuarioEntityMapper usuarioEntityMapper;
 
-    public AlunoEntityMapper(UsuarioEntityMapper usuarioEntityMapper, EnderecoEntityMapper enderecoEntityMapper, ResponsavelEntityMapper responsavelEntityMapper) {
+    public AlunoEntityMapper(UsuarioEntityMapper usuarioEntityMapper) {
         this.usuarioEntityMapper = usuarioEntityMapper;
     }
 
@@ -35,7 +36,8 @@ public class AlunoEntityMapper {
             aluno.isAutorizado(),
             aluno.getDataInclusao().getValue(),
             EnderecoEntityMapper.toEntity(aluno.getEndereco()),
-            aluno.isMenor() ? ResponsavelEntityMapper.toEntityList(aluno.getResponsaveis()) : null
+            aluno.isMenor() ? ResponsavelEntityMapper.toEntityList(aluno.getResponsaveis()) : null,
+            MensalidadeEntityMapper.toEntityList(aluno.getMensalidades())
 //            aluno.getUsuarioInclusao() != null ? usuarioEntityMapper.toEntity(aluno.getUsuarioInclusao()) : null
         );
     }
@@ -63,7 +65,8 @@ public class AlunoEntityMapper {
             entity.isAutorizado(),
             DataInclusao.of(entity.getDataInclusao()),
             EnderecoEntityMapper.toDomain(entity.getEndereco()),
-            entity.isMenor() ? ResponsavelEntityMapper.toDomainList(entity.getResponsaveis()) : null
+            entity.isMenor() ? ResponsavelEntityMapper.toDomainList(entity.getResponsaveis()) : null,
+            MensalidadeEntityMapper.toDomainList(entity.getMensalidades())
 //            usuarioEntityMapper.toDomain(entity.getUsuarioInclusao())
         );
     }
