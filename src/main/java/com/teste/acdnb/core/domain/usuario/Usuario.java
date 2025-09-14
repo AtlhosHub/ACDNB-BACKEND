@@ -11,13 +11,13 @@ public class Usuario{
     private Email email;
     private Senha senha;
     private Celular celular;
-    private DataInclusao dataNascimento;
-    private Nome nomeSocial;
+    private DataNascimento dataNascimento;
+    private NomeSocial nomeSocial;
     private String genero;
     private Telefone telefone;
     private String cargo;
     private DataInclusao dataInclusao;
-//    private Usuario usuarioInclusao;
+    private Usuario usuarioInclusao;
 //    private List<Usuario> usuariosCadastrados = new ArrayList<>();
 //    private List<Aluno> alunos = new ArrayList<>();
 //    private List<ListaEspera> interessados = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Usuario{
     public Usuario() {
     }
 
-    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataInclusao dataNascimento, Nome nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao) {
+    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataNascimento dataNascimento, NomeSocial nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao, Usuario usuarioInclusao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -38,7 +38,7 @@ public class Usuario{
         this.telefone = telefone;
         this.cargo = cargo;
         this.dataInclusao = dataInclusao;
-//        this.usuarioInclusao = usuarioInclusao;
+        this.usuarioInclusao = usuarioInclusao;
 //        this.usuariosCadastrados = usuariosCadastrados;
     }
 
@@ -82,19 +82,19 @@ public class Usuario{
         this.celular = celular;
     }
 
-    public DataInclusao getDataNascimento() {
+    public DataNascimento getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(DataInclusao dataNascimento) {
+    public void setDataNascimento(DataNascimento dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public Nome getNomeSocial() {
+    public NomeSocial getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(Nome nomeSocial) {
+    public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 
@@ -130,13 +130,12 @@ public class Usuario{
         this.dataInclusao = dataInclusao;
     }
 
-//    public Usuario getUsuarioInclusao() {
-//        return usuarioInclusao;
-//    }
-//
-//    public void setUsuarioInclusao(Usuario usuarioInclusao) {
-//        this.usuarioInclusao = usuarioInclusao;
-//    }
+    public Usuario getUsuarioInclusao() {
+        return usuarioInclusao;
+    }
+    public void setUsuarioInclusao(Usuario usuarioInclusao) {
+        this.usuarioInclusao = usuarioInclusao;
+    }
 //
 //    public List<Usuario> getUsuariosCadastrados() {
 //        return usuariosCadastrados;

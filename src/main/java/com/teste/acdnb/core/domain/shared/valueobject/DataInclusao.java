@@ -1,4 +1,6 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
+import com.teste.acdnb.core.application.exception.InvalidDataException;
+
 import java.time.LocalDateTime;
 
 public class DataInclusao {
@@ -10,7 +12,7 @@ public class DataInclusao {
 
     public static DataInclusao of(LocalDateTime value) {
         if(value == null || value.isAfter(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Data inválida");
+            throw new InvalidDataException("Data de inclusão inválida");
         }
 
         return new DataInclusao(value);

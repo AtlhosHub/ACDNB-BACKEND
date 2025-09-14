@@ -1,5 +1,7 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.teste.acdnb.core.application.exception.InvalidDataException;
+
 import java.util.regex.Pattern;
 
 public class Telefone {
@@ -12,7 +14,7 @@ public class Telefone {
 
     public static Telefone of(String value) {
         if(value == null || !pattern.matcher(value).matches()) {
-            throw new IllegalArgumentException("Telefone inválido");
+            throw new InvalidDataException("Número de Telefone inválido");
         }
 
         return new Telefone(value);

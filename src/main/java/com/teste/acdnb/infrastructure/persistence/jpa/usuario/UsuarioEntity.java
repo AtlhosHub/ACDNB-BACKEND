@@ -48,7 +48,7 @@ public class UsuarioEntity {
     @NotNull(message = "A data de nascimento deve ser preenchida")
     @Past(message = "A data deve ser uma data passada")
     @Schema(description = "Data de nascimento do usuário", example = "1990-05-15")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @Schema(description = "Nome social do usuário, caso aplicável", example = "Joana Silva")
     private String nomeSocial;
@@ -65,6 +65,10 @@ public class UsuarioEntity {
     @CreationTimestamp
     @Schema(description = "Data de inclusão do usuário no sistema", example = "2025-04-21T10:15:30")
     private LocalDateTime dataInclusao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_inclusao_id")
+    private UsuarioEntity usuarioInclusao;
 
 //    @ManyToOne
 //    @JoinColumn(name = "usuario_inclusao_id")
