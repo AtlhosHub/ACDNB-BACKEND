@@ -8,14 +8,17 @@ import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.core.domain.usuario.valueobject.Senha;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioRequestDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.UsuarioResponseDTO;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
 public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
 
     private final UsuarioGateway usuarioGateway;
-    public AdicionarUsuarioUseCaseImpl(UsuarioGateway usuarioGateway) {
+    private PasswordEncoder passwordEncoder;
+    public AdicionarUsuarioUseCaseImpl(UsuarioGateway usuarioGateway, PasswordEncoder passwordEncoder) {
         this.usuarioGateway = usuarioGateway;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,10 +35,12 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
                     .orElseThrow(() -> new ResourceNotFoundException("Usuário de inclusão não encontrado"));
         }
 
+        String senhaCriptografada = passwordEncoder.encode(usuarioRequestDTO.senha());
+
         var usuarioParaRegistrar = new Usuario();
         usuarioParaRegistrar.setNome(Nome.of(usuarioRequestDTO.nome()));
         usuarioParaRegistrar.setEmail(Email.of(usuarioRequestDTO.email()));
-        usuarioParaRegistrar.setSenha(Senha.of(usuarioRequestDTO.senha()));
+        usuarioParaRegistrar.setSenha(Senha.of(senhaCriptografada));
         usuarioParaRegistrar.setCelular(Celular.of(usuarioRequestDTO.celular()));
         usuarioParaRegistrar.setDataNascimento(DataNascimento.of(usuarioRequestDTO.dataNascimento()));
         usuarioParaRegistrar.setNomeSocial(NomeSocial.of(usuarioRequestDTO.nomeSocial(), usuarioRequestDTO.nome()));
