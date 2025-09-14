@@ -33,8 +33,8 @@ public class UsuarioController {
         this.autenticarUsuarioUseCase = autenticarUsuarioUseCase;
     }
 
-    // @SecurityRequirement(name = "Bearer")
-    @PostMapping("/adicionar")
+    @SecurityRequirement(name = "Bearer")
+    @PostMapping
     public ResponseEntity<UsuarioResponseDTO> adicionarUsuario(@RequestBody UsuarioRequestDTO usuario) {
         UsuarioResponseDTO executar = adicionarUsuarioUseCase.execute(usuario);
         return ResponseEntity.ok(executar);
