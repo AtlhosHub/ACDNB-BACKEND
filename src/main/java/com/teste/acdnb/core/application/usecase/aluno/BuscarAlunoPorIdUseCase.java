@@ -1,7 +1,7 @@
 package com.teste.acdnb.core.application.usecase.aluno;
 
-import com.teste.acdnb.core.domain.aluno.Aluno;
+import com.teste.acdnb.infrastructure.dto.aluno.AlunoInfoDTO;
 
 public interface BuscarAlunoPorIdUseCase {
-    Aluno execute(int id);
+    AlunoInfoDTO execute(int id);
 }

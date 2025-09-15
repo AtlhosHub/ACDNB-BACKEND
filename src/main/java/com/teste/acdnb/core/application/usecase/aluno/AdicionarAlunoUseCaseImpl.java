@@ -74,7 +74,7 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
 
         aluno.setNome(Nome.of(alunoDTO.nome()));
         aluno.setEmail(Email.of(alunoDTO.email()));
-        aluno.setDataNascimento(DataInclusao.of(alunoDTO.dataNascimento()));
+        aluno.setDataNascimento(DataNascimento.of(alunoDTO.dataNascimento()));
         aluno.setCpf(Cpf.of(alunoDTO.cpf()));
         aluno.setRg(alunoDTO.rg());
         aluno.setNomeSocial(Nome.of(alunoDTO.nomeSocial()));
