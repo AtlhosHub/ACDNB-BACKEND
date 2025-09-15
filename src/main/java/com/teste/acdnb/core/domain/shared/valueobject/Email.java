@@ -1,5 +1,6 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.teste.acdnb.core.application.exception.InvalidDataException;
 import java.util.regex.Pattern;
 
 public class Email {
@@ -12,7 +13,7 @@ public class Email {
 
     public static Email of(String value) {
         if(value == null || !pattern.matcher(value).matches()) {
-            throw new IllegalArgumentException("Email inválido");
+            throw new InvalidDataException("E-mail inválido");
         }
 
         return new Email(value);

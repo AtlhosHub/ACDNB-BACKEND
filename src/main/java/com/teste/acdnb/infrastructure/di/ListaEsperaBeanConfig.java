@@ -1,0 +1,63 @@
+package com.teste.acdnb.infrastructure.di;
+
+import com.teste.acdnb.core.application.gateway.HorarioPreferenciaGateway;
+import com.teste.acdnb.core.application.gateway.ListaEsperaGateway;
+import com.teste.acdnb.core.application.usecase.listaEspera.*;
+import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
+import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ListaEsperaBeanConfig {
+    @Bean
+    public AdicionarInteressadoUseCase adicionarInteressadoUseCase(
+            ListaEsperaGateway listaEsperaGateway,
+            UsuarioRepository usuarioRepository,
+            UsuarioEntityMapper usuarioEntityMapper,
+            HorarioPreferenciaGateway horarioPreferenciaGateway
+    ) {
+        return new AdicionarInteressadoUseCaseImpl(
+                listaEsperaGateway,
+                usuarioRepository,
+                usuarioEntityMapper,
+                horarioPreferenciaGateway
+        );
+    }
+
+    @Bean
+    public ListarInteressadosUseCase listarInteressadosUseCase(
+            ListaEsperaGateway listaEsperaGateway
+    ) {
+        return new ListarInteressadosUseCaseImpl(listaEsperaGateway);
+    }
+
+    @Bean
+    public BuscarInteressadoUseCase buscarInteressadoUseCase(
+            ListaEsperaGateway listaEsperaGateway
+    ) {
+        return new BuscarInteressadoUseCaseImpl(listaEsperaGateway);
+    }
+
+    @Bean
+    public DeletarInteressadoUseCase deletarInteressadoUseCase(ListaEsperaGateway listaEsperaGateway) {
+        return new DeletarInteressadoUseCaseImpl(listaEsperaGateway);
+    }
+
+    @Bean
+    public AtualizarInteressadoUseCase atualizarInteressadoUseCase(
+            ListaEsperaGateway listaEsperaGateway,
+            UsuarioRepository usuarioRepository,
+            UsuarioEntityMapper usuarioEntityMapper,
+            HorarioPreferenciaGateway horarioPreferenciaGateway
+    ) {
+        return new AtualizarInteressadoUseCaseImpl(
+                listaEsperaGateway,
+                usuarioRepository,
+                usuarioEntityMapper,
+                horarioPreferenciaGateway
+        );
+    }
+
+
+}

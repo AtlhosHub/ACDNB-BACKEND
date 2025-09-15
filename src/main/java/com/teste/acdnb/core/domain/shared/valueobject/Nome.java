@@ -1,5 +1,7 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.teste.acdnb.core.application.exception.InvalidDataException;
+
 import java.util.regex.Pattern;
 
 public class Nome {
@@ -10,7 +12,7 @@ public class Nome {
 
     public static Nome of(String value) {
         if(value == null || !pattern.matcher(value).matches()) {
-            throw new IllegalArgumentException("Nome inválido");
+            throw new InvalidDataException("Nome inválido");
         }
 
         return new Nome(value);
