@@ -38,6 +38,7 @@ public class UsuarioController {
         this.autenticarUsuarioUseCase = autenticarUsuarioUseCase;
     }
 
+
     @PostMapping
     @SecurityRequirement(name = "Bearer")
     @Operation(summary = "Adicionar um novo usuário", description = "Adiciona um novo usuário ao sistema.")

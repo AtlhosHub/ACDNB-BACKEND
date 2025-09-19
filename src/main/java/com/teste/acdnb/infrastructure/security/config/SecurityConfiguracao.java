@@ -31,12 +31,12 @@ import java.util.List;
 public class SecurityConfiguracao {
 
     private final AutenticacaoService autenticacaoService;
-    private final AutenticacaoEntryPoint autenticacaoJwtEntryPoint;
+    private final AutenticacaoEntryPoint autenticacaoEntryPoint;
 
     public SecurityConfiguracao(AutenticacaoService autenticacaoService,
-                                AutenticacaoEntryPoint autenticacaoJwtEntryPoint) {
+                                AutenticacaoEntryPoint autenticacaoEntryPoint) {
         this.autenticacaoService = autenticacaoService;
-        this.autenticacaoJwtEntryPoint = autenticacaoJwtEntryPoint;
+        this.autenticacaoEntryPoint = autenticacaoEntryPoint;
     }
 
     private static final String[] URLS_PERMITIDAS = {
@@ -52,7 +52,6 @@ public class SecurityConfiguracao {
             "/v3/api-docs/**",
             "/actuator/*",
             "/usuarios/login/**",
-            "/usuarios/adicionar/**",
             "/h2-console/**",
             "/error/**",
             "/resetPassword/**"
@@ -67,7 +66,7 @@ public class SecurityConfiguracao {
                         .requestMatchers(URLS_PERMITIDAS).permitAll()
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(ex -> ex.authenticationEntryPoint(autenticacaoJwtEntryPoint))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(autenticacaoEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
@@ -82,8 +81,7 @@ public class SecurityConfiguracao {
         return authenticationManagerBuilder.build();
     }
 
-    @Bean
-    public AutenticacaoEntryPoint jwtAuthenticationEntryPointBean() {return new AutenticacaoEntryPoint();}
+
 
     @Bean
     public AutenticacaoFilter jwtAuthenticationFilterBean(){
