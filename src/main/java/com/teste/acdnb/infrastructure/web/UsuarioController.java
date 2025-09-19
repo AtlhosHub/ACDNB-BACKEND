@@ -4,6 +4,11 @@ import com.teste.acdnb.core.application.usecase.usuario.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.infrastructure.dto.usuario.*;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioDTOMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +38,30 @@ public class UsuarioController {
         this.autenticarUsuarioUseCase = autenticarUsuarioUseCase;
     }
 
-    // @SecurityRequirement(name = "Bearer")
-    @PostMapping("/adicionar")
+    @PostMapping
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Adicionar um novo usuário", description = "Adiciona um novo usuário ao sistema.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuário cadastrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = "Erro(s) de validação: nome: O nome do usuário não pode ficar em branco"))),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "409", description = "E-mail já cadastrados", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<UsuarioResponseDTO> adicionarUsuario(@RequestBody UsuarioRequestDTO usuario) {
         UsuarioResponseDTO executar = adicionarUsuarioUseCase.execute(usuario);
         return ResponseEntity.ok(executar);
     }
-
-    @SecurityRequirement(name = "Bearer")
+    
     @GetMapping
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Listar usuários", description = "Retorna uma lista de todos os usuários cadastrados no sistema.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<List<UsuarioListaDTO>> listarUsuarios() {
         List<UsuarioListaDTO> usuarios = listarUsuariosUseCase.execute()
                 .stream()
@@ -50,8 +70,15 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    @SecurityRequirement(name = "Bearer")
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Buscar usuário por ID", description = "Retorna os detalhes de um usuário específico com base no ID fornecido.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Dados do usuário retornados com sucesso"),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<UsuarioResponseDTO> buscarUsuarioPorId(@PathVariable int id) {
         Usuario usuario = buscarUsuarioPorIdUseCase.execute(id);
         return usuario == null
@@ -59,15 +86,32 @@ public class UsuarioController {
                 : ResponseEntity.ok(UsuarioDTOMapper.toInfoDTO(usuario));
     }
 
-    @SecurityRequirement(name = "Bearer")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Remover usuário por ID", description = "Remove um usuário do sistema com base no ID fornecido.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso", content = @Content()),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<Void> deletarUsuario(@PathVariable int id) {
         removerUsuarioUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
 
-    @SecurityRequirement(name = "Bearer")
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Atualizar usuário por ID", description = "Atualiza os dados de um usuário existente com base no ID fornecido.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos", content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = "Erro(s) de validação: nome: O nome do usuário não pode ficar em branco"))),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content()),
+            @ApiResponse(responseCode = "409", description = "E-mail já cadastrados", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(
             @PathVariable int id,
             @RequestBody UsuarioRequestDTO usuarioRequestDTO
@@ -76,8 +120,14 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioAtualizado);
     }
 
-    @SecurityRequirement(name = "Bearer")
     @PostMapping("/filtro")
+    @SecurityRequirement(name = "Bearer")
+    @Operation(summary = "Filtrar usuários", description = "Retorna uma lista de usuários com base nos critérios do filtro fornecido.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<List<UsuarioResponseDTO>> listarUsuariosPorNome(
             @RequestBody UsuarioFiltroDTO usuarioFiltroDTO) {
 
@@ -86,9 +136,20 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Autenticar usuário", description = "Realiza a autenticação de um usuário e retorna um token de acesso.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
+            @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
+    })
     public ResponseEntity<UsuarioTokenDTO> login(
             @RequestBody UsuarioLoginDTO usuarioLoginDTO){
         UsuarioTokenDTO usuarioTokenDTO = autenticarUsuarioUseCase.execute(usuarioLoginDTO);
         return ResponseEntity.ok(usuarioTokenDTO);
+    }
+
+    @GetMapping("/token-validation")
+    public ResponseEntity<Void> tokenValidation() {
+        return ResponseEntity.noContent().build();
     }
 }
