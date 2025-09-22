@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface AlunoGateway {
     boolean existsByEmailIgnoreCaseOrCpfOrRg(String email, String cpf, String rg);
     boolean existsByCpfOrRg(String cpf, String rg);
-    Aluno adicionarAluno(Aluno aluno);
+    Aluno salvarAluno(Aluno aluno);
 
     Optional<Endereco> findEndereco(Endereco endereco);
     Endereco saveEndereco(Endereco endereco);
@@ -26,5 +26,13 @@ public interface AlunoGateway {
 
     void deletarAluno(int id);
 
-    Aluno atualizarAluno(Aluno aluno, int id);
+    boolean existsByEmailIgnoreCaseAndIdIsNot(String email, int id);
+
+    boolean existsByCpfAndIdIsNot(String cpf, int id);
+
+    boolean existsByRgAndIdIsNot(String rg, int id);
+
+    List<Aluno> listarAniversariantes();
+
+    int qtdAlunosAtivos();
 }

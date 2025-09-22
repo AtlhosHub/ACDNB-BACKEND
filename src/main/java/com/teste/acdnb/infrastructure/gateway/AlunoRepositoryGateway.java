@@ -33,7 +33,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public Aluno adicionarAluno(Aluno aluno){
+    public Aluno salvarAluno(Aluno aluno){
         return AlunoEntityMapper.toDomain(
                 alunoRepository.save(
                         AlunoEntityMapper.toEntity(aluno)
@@ -99,7 +99,27 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public Aluno atualizarAluno(Aluno aluno, int id) {
-        return new Aluno();
+    public boolean existsByEmailIgnoreCaseAndIdIsNot(String email, int id){
+        return alunoRepository.existsByEmailIgnoreCaseAndIdIsNot(email, id);
+    }
+
+    @Override
+    public boolean existsByCpfAndIdIsNot(String cpf, int id){
+        return alunoRepository.existsByCpfAndIdIsNot(cpf, id);
+    }
+
+    @Override
+    public boolean existsByRgAndIdIsNot(String rg, int id){
+        return alunoRepository.existsByRgAndIdIsNot(rg, id);
+    }
+
+    @Override
+    public List<Aluno> listarAniversariantes(){
+        return AlunoMapperUtil.toDomainList(alunoRepository.findAniversariantes(), alunoEntityMapper);
+    }
+
+    @Override
+    public int qtdAlunosAtivos(){
+        return (int) alunoRepository.countByAtivo(true);
     }
 }

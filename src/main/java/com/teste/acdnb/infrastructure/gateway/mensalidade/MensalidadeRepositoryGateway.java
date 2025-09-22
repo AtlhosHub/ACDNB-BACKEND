@@ -5,6 +5,7 @@ import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeRepository;
@@ -40,7 +41,7 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     public long contarMensalidadePendentesOuAtrasadas(Aluno aluno) {
         return mensalidadeRepository
                 .countByAlunoAndStatusPagamentoIn(
-                        aluno,
+                        AlunoEntityMapper.toEntity(aluno),
                         List.of(StatusPagamento.PENDENTE, StatusPagamento.ATRASADO)
                 );
     }

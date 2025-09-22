@@ -2,6 +2,7 @@ package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.aluno.*;
 import com.teste.acdnb.core.domain.aluno.Aluno;
+import com.teste.acdnb.infrastructure.dto.AlunoAniversarioDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoInfoDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,13 +23,17 @@ public class AlunoController {
     private final DeletarAlunoUseCase deletarAlunoUseCase;
     private final BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase;
     private final AtualizarAlunoUseCase atualizarAlunoUseCase;
+    private final ListarAniversariosUseCase listarAniversariosUseCase;
+    private final QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase;
 
-    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase) {
+    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase) {
         this.adicionarAlunoUseCase = adicionarAlunoUseCase;
         this.listarAlunosUseCase = listarAlunosUseCase;
         this.buscarAlunoPorIdUseCase = buscarAlunoPorIdUseCase;
         this.atualizarAlunoUseCase = atualizarAlunoUseCase;
         this.deletarAlunoUseCase = deletarAlunoUseCase;
+        this.listarAniversariosUseCase = listarAniversariosUseCase;
+        this.qtdAlunosAtivosUseCase = qtdAlunosAtivosUseCase;
     }
 
     @PostMapping
@@ -55,9 +60,20 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Aluno> atualizarAluno(@Valid @RequestBody AlunoDTO aluno, @PathVariable int id){
-        Aluno atualizar = adicionarAlunoUseCase.execute(aluno);
+    @PutMapping("/{id}")
+    public ResponseEntity<Aluno> atualizarAluno(@RequestBody Aluno aluno, @PathVariable int id){
+        Aluno atualizar = atualizarAlunoUseCase.execute(aluno, id);
         return ResponseEntity.ok(atualizar);
+    }
+
+    @GetMapping("/aniversariantes")
+    public ResponseEntity<List<AlunoAniversarioDTO>> listarAniversarios() {
+        List<AlunoAniversarioDTO> aniversariantes = listarAniversariosUseCase.execute();
+        return aniversariantes.isEmpty() ? ResponseEntity.ok(List.of()) : ResponseEntity.ok(aniversariantes);
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<Integer> qtdAlunosAtivos(){
+        return ResponseEntity.ok(qtdAlunosAtivosUseCase.execute());
     }
 }

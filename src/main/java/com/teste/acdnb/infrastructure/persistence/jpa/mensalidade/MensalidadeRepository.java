@@ -1,9 +1,9 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.mensalidade;
 
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
-import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -30,5 +30,5 @@ public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, 
 
     @Query("SELECT COUNT(m) FROM MensalidadeEntity m JOIN m.valor v WHERE m.statusPagamento = 'PAGO' AND YEAR(m.dataPagamento) = YEAR(CURRENT_DATE)  AND v.desconto = true")
     int countMensalidadeComDesconto();
-    long countByAlunoAndStatusPagamentoIn(Aluno aluno, List<StatusPagamento> status);
+    long countByAlunoAndStatusPagamentoIn(AlunoEntity aluno, List<StatusPagamento> status);
 }
