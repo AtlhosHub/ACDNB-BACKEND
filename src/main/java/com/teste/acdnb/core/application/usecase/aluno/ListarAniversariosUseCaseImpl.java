@@ -2,7 +2,7 @@ package com.teste.acdnb.core.application.usecase.aluno;
 
 import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
-import com.teste.acdnb.infrastructure.dto.AlunoAniversarioDTO;
+import com.teste.acdnb.infrastructure.dto.aluno.AlunoAniversarioDTO;
 
 import java.time.LocalDate;
 import java.util.List;

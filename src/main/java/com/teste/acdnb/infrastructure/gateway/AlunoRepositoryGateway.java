@@ -4,6 +4,8 @@ import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
+import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoMapperUtil;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.EnderecoEntityMapper;
@@ -11,7 +13,9 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.Respons
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.AlunoRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.EnderecoRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.ResponsavelRepository;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.AlunoSpecification;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -84,6 +88,12 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    public List<Aluno> listarAlunosFiltro(AlunoFilter filter){
+        Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
+        return AlunoMapperUtil.toDomainList(alunoRepository.findAll(spec, Sort.by(Sort.Order.asc("nome").ignoreCase())), alunoEntityMapper);
+    }
+
+    @Override
     public boolean existsById(int id){
         return alunoRepository.existsById(id);
     }
@@ -121,5 +131,13 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     @Override
     public int qtdAlunosAtivos(){
         return (int) alunoRepository.countByAtivo(true);
+    }
+
+    @Override
+    public Optional<Aluno> buscarAlunoPorEmailOuResponsavelEmail(String email){
+        if (alunoRepository.findByEmailOrResponsavelEmail(email).isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(AlunoEntityMapper.toDomain(alunoRepository.findByEmailOrResponsavelEmail(email).get()));
     }
 }

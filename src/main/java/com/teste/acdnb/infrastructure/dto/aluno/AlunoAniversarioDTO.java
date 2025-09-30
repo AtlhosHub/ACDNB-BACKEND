@@ -1,4 +1,4 @@
-package com.teste.acdnb.infrastructure.dto;
+package com.teste.acdnb.infrastructure.dto.aluno;
 
 import java.time.LocalDate;
 

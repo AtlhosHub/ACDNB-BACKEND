@@ -49,4 +49,14 @@ public class AlunoBeanConfig {
     public QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase(AlunoGateway alunoGateway) {
         return new QtdAlunosAtivosUseCaseImpl(alunoGateway);
     }
+
+    @Bean
+    public ListarAlunosMensalidades listarAlunosMensalidades(AlunoGateway alunoGateway, MensalidadeGateway mensalidadeGateway) {
+        return new ListarAlunosMensalidadesImpl(alunoGateway, mensalidadeGateway);
+    }
+
+    @Bean
+    public VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase(AlunoGateway alunoGateway) {
+        return new VerificarEmailCadastradoUseCaseImpl(alunoGateway);
+    }
 }
