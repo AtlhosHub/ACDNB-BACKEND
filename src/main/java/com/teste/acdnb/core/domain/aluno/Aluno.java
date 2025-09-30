@@ -14,10 +14,10 @@ public class Aluno {
     private int id;
     private Nome nome;
     private Email email;
-    private DataInclusao dataNascimento;
+    private DataNascimento dataNascimento;
     private Cpf cpf;
     private String rg;
-    private Nome nomeSocial;
+    private NomeSocial nomeSocial;
     private String genero;
     private Celular celular;
     private Telefone telefone;
@@ -36,7 +36,7 @@ public class Aluno {
 
     public Aluno() {}
 
-    public Aluno(int id, Nome nome, Email email, DataInclusao dataNascimento, Cpf cpf, String rg, Nome nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao, Endereco endereco, List<Responsavel> responsaveis, List<Mensalidade> mensalidades) {
+    public Aluno(int id, Nome nome, Email email, DataNascimento dataNascimento, Cpf cpf, String rg, NomeSocial nomeSocial, String genero, Celular celular, Telefone telefone, String nacionalidade, String naturalidade, String profissao, String deficiencia, boolean ativo, boolean atestado, boolean autorizado, DataInclusao dataInclusao, Endereco endereco, List<Responsavel> responsaveis, List<Mensalidade> mensalidades) {
         this.dataNascimento = dataNascimento;
         if(isMenor() && (responsaveis == null || responsaveis.isEmpty())){
             throw new IllegalArgumentException("Alunos menores de idade devem ter pelo menos um responsável.");
@@ -70,7 +70,7 @@ public class Aluno {
     }
 
     public boolean isMenor(){
-        return Period.between(dataNascimento.getValue().toLocalDate(), LocalDate.now()).getYears() < 18;
+        return Period.between(dataNascimento.getValue(), LocalDate.now()).getYears() < 18;
     }
 
     public int getId() {
@@ -97,11 +97,11 @@ public class Aluno {
         this.email = email;
     }
 
-    public DataInclusao getDataNascimento() {
+    public DataNascimento getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(DataInclusao dataNascimento) {
+    public void setDataNascimento(DataNascimento dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -121,11 +121,11 @@ public class Aluno {
         this.rg = rg;
     }
 
-    public Nome getNomeSocial() {
+    public NomeSocial getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(Nome nomeSocial) {
+    public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 

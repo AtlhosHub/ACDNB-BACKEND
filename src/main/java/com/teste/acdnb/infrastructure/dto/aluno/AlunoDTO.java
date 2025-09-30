@@ -6,6 +6,7 @@ import com.teste.acdnb.core.domain.usuario.Usuario;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public record AlunoDTO (
@@ -20,7 +21,7 @@ public record AlunoDTO (
 
         @NotNull(message = "Data de nascimento não pode ser nula")
         @Past(message = "Data de nascimento deve ser anterior a data atual")
-        LocalDateTime dataNascimento,
+        LocalDate dataNascimento,
 
         @NotBlank(message = "CPF não pode ser vazio")
         @Pattern(regexp = "^\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$", message = "CPF deve ser válido")

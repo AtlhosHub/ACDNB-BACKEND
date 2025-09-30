@@ -15,7 +15,7 @@ public class Cpf {
             throw new IllegalArgumentException("CPF inválido");
         }
 
-        value.replaceAll("[-.]","");
+        value = value.replaceAll("[-.]","");
 
         int soma = 0;
         int peso = 10;

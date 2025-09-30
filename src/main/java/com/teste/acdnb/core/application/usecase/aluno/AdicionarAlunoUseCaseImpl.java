@@ -60,7 +60,7 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
             alunoParaCadastrar.setResponsaveis(responsaveis);
         }
 
-        Aluno alunoCadastrado = alunoGateway.adicionarAluno(alunoParaCadastrar);
+        Aluno alunoCadastrado = alunoGateway.salvarAluno(alunoParaCadastrar);
 
         ValorMensalidade valorMensalidade = valorMensalidadeGateway.buscarValorMensalidadeAtual();
         List<Mensalidade> mensalidades = mensalidadeFactory.gerarMensalidades(alunoCadastrado, valorMensalidade, DATA_REFERENCIA, NUMERO_PARCELAS);
@@ -74,10 +74,10 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
 
         aluno.setNome(Nome.of(alunoDTO.nome()));
         aluno.setEmail(Email.of(alunoDTO.email()));
-        aluno.setDataNascimento(DataInclusao.of(alunoDTO.dataNascimento()));
+        aluno.setDataNascimento(DataNascimento.of(alunoDTO.dataNascimento()));
         aluno.setCpf(Cpf.of(alunoDTO.cpf()));
         aluno.setRg(alunoDTO.rg());
-        aluno.setNomeSocial(Nome.of(alunoDTO.nomeSocial()));
+        aluno.setNomeSocial(NomeSocial.of(alunoDTO.nomeSocial(), alunoDTO.nome()));
         aluno.setGenero(alunoDTO.genero());
         aluno.setCelular(Celular.of(alunoDTO.celular()));
         aluno.setTelefone(Telefone.of(alunoDTO.telefone()));

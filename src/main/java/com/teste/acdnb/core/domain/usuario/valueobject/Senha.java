@@ -1,7 +1,5 @@
 package com.teste.acdnb.core.domain.usuario.valueobject;
 
-import com.teste.acdnb.core.domain.shared.valueobject.Celular;
-
 import java.util.regex.Pattern;
 
 public class Senha {
