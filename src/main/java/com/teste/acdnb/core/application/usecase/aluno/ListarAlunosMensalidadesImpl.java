@@ -36,7 +36,7 @@ public class ListarAlunosMensalidadesImpl implements ListarAlunosMensalidades{
                         mensalidade.getDataPagamento(),
                         mensalidade.getDataVencimento(),
                         mensalidade.getStatusPagamento().name(),
-                        mensalidade.getFormaPagamento().name(),
+                        mensalidade.getFormaPagamento() != null ? mensalidade.getFormaPagamento().name() : null,
                         mensalidade.getStatusPagamento() == StatusPagamento.PAGO ? mensalidade.getValor().getValor() : null,
                         mensalidade.getValor().isDesconto(),
                         mensalidade.isAlteracaoAutomatica()
