@@ -5,6 +5,8 @@ import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.application.usecase.aluno.*;
 import com.teste.acdnb.core.domain.mensalidade.factory.MensalidadeFactory;
+import com.teste.acdnb.infrastructure.security.ProdutorMensagem;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,8 +18,8 @@ public class AlunoBeanConfig {
     }
 
     @Bean
-    public AdicionarAlunoUseCase adicionarAlunoUseCase(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway) {
-        return new AdicionarAlunoUseCaseImpl(alunoGateway, valorMensalidadeGateway, mensalidadeFactory, mensalidadeGateway);
+    public AdicionarAlunoUseCase adicionarAlunoUseCase(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway, ProdutorMensagem produtorMensagem) {
+        return new AdicionarAlunoUseCaseImpl(alunoGateway, valorMensalidadeGateway, mensalidadeFactory, mensalidadeGateway, produtorMensagem);
     }
 
     @Bean
@@ -58,5 +60,10 @@ public class AlunoBeanConfig {
     @Bean
     public VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase(AlunoGateway alunoGateway) {
         return new VerificarEmailCadastradoUseCaseImpl(alunoGateway);
+    }
+
+    @Bean
+    public ProdutorMensagem produtorMensagem(RabbitTemplate rabbitTemplate){
+        return new ProdutorMensagem(rabbitTemplate);
     }
 }

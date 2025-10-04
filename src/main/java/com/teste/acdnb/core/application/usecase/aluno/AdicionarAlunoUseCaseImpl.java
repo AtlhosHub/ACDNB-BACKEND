@@ -10,7 +10,9 @@ import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
 import com.teste.acdnb.core.domain.mensalidade.factory.MensalidadeFactory;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
+import com.teste.acdnb.infrastructure.dto.EmailContatoDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
+import com.teste.acdnb.infrastructure.security.ProdutorMensagem;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,15 +21,17 @@ import java.util.stream.Collectors;
 public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
     private final AlunoGateway alunoGateway;
     private final ValorMensalidadeGateway valorMensalidadeGateway;
+    private final ProdutorMensagem produtorMensagem;
     private final MensalidadeFactory mensalidadeFactory;
     private final MensalidadeGateway mensalidadeGateway;
     private final int NUMERO_PARCELAS = 12;
     private final LocalDate DATA_REFERENCIA = LocalDate.now().withDayOfMonth(5);
-    public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway) {
+    public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway, ProdutorMensagem produtorMensagem) {
         this.alunoGateway = alunoGateway;
         this.valorMensalidadeGateway = valorMensalidadeGateway;
         this.mensalidadeFactory = mensalidadeFactory;
         this.mensalidadeGateway = mensalidadeGateway;
+        this.produtorMensagem =  produtorMensagem;
     }
 
     @Override
@@ -66,6 +70,9 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
         List<Mensalidade> mensalidades = mensalidadeFactory.gerarMensalidades(alunoCadastrado, valorMensalidade, DATA_REFERENCIA, NUMERO_PARCELAS);
         mensalidadeGateway.salvarTodas(mensalidades);
 
+        String emailContato = alunoCadastrado.getResponsaveis()!= null && !alunoCadastrado.getResponsaveis().isEmpty()
+                ?alunoCadastrado.getResponsaveis().get(0).getEmail().getValue():alunoCadastrado.getEmail().getValue();
+        produtorMensagem.ProduzirMensagem(new EmailContatoDTO(alunoCadastrado.getNome().getValue(), emailContato));
         return alunoCadastrado;
     }
 
