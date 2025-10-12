@@ -12,6 +12,10 @@ public class NomeSocial {
     private NomeSocial(String value) { this.value = value; }
 
     public static NomeSocial of(String value, String nome) {
+        if(value==null || value.isBlank()) {
+            return null;
+        }
+
         if(!pattern.matcher(value).matches() || value.equalsIgnoreCase(nome)) {
             throw new InvalidDataException("Nome Social inválido");
         }

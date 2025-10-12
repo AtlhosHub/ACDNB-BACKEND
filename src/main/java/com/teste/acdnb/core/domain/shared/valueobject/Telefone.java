@@ -13,7 +13,11 @@ public class Telefone {
     }
 
     public static Telefone of(String value) {
-        if(value == null || !pattern.matcher(value).matches()) {
+        if (value == null) {
+            return null;
+        }
+
+        if(!pattern.matcher(value).matches()) {
             throw new InvalidDataException("Número de Telefone inválido");
         }
 
