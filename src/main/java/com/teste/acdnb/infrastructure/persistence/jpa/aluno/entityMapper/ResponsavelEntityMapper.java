@@ -47,7 +47,7 @@ public class ResponsavelEntityMapper {
                 Email.of(responsavel.getEmail()),
                 responsavel.getRg(),
                 Telefone.of(responsavel.getTelefone()),
-                Nome.of(responsavel.getNomeSocial()),
+                NomeSocial.of(responsavel.getNomeSocial(), responsavel.getNome()),
                 responsavel.getGenero(),
                 responsavel.getProfissao(),
                 null
