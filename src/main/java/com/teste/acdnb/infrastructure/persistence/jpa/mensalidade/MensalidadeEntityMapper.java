@@ -30,14 +30,14 @@ public class MensalidadeEntityMapper {
         if (mensalidadeEntity == null) return null;
         return new Mensalidade(
                 mensalidadeEntity.getId(),
-                mensalidadeEntity.getFormaPagamento(),
+                Optional.ofNullable(mensalidadeEntity.getFormaPagamento()),
                 ValorMensalidadeEntityMapper.toDomain(mensalidadeEntity.getValor()),
                 mensalidadeEntity.isAlteracaoAutomatica(),
                 mensalidadeEntity.getStatusPagamento(),
                 mensalidadeEntity.getDataPagamento(),
                 mensalidadeEntity.getDataVencimento(),
                 AlunoEntityMapper.toDomain(mensalidadeEntity.getAluno()),
-                Optional.of(ComprovanteEntityMapper.toDomain(mensalidadeEntity.getComprovante()))
+                Optional.ofNullable(ComprovanteEntityMapper.toDomain(mensalidadeEntity.getComprovante()))
         );
     }
 

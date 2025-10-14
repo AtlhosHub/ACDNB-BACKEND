@@ -23,9 +23,9 @@ public class Mensalidade {
 
     public Mensalidade() {}
 
-    public Mensalidade(int id, FormaPagamento formaPagamento, ValorMensalidade valor, boolean alteracaoAutomatica, StatusPagamento statusPagamento, LocalDateTime dataPagamento, LocalDate dataVencimento, Aluno aluno, Optional<Comprovante> comprovante) {
+    public Mensalidade(int id, Optional<FormaPagamento> formaPagamento, ValorMensalidade valor, boolean alteracaoAutomatica, StatusPagamento statusPagamento, LocalDateTime dataPagamento, LocalDate dataVencimento, Aluno aluno, Optional<Comprovante> comprovante) {
         this.id = id;
-        this.formaPagamento = formaPagamento;
+        this.formaPagamento = formaPagamento.orElse(null);
         this.valor = valor;
         this.alteracaoAutomatica = alteracaoAutomatica;
         this.statusPagamento = statusPagamento;
