@@ -2,9 +2,16 @@ package com.teste.acdnb.infrastructure.gateway;
 
 import com.teste.acdnb.core.application.gateway.ListaEsperaGateway;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
+import com.teste.acdnb.infrastructure.filter.InteressadosFilter;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
+import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.AlunoSpecification;
 import com.teste.acdnb.infrastructure.persistence.jpa.listaEspera.ListaEsperaEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.listaEspera.ListaEsperaEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.listaEspera.ListaEsperaRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,8 +35,14 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
     }
 
     @Override
-    public List<ListaEspera> listarTodos() {
-        return listaEsperaRepository.findAll()
+    public List<ListaEspera> listarTodos(InteressadosFilter interessadosFitler) {
+        Pageable pageable = PageRequest.of(
+                interessadosFitler.offset() / interessadosFitler.limit(),
+                interessadosFitler.limit(),
+                Sort.by(Sort.Order.desc("dataInclusao"))
+        );
+
+        return listaEsperaRepository.findAll(pageable)
                 .stream()
                 .map(listaEsperaEntityMapper::toDomain)
                 .toList();

@@ -3,6 +3,9 @@ package com.teste.acdnb.infrastructure.web;
 import com.teste.acdnb.core.application.usecase.listaEspera.*;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
 import com.teste.acdnb.infrastructure.dto.ListaEsperaDTO;
+import com.teste.acdnb.infrastructure.dto.PaginacaoResponse;
+import com.teste.acdnb.infrastructure.dto.aluno.AlunoComprovanteDTO;
+import com.teste.acdnb.infrastructure.filter.InteressadosFilter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,16 +37,20 @@ public class ListaEsperaController {
         this.atualizarInteressadoUseCase = atualizarInteressadoUseCase;
     }
 
-    @PostMapping
+    @PostMapping("/adicionar")
     public ResponseEntity<ListaEspera> adicionarInteressado(@RequestBody ListaEsperaDTO interessado) {
         ListaEspera executar = adicionarInteressadoUseCase.execute(interessado);
         return ResponseEntity.ok(executar);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ListaEspera>> listarTodosInteressados() {
-        List<ListaEspera> lista = listarInteressadosUseCase.execute();
-        return ResponseEntity.ok(lista);
+    @PostMapping
+    public ResponseEntity<PaginacaoResponse<ListaEspera>> listarTodosInteressados(@RequestBody InteressadosFilter filtro) {
+        List<ListaEspera> interessados = listarInteressadosUseCase.execute(filtro);
+        int qtdInteressados = interessados.size();
+
+        PaginacaoResponse<ListaEspera> response = new PaginacaoResponse<>(interessados, filtro.offset(), filtro.limit(), qtdInteressados);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

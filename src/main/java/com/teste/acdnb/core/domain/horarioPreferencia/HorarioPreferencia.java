@@ -2,16 +2,18 @@ package com.teste.acdnb.core.domain.horarioPreferencia;
 
 import com.teste.acdnb.core.domain.shared.valueobject.DataInclusao;
 
+import java.time.LocalTime;
+
 public class HorarioPreferencia {
     private Integer id;
-    DataInclusao  horarioAulaInicio;
-    DataInclusao  horarioAulaFim;
+    LocalTime horarioAulaInicio;
+    LocalTime  horarioAulaFim;
     DataInclusao dataInclusao = DataInclusao.of(java.time.LocalDateTime.now());
 
     public HorarioPreferencia() {
     }
 
-    public HorarioPreferencia(Integer id, DataInclusao horarioAulaInicio, DataInclusao horarioAulaFim, DataInclusao dataInclusao) {
+    public HorarioPreferencia(Integer id, LocalTime horarioAulaInicio, LocalTime horarioAulaFim, DataInclusao dataInclusao) {
         this.id = id;
         this.horarioAulaInicio = horarioAulaInicio;
         this.horarioAulaFim = horarioAulaFim;
@@ -26,19 +28,19 @@ public class HorarioPreferencia {
         this.id = id;
     }
 
-    public DataInclusao getHorarioAulaInicio() {
+    public LocalTime getHorarioAulaInicio() {
         return horarioAulaInicio;
     }
 
-    public void setHorarioAulaInicio(DataInclusao horarioAulaInicio) {
+    public void setHorarioAulaInicio(LocalTime horarioAulaInicio) {
         this.horarioAulaInicio = horarioAulaInicio;
     }
 
-    public DataInclusao getHorarioAulaFim() {
+    public LocalTime getHorarioAulaFim() {
         return horarioAulaFim;
     }
 
-    public void setHorarioAulaFim(DataInclusao horarioAulaFim) {
+    public void setHorarioAulaFim(LocalTime horarioAulaFim) {
         this.horarioAulaFim = horarioAulaFim;
     }
 

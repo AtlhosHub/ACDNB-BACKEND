@@ -4,9 +4,11 @@ import com.teste.acdnb.core.application.usecase.mensalidade.AtualizarMensalidade
 import com.teste.acdnb.core.application.usecase.mensalidade.ContarMensalidadeComDesconto;
 import com.teste.acdnb.core.application.usecase.mensalidade.GerarRelatorioMensalidadePorMes;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
+import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
 import com.teste.acdnb.infrastructure.dto.PagamentoManualDTO;
+import com.teste.acdnb.infrastructure.gateway.mensalidade.ValorMensalidadeRepositoryGateway;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,11 +31,13 @@ public class MensalidadeController {
     private final GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes;
     private final ContarMensalidadeComDesconto contarMensalidadeComDesconto;
     private final AtualizarMensalidade atualizarMensalidade;
+    private final BuscarValorMensalidadeAtual buscarValorMensalidadeAtual;
 
-    public MensalidadeController(GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes, ContarMensalidadeComDesconto contarMensalidadeComDesconto, AtualizarMensalidade atualizarMensalidade) {
+    public MensalidadeController(GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes, ContarMensalidadeComDesconto contarMensalidadeComDesconto, AtualizarMensalidade atualizarMensalidade, BuscarValorMensalidadeAtual buscarValorMensalidadeAtual) {
         this.gerarRelatorioMensalidadePorMes = gerarRelatorioMensalidadePorMes;
         this.contarMensalidadeComDesconto = contarMensalidadeComDesconto;
         this.atualizarMensalidade = atualizarMensalidade;
+        this.buscarValorMensalidadeAtual = buscarValorMensalidadeAtual;
     }
 
     @GetMapping("/grafico")
@@ -54,8 +58,16 @@ public class MensalidadeController {
     @Operation(summary = "Registrar pagamento manualmente", description = "Registra o pagamento realizado por um aluno.")
     public ResponseEntity<Mensalidade> pagarManual(
             @PathVariable Long id,
-            @RequestBody @Valid PagamentoManualDTO dto) {
+            @RequestBody @Valid PagamentoManualDTO dto
+    ) {
         Mensalidade mensalidadeAtualizada = atualizarMensalidade.execute(id, dto);
         return ResponseEntity.ok(mensalidadeAtualizada);
+    }
+
+    @GetMapping("/valor-atual")
+    @Operation(summary = "Puxa o valor de mensalidade atual", description = "Puxa qual valor de mensalidade está sendo usado atualmente.")
+    public ResponseEntity<ValorMensalidade> valorMensalidadeAtual() {
+        ValorMensalidade valorMensalidadeAtual = buscarValorMensalidadeAtual.execute();
+        return ResponseEntity.ok(valorMensalidadeAtual);
     }
 }

@@ -7,6 +7,8 @@ public record AlunoFilter(
         List<String> status,
         Boolean ativo,
         String dataEnvioFrom,
-        String dataEnvioTo
+        String dataEnvioTo,
+        Integer offset,
+        Integer limit
 ) {
 }

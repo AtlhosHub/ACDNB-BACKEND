@@ -5,6 +5,9 @@ import com.teste.acdnb.core.domain.horarioPreferencia.HorarioPreferencia;
 import com.teste.acdnb.core.domain.shared.valueobject.DataInclusao;
 import com.teste.acdnb.infrastructure.dto.HorarioPreferenciaDTO;
 import com.teste.acdnb.infrastructure.util.DateParser;
+import com.teste.acdnb.infrastructure.util.TimeParser;
+
+import java.time.LocalDateTime;
 
 public class AdicionarHorarioPreferenciaUseCaseImpl implements AdicionarHorarioPreferenciaUseCase {
 
@@ -17,9 +20,9 @@ public class AdicionarHorarioPreferenciaUseCaseImpl implements AdicionarHorarioP
     @Override
     public HorarioPreferencia execute(HorarioPreferenciaDTO dto) {
         var horarioPreferencia = new HorarioPreferencia();
-        horarioPreferencia.setHorarioAulaInicio(DataInclusao.of(DateParser.parse(dto.horarioAulaInicio())));
-        horarioPreferencia.setHorarioAulaFim(DataInclusao.of(DateParser.parse(dto.horarioAulaFim())));
-        horarioPreferencia.setDataInclusao(DataInclusao.of(DateParser.parse(dto.dataInclusao())));
+        horarioPreferencia.setHorarioAulaInicio(TimeParser.parse(dto.horarioAulaInicio()));
+        horarioPreferencia.setHorarioAulaFim(TimeParser.parse(dto.horarioAulaFim()));
+        horarioPreferencia.setDataInclusao(DataInclusao.of(LocalDateTime.now()));
 
         return horarioPreferenciaGateway.adicionarHorarioPreferencia(horarioPreferencia);
     }

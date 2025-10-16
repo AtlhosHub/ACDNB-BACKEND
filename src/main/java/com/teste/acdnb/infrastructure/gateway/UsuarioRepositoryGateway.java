@@ -21,7 +21,6 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
         this.usuarioEntityMapper = usuarioEntityMapper;
     }
 
-
     @Override
     public Usuario adicionarUsuario(Usuario usuario) {
         UsuarioEntity usuarioEntity = usuarioEntityMapper.toEntity(usuario);

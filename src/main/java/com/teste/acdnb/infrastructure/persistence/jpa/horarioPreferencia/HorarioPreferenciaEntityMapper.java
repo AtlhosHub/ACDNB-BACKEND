@@ -12,8 +12,8 @@ public class HorarioPreferenciaEntityMapper {
 
         return new HorarioPreferenciaEntity(
                 domain.getId(),
-                domain.getHorarioAulaInicio() != null ? domain.getHorarioAulaInicio().getValue() : null,
-                domain.getHorarioAulaFim() != null ? domain.getHorarioAulaFim().getValue() : null,
+                domain.getHorarioAulaInicio() != null ? domain.getHorarioAulaInicio() : null,
+                domain.getHorarioAulaFim() != null ? domain.getHorarioAulaFim() : null,
                 domain.getDataInclusao() != null ? domain.getDataInclusao().getValue() : null
         );
     }
@@ -23,8 +23,8 @@ public class HorarioPreferenciaEntityMapper {
 
         return new HorarioPreferencia(
                 entity.getId(),
-                entity.getHorarioAulaInicio() != null ? DataInclusao.of(entity.getHorarioAulaInicio()) : null,
-                entity.getHorarioAulaFim() != null ? DataInclusao.of(entity.getHorarioAulaFim()) : null,
+                entity.getHorarioAulaInicio() != null ? entity.getHorarioAulaInicio() : null,
+                entity.getHorarioAulaFim() != null ? entity.getHorarioAulaFim() : null,
                 entity.getDataInclusao() != null ? DataInclusao.of(entity.getDataInclusao()) : null
         );
     }

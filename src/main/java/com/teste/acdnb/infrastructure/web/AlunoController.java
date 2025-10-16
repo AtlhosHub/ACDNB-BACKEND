@@ -2,6 +2,7 @@ package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.aluno.*;
 import com.teste.acdnb.core.domain.aluno.Aluno;
+import com.teste.acdnb.infrastructure.dto.PaginacaoResponse;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoAniversarioDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoComprovanteDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
@@ -85,10 +86,13 @@ public class AlunoController {
     }
 
     @PostMapping("/comprovantes")
-    public ResponseEntity<List<AlunoComprovanteDTO>> listarAlunosComComprovantes(
-            @RequestBody AlunoFilter filtro) {
+    public ResponseEntity<PaginacaoResponse<AlunoComprovanteDTO>> listarAlunosComComprovantes(@RequestBody AlunoFilter filtro) {
         List<AlunoComprovanteDTO> alunosComComprovantes = listarAlunosMensalidades.execute(filtro);
-        return ResponseEntity.ok(alunosComComprovantes.isEmpty() ? List.of() : alunosComComprovantes);
+        int qtdAlunos = listarAlunosUseCase.execute().size();
+
+        PaginacaoResponse<AlunoComprovanteDTO> response = new PaginacaoResponse<>(alunosComComprovantes, filtro.offset(), filtro.limit(), qtdAlunos);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/emailCadastrado")
