@@ -1,10 +1,10 @@
 insert into usuario
-(nome, email, senha, celular, data_nascimento)
+    (nome, email, senha, celular, data_nascimento)
 values
     ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11) 99999-9999', '1990-01-01');
 
 insert into valor_mensalidade
-(data_inclusao, valor, desconto, manual)
+    (data_inclusao, valor, desconto, manual)
 values
     (now(), 120.00, false, false);
 
@@ -30,7 +30,7 @@ values
 --     ('Theo Daniel Ferreira', 'theo.ferreira@gmail.com', '(11) 98234-2127', '1998-05-15', 'Masculino', '2025-05-18', 1, 1, '2025-05-18');
 --
 INSERT INTO endereco
-(logradouro, num_log, bairro, cidade, estado, cep)
+    (logradouro, num_log, bairro, cidade, estado, cep)
 VALUES
     ('Avenida Maria Dias', 776, 'Jardim São Carlos', 'Bebedouro', 'SP', '14702-248'),
     ('Rua Capitão João Carlos', 864, 'Nossa Senhora do Ó', 'São Paulo', 'SP', '02926-060'),
@@ -44,7 +44,7 @@ VALUES
     ('Rua João Batista Carri', 949, 'Parque Residencial Maria Stella Faga', 'São Carlos', 'SP', '13568-410');
 --
 INSERT INTO aluno
-(nome, email, data_nascimento, cpf, rg, genero, celular, nacionalidade, naturalidade, telefone, profissao, ativo, atestado, deficiencia, autorizado, endereco_id, data_inclusao)
+    (nome, email, data_nascimento, cpf, rg, genero, celular, nacionalidade, naturalidade, telefone, profissao, ativo, atestado, deficiencia, autorizado, endereco_id, data_inclusao)
 VALUES
     ('Giovanna Julia Assis', 'giovanna-assis81@gmail.com', '1979-06-09', '14389008803', '10.036.757-4', 'Feminino', '(17) 98171-3456', 'Brasileira', 'Bebedouro', null, 'Engenheira de Software', true, true, 'Daltonismo', true, 1, '2025-06-01 09:00:00'),
     ('Yuri Enrico Thales Duarte', 'yuri_duarte@gmail.com', '1989-03-17', '08582254849', '11.874.451-3', 'Masculino', '(11) 98755-1988', 'Brasileira', 'São Paulo', '(11) 2635-2938', 'Técnico de Enfermagem', true, true, null, true, 2, '2025-06-01 09:00:00'),

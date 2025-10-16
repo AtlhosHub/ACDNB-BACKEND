@@ -13,14 +13,14 @@ public class Responsavel {
     private Email email;
     private String rg;
     private Telefone telefone;
-    private Nome nomeSocial;
+    private NomeSocial nomeSocial;
     private String genero;
     private String profissao;
     private List<Aluno> alunos = new ArrayList<>();
 
     public Responsavel(){}
 
-    public Responsavel(int id, Nome nome, Cpf cpf, Celular celular, Email email, String rg, Telefone telefone, Nome nomeSocial, String genero, String profissao, List<Aluno> alunos) {
+    public Responsavel(int id, Nome nome, Cpf cpf, Celular celular, Email email, String rg, Telefone telefone, NomeSocial nomeSocial, String genero, String profissao, List<Aluno> alunos) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -90,11 +90,11 @@ public class Responsavel {
         this.telefone = telefone;
     }
 
-    public Nome getNomeSocial() {
+    public NomeSocial getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(Nome nomeSocial) {
+    public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 
