@@ -3,6 +3,8 @@ package com.teste.acdnb.infrastructure.di;
 import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.application.usecase.mensalidade.*;
+import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidade;
+import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidadeImpl;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +15,7 @@ public class MensalidadeBeanConfig {
     @Bean
     public GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes(MensalidadeGateway mensalidadeGateway) {
         return new GerarRelatorioMensalidadePorMesImpl(mensalidadeGateway);
-    };
+    }
 
     @Bean
     public ContarMensalidadeComDesconto contarMensalidadeComDesconto(MensalidadeGateway mensalidadeGateway) {
@@ -28,5 +30,10 @@ public class MensalidadeBeanConfig {
     @Bean
     public BuscarValorMensalidadeAtual buscarValorMensalidadeAtual(ValorMensalidadeGateway valorMensalidadeGateway) {
         return new BuscarValorMensalidadeAtualImpl(valorMensalidadeGateway);
+    }
+
+    @Bean
+    public AdicionarValorMensalidade adicionarValorMensalidade(ValorMensalidadeGateway valorMensalidadeGateway){
+        return new AdicionarValorMensalidadeImpl(valorMensalidadeGateway);
     }
 }
