@@ -57,6 +57,7 @@ VALUES
     ('Julio Thomas Peixoto', 'julio_thomas_peixoto@gmail.com', '1974-06-12', '38544057829', '27.755.336-2', 'Masculino', '(15) 99812-7129', 'Brasileira', 'Itapetininga', '(15) 3610-5532', 'Chef de Cozinha', true, true, null, true, 9, '2025-06-01 09:00:00'),
     ('Samuel Martin Fogaça', 'samuel.martin.fogaca@outlook.com', '1965-03-26', '39023853830', '42.596.317-2', 'Masculino', '(16) 99122-7178', 'Brasileira', 'São Carlos', null, 'Analista de Dados', true, true, null, true, 10, '2025-06-01 09:00:00');
 --
+
 -- Aluno ID 1
 INSERT INTO mensalidade (aluno_id, valor_mensalidade_id, data_vencimento, status_pagamento, alteracao_automatica) VALUES (1, 1, '2025-10-12', 'PENDENTE', false);
 INSERT INTO mensalidade (aluno_id, valor_mensalidade_id, data_vencimento, status_pagamento, alteracao_automatica) VALUES (1, 1, '2025-11-12', 'PENDENTE', false);

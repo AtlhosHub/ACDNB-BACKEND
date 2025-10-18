@@ -10,6 +10,7 @@ import com.teste.acdnb.infrastructure.filter.AlunoFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ListarAlunosMensalidadesImpl implements ListarAlunosMensalidades{
     public final AlunoGateway alunoGateway;
@@ -23,15 +24,22 @@ public class ListarAlunosMensalidadesImpl implements ListarAlunosMensalidades{
     @Override
     public List<AlunoComprovanteDTO> execute(AlunoFilter filter) {
         List<AlunoComprovanteDTO> listaAlunos = new ArrayList<>();
+
         List<Aluno> alunos = alunoGateway.listarAlunosFiltro(filter);
+        List<Mensalidade> mensalidades = mensalidadeGateway.listarMensalidadesFiltro(filter);
 
         for (Aluno aluno : alunos) {
-            List<Mensalidade> mensalidades = mensalidadeGateway.listarMensalidadesFiltro(filter);
-            for (Mensalidade mensalidade : mensalidades) {
+                Mensalidade mensalidade = mensalidades.stream()
+                        .filter(m -> m.getAluno().getId() == aluno.getId())
+                        .findFirst()
+                        .orElse(null);
+
+                if(mensalidade == null) continue;
+
                 listaAlunos.add(new AlunoComprovanteDTO(
                         mensalidade.getId(),
                         aluno.getId(),
-                        aluno.getNomeSocial() == null ? aluno.getNome().getValue() : aluno.getNomeSocial().getValue(),
+                        aluno.getNomeSocial() == null ? aluno.getNome().getValue() : aluno.getNomeSocialValue(),
                         aluno.isAtivo(),
                         mensalidade.getDataPagamento(),
                         mensalidade.getDataVencimento(),
@@ -41,7 +49,6 @@ public class ListarAlunosMensalidadesImpl implements ListarAlunosMensalidades{
                         mensalidade.getValor().isDesconto(),
                         mensalidade.isAlteracaoAutomatica()
                 ));
-            }
         }
 
         return listaAlunos;
