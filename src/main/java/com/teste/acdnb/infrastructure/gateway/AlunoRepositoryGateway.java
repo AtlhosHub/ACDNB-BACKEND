@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,8 +137,9 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public List<Aluno> listarAniversariantes(){
-        return AlunoMapperUtil.toDomainList(alunoRepository.findAniversariantes(), alunoEntityMapper);
+    public List<Aluno> listarAniversariantes() {
+        int mesAtual = LocalDate.now().getMonthValue();
+        return AlunoMapperUtil.toDomainList(alunoRepository.findAniversariantes(mesAtual), alunoEntityMapper);
     }
 
     @Override

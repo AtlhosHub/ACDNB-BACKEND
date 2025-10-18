@@ -102,8 +102,7 @@ public class AlunoEntity {
 
     @OneToMany(
             mappedBy = "aluno",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.REMOVE
     )
     @JsonIgnoreProperties("comprovante")
     @Schema(description = "Mensalidades associadas ao aluno")

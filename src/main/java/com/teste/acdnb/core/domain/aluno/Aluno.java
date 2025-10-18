@@ -125,6 +125,10 @@ public class Aluno {
         return nomeSocial;
     }
 
+    public String getNomeSocialValue() {
+        return nomeSocial == null ? null : nomeSocial.getValue();
+    }
+
     public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
@@ -141,12 +145,20 @@ public class Aluno {
         return celular;
     }
 
+    public String getCelularValue() {
+        return celular == null ? null : celular.getValue();
+    }
+
     public void setCelular(Celular celular) {
         this.celular = celular;
     }
 
     public Telefone getTelefone() {
         return telefone;
+    }
+
+    public String getTelefoneValue() {
+        return telefone == null ? null : telefone.getValue();
     }
 
     public void setTelefone(Telefone telefone) {

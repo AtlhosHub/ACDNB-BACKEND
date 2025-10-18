@@ -4,17 +4,13 @@ import com.teste.acdnb.core.application.usecase.mensalidade.AtualizarMensalidade
 import com.teste.acdnb.core.application.usecase.mensalidade.ContarMensalidadeComDesconto;
 import com.teste.acdnb.core.application.usecase.mensalidade.GerarRelatorioMensalidadePorMes;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
+import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidade;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
 import com.teste.acdnb.infrastructure.dto.PagamentoManualDTO;
-import com.teste.acdnb.infrastructure.gateway.mensalidade.ValorMensalidadeRepositoryGateway;
-import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
+import com.teste.acdnb.infrastructure.dto.mensaldiade.NovoValorMensalidadeDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -32,12 +28,21 @@ public class MensalidadeController {
     private final ContarMensalidadeComDesconto contarMensalidadeComDesconto;
     private final AtualizarMensalidade atualizarMensalidade;
     private final BuscarValorMensalidadeAtual buscarValorMensalidadeAtual;
+    private final AdicionarValorMensalidade adicionarValorMensalidade;
 
-    public MensalidadeController(GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes, ContarMensalidadeComDesconto contarMensalidadeComDesconto, AtualizarMensalidade atualizarMensalidade, BuscarValorMensalidadeAtual buscarValorMensalidadeAtual) {
+    public MensalidadeController(
+            GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes,
+            ContarMensalidadeComDesconto contarMensalidadeComDesconto,
+            AtualizarMensalidade atualizarMensalidade,
+            BuscarValorMensalidadeAtual buscarValorMensalidadeAtual,
+            AdicionarValorMensalidade adicionarValorMensalidade
+
+    ) {
         this.gerarRelatorioMensalidadePorMes = gerarRelatorioMensalidadePorMes;
         this.contarMensalidadeComDesconto = contarMensalidadeComDesconto;
         this.atualizarMensalidade = atualizarMensalidade;
         this.buscarValorMensalidadeAtual = buscarValorMensalidadeAtual;
+        this.adicionarValorMensalidade = adicionarValorMensalidade;
     }
 
     @GetMapping("/grafico")
@@ -69,5 +74,13 @@ public class MensalidadeController {
     public ResponseEntity<ValorMensalidade> valorMensalidadeAtual() {
         ValorMensalidade valorMensalidadeAtual = buscarValorMensalidadeAtual.execute();
         return ResponseEntity.ok(valorMensalidadeAtual);
+    }
+
+    @PostMapping("/valor-mensalidade")
+    @Operation(summary = "Adiciona novo valor de mensalidade", description = "Adiciona um novo valor de mensalidade")
+    public ResponseEntity<ValorMensalidade> adicionarValorMensalidadee(@RequestBody NovoValorMensalidadeDTO novoValor) {
+        ValorMensalidade novoValorMensalidade = adicionarValorMensalidade.execute(novoValor);
+
+        return ResponseEntity.ok(novoValorMensalidade);
     }
 }

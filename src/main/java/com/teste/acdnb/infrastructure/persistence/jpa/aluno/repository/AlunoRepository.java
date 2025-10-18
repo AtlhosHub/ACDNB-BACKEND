@@ -25,8 +25,8 @@ public interface AlunoRepository extends JpaRepository<AlunoEntity, Integer>, Jp
 
     List<AlunoEntity> findAll(@Nullable Specification<AlunoEntity> spec, @Nullable Sort sort);
 
-    @Query("SELECT a.nome, a.dataNascimento FROM AlunoEntity a ORDER BY a.dataNascimento")
-    List<AlunoEntity> findAniversariantes();
+    @Query("SELECT a FROM AlunoEntity a WHERE MONTH(a.dataNascimento) >= :mesAtual ORDER BY MONTH(a.dataNascimento), DAY(a.dataNascimento)")
+    List<AlunoEntity> findAniversariantes(@Param("mesAtual") int mesAtual);
 
     long countByAtivo(boolean ativo);
 
