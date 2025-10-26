@@ -7,8 +7,10 @@ import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensal
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidadeImpl;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.core.Queue;
 
 @Configuration
 public class MensalidadeBeanConfig {
@@ -35,5 +37,13 @@ public class MensalidadeBeanConfig {
     @Bean
     public AdicionarValorMensalidade adicionarValorMensalidade(ValorMensalidadeGateway valorMensalidadeGateway){
         return new AdicionarValorMensalidadeImpl(valorMensalidadeGateway);
+    }
+
+    @Value("${app.rabbitmq.queue.comprovante:fila-comprovante-processado}")
+    private String queueName;
+
+    @Bean
+    public Queue comprovanteQueue() {
+        return new Queue(queueName, true);
     }
 }

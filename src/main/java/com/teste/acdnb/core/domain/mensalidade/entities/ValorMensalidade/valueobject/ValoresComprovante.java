@@ -6,6 +6,9 @@ public class ValoresComprovante {
     private BigDecimal valorCheio;
     private BigDecimal valorDescontoAplicado;
 
+    public ValoresComprovante() {
+    }
+
     private ValoresComprovante(BigDecimal valorCheio, BigDecimal valorDescontoAplicado) {
         this.valorCheio = valorCheio;
         this.valorDescontoAplicado = valorDescontoAplicado;
