@@ -30,9 +30,8 @@ public class AlunoController {
     private final ListarAniversariosUseCase listarAniversariosUseCase;
     private final QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase;
     private final ListarAlunosMensalidades listarAlunosMensalidades;
-    private final VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase;
 
-    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades, VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase) {
+    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades) {
         this.adicionarAlunoUseCase = adicionarAlunoUseCase;
         this.listarAlunosUseCase = listarAlunosUseCase;
         this.buscarAlunoPorIdUseCase = buscarAlunoPorIdUseCase;
@@ -41,7 +40,6 @@ public class AlunoController {
         this.listarAniversariosUseCase = listarAniversariosUseCase;
         this.qtdAlunosAtivosUseCase = qtdAlunosAtivosUseCase;
         this.listarAlunosMensalidades = listarAlunosMensalidades;
-        this.verificarEmailCadastradoUseCase = verificarEmailCadastradoUseCase;
     }
 
     @PostMapping
@@ -93,11 +91,5 @@ public class AlunoController {
         PaginacaoResponse<AlunoComprovanteDTO> response = new PaginacaoResponse<>(alunosComComprovantes, filtro.offset(), filtro.limit(), qtdAlunos);
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/emailCadastrado")
-    public ResponseEntity<Aluno> verificarEmailCadastrado(@RequestParam String email) {
-        Optional<Aluno> aluno = verificarEmailCadastradoUseCase.execute(email);
-        return aluno.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
