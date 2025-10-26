@@ -35,7 +35,7 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
     }
 
     @Override
-    public List<ListaEspera> listarTodos(InteressadosFilter interessadosFitler) {
+    public List<ListaEspera> listarFiltro(InteressadosFilter interessadosFitler) {
         Pageable pageable = PageRequest.of(
                 interessadosFitler.offset() / interessadosFitler.limit(),
                 interessadosFitler.limit(),
@@ -43,6 +43,14 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
         );
 
         return listaEsperaRepository.findAll(pageable)
+                .stream()
+                .map(listaEsperaEntityMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<ListaEspera> listarTodos() {
+        return listaEsperaRepository.findAll()
                 .stream()
                 .map(listaEsperaEntityMapper::toDomain)
                 .toList();

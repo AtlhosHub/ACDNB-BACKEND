@@ -5,7 +5,7 @@ import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.MensalidadeSpecification;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
@@ -76,7 +76,7 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     };
 
     @Override
-    public List<Mensalidade> listarMensalidadesFiltro(AlunoFilter filter){
+    public List<Mensalidade> listarMensalidadesFiltro(ListarAlunosMensalidadeFilter filter){
         Specification<MensalidadeEntity> spec = MensalidadeSpecification.filtrarPor(filter);
         return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
     }

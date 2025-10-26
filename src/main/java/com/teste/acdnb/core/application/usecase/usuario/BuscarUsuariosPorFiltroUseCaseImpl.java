@@ -21,13 +21,14 @@ public class BuscarUsuariosPorFiltroUseCaseImpl implements  BuscarUsuariosPorFil
 
         return usuarios.stream()
                 .map(usuario -> new UsuarioResponseDTO(
+                        usuario.getId(),
                         usuario.getNome().getValue(),
                         usuario.getEmail().getValue(),
-                        usuario.getCelular().getValue(),
+                        usuario.getCelular() != null ? usuario.getCelular().getValue() : null,
                         usuario.getDataNascimento().getValue(),
                         usuario.getNomeSocial() != null ? usuario.getNomeSocial().getValue() : null,
                         usuario.getGenero(),
-                        usuario.getTelefone().getValue(),
+                        usuario.getTelefone() != null ? usuario.getTelefone().getValue(): null,
                         usuario.getCargo()
                 ))
                 .toList();

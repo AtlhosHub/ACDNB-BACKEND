@@ -2,7 +2,7 @@ package com.teste.acdnb.infrastructure.filter;
 
 import java.util.List;
 
-public record AlunoFilter(
+public record ListarAlunosMensalidadeFilter(
         String nome,
         List<String> status,
         Boolean ativo,

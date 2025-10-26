@@ -6,6 +6,9 @@ import com.teste.acdnb.infrastructure.dto.usuario.UsuarioFiltroDTO;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -70,9 +73,17 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
 
     @Override
     public List<Usuario> buscarUsuariosPorNome(UsuarioFiltroDTO usuarioFiltroDTO) {
-        return usuarioRepository.findByNomeContainingIgnoreCaseOrderByNomeAsc(usuarioFiltroDTO.nome())
+        Pageable pageable = PageRequest.of(
+                usuarioFiltroDTO.offset() / usuarioFiltroDTO.limit(),
+                usuarioFiltroDTO.limit(),
+                Sort.by(Sort.Order.asc("nome"))
+        );
+
+        return usuarioRepository
+                .findByNomeContainingIgnoreCase(usuarioFiltroDTO.nome(), pageable)
                 .stream()
                 .map(usuarioEntityMapper::toDomain)
                 .toList();
     }
+
 }

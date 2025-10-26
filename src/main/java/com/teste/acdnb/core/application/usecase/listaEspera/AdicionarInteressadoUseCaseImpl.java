@@ -35,9 +35,9 @@ public class AdicionarInteressadoUseCaseImpl implements AdicionarInteressadoUseC
         interessado.setEmail(Email.of(dto.email()));
         interessado.setDataInteresse(dto.dataInteresse() != null ? DataInclusao.of(DateParser.parse(dto.dataInteresse())) : null);
         interessado.setCelular(Celular.of(dto.celular()));
-        interessado.setNomeSocial(Nome.of(dto.nomeSocial()));
+        interessado.setNomeSocial(NomeSocial.of(dto.nomeSocial(), dto.nome()));
         interessado.setGenero(dto.genero());
-        interessado.setDataNascimento(dto.dataNascimento() != null ? DataInclusao.of(DateParser.parse(dto.dataNascimento())) : null);
+        interessado.setDataNascimento(dto.dataNascimento() != null ? DataNascimento.of(dto.dataNascimento()) : null);
         interessado.setTelefone(Telefone.of(dto.telefone()));
         interessado.setDataInclusao(dto.dataInclusao() != null ? DataInclusao.of(DateParser.parse(dto.dataInclusao())) : null);
 

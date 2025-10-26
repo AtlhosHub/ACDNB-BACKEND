@@ -41,6 +41,7 @@ public class AtualizarUsuarioUseCaseImpl implements AtualizarUsuarioUseCase {
         System.out.println(usuarioAtualizado);
 
         return new UsuarioResponseDTO(
+                usuarioAtualizado.getId(),
                 usuarioAtualizado.getNome().getValue(),
                 usuarioAtualizado.getEmail().getValue(),
                 usuarioAtualizado.getCelular().getValue(),

@@ -4,7 +4,7 @@ import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoMapperUtil;
@@ -92,18 +92,15 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public List<Aluno> listarAlunosFiltro(AlunoFilter filter){
+    public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
         Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
 
-        Pageable pageable = PageRequest.of(
-                filter.offset() / filter.limit(),
-                filter.limit(),
+        List<AlunoEntity> lista = alunoRepository.findAll(
+                spec,
                 Sort.by(Sort.Order.asc("nome").ignoreCase())
         );
 
-        Page<AlunoEntity> page = alunoRepository.findAll(spec, pageable);
-
-        return AlunoMapperUtil.toDomainList(page.getContent(), alunoEntityMapper);
+        return AlunoMapperUtil.toDomainList(lista, alunoEntityMapper);
     }
 
     @Override
