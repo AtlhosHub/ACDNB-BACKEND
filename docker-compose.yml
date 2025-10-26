@@ -1,10 +1,47 @@
+version: '3.8'
 services:
   rabbitmq:
-    image: 'rabbitmq:latest'
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     environment:
-      - 'RABBITMQ_DEFAULT_PASS=guest'
-      - 'RABBITMQ_DEFAULT_USER=guest'
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     ports:
-      -  "5672:5672"
+      - "5672:5672"
       - "15672:15672"
+    networks:
+      - backend-net
 
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: acdnb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user123
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend-net
+
+  back01:
+    build: .
+    depends_on:
+      - rabbitmq
+      - mysql
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/acdnb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user123
+    networks:
+      - backend-net
+
+volumes:
+  mysql_data:
+
+networks:
+  backend-net:
+    external: true

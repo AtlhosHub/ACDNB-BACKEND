@@ -32,7 +32,6 @@ public class AlunoController {
     private final ListarAniversariosUseCase listarAniversariosUseCase;
     private final QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase;
     private final ListarAlunosMensalidades listarAlunosMensalidades;
-    private final VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase;
 
     private final MensalidadeRepository mensalidadeRepository;
 
@@ -98,11 +97,5 @@ public class AlunoController {
         PaginacaoResponse<AlunoComprovanteDTO> response = new PaginacaoResponse<>(alunosComComprovantes, filtro.offset(), filtro.limit(), totalItems);
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/emailCadastrado")
-    public ResponseEntity<Aluno> verificarEmailCadastrado(@RequestParam String email) {
-        Optional<Aluno> aluno = verificarEmailCadastradoUseCase.execute(email);
-        return aluno.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

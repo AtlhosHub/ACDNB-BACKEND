@@ -58,11 +58,6 @@ public class AlunoBeanConfig {
     }
 
     @Bean
-    public VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase(AlunoGateway alunoGateway) {
-        return new VerificarEmailCadastradoUseCaseImpl(alunoGateway);
-    }
-
-    @Bean
     public ProdutorMensagem produtorMensagem(RabbitTemplate rabbitTemplate){
         return new ProdutorMensagem(rabbitTemplate);
     }
