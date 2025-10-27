@@ -80,4 +80,16 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
         Specification<MensalidadeEntity> spec = MensalidadeSpecification.filtrarPor(filter);
         return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
     }
+
+    @Override
+    public List<Mensalidade> buscarMensalidadesPendentesOuAtrasadasPorAluno(Aluno aluno) {
+        return mensalidadeRepository
+                .findByAlunoAndStatusPagamentoInOrderByDataVencimentoAsc(
+                        AlunoEntityMapper.toEntity(aluno),
+                        List.of(StatusPagamento.PENDENTE, StatusPagamento.ATRASADO)
+                )
+                .stream()
+                .map(MensalidadeEntityMapper::toDomain)
+                .toList();
+    }
 }

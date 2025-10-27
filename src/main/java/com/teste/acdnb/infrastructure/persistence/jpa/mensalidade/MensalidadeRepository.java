@@ -36,4 +36,9 @@ public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, 
     long countByAlunoAndStatusPagamentoIn(AlunoEntity aluno, List<StatusPagamento> status);
 
     List<MensalidadeEntity> findAll(@Nullable Specification<MensalidadeEntity> spec, Sort sort);
+
+    List<MensalidadeEntity> findByAlunoAndStatusPagamentoInOrderByDataVencimentoAsc(
+            AlunoEntity aluno,
+            List<StatusPagamento> statusPagamento
+    );
 }

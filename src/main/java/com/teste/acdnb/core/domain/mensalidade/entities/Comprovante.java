@@ -1,5 +1,6 @@
 package com.teste.acdnb.core.domain.mensalidade.entities;
 
+import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.valueobject.ValoresComprovante;
 import com.teste.acdnb.core.domain.shared.valueobject.Nome;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class Comprovante {
     private int id;
+    private Aluno aluno;
     private Nome nomeRemetente;
     private String bancoOrigem;
     private ValoresComprovante valores;
@@ -16,8 +18,9 @@ public class Comprovante {
 
     public Comprovante() {}
 
-    public Comprovante(int id, Nome nomeRemetente, String bancoOrigem, ValoresComprovante valores, LocalDateTime dataEnvio, String contaDestino, String bancoDestino) {
+    public Comprovante(int id, Aluno aluno, Nome nomeRemetente, String bancoOrigem, ValoresComprovante valores, LocalDateTime dataEnvio, String contaDestino, String bancoDestino) {
         this.id = id;
+        this.aluno = aluno;
         this.nomeRemetente = nomeRemetente;
         this.bancoOrigem = bancoOrigem;
         this.valores = valores;
@@ -25,6 +28,7 @@ public class Comprovante {
         this.contaDestino = contaDestino;
         this.bancoDestino = bancoDestino;
     }
+
 
     @Override
     public String toString() {
@@ -34,6 +38,14 @@ public class Comprovante {
                 ", data_hora='" + dataEnvio + '\'' +
                 ", banco_origem='" + bancoOrigem + '\'' +
                 '}';
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 
     public int getId() {

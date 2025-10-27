@@ -1,5 +1,7 @@
 package com.teste.acdnb.infrastructure.di;
 
+import com.teste.acdnb.core.application.gateway.AlunoGateway;
+import com.teste.acdnb.core.application.gateway.mensalidade.ComprovanteGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.application.usecase.mensalidade.*;
@@ -45,5 +47,12 @@ public class MensalidadeBeanConfig {
     @Bean
     public Queue comprovanteQueue() {
         return new Queue(queueName, true);
+    }
+
+    @Bean
+    public ProcessarPagamentoUseCase processarPagamentoUseCase(AlunoGateway alunoGateway,
+                                                 MensalidadeGateway mensalidadeGateway,
+                                                 ComprovanteGateway comprovanteGateway) {
+        return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway);
     }
 }

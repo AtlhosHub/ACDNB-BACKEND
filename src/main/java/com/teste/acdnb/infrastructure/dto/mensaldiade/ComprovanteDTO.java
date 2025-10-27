@@ -9,5 +9,6 @@ public record ComprovanteDTO(
         LocalDateTime dataHora,
         String tipo,
         String bancoOrigem,
-        String bancoDestino
+        String bancoDestino,
+        String emailDestinatario
 ) {}
