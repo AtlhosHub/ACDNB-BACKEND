@@ -2,7 +2,10 @@ package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.usuario.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
+import com.teste.acdnb.infrastructure.dto.PaginacaoResponse;
+import com.teste.acdnb.infrastructure.dto.aluno.AlunoComprovanteDTO;
 import com.teste.acdnb.infrastructure.dto.usuario.*;
+import com.teste.acdnb.infrastructure.gateway.UsuarioRepositoryGateway;
 import com.teste.acdnb.infrastructure.persistence.jpa.usuario.UsuarioDTOMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +31,9 @@ public class UsuarioController {
     private final BuscarUsuariosPorFiltroUseCase buscarUsuarioPorFiltroUseCase;
     private final AutenticarUsuarioUseCase autenticarUsuarioUseCase;
 
-    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, RemoverUsuarioUseCase removerUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase, BuscarUsuariosPorFiltroUseCase buscarUsuarioPorFiltroUseCase, AutenticarUsuarioUseCase autenticarUsuarioUseCase) {
+    private final UsuarioRepositoryGateway usuarioRepositoryGateway;
+
+    public UsuarioController(AdicionarUsuarioUseCase adicionarUsuarioUseCase, ListarUsuariosUseCase listarUsuariosUseCase, BuscarUsuarioPorIdUseCase buscarUsuarioPorIdUseCase, RemoverUsuarioUseCase removerUsuarioUseCase, AtualizarUsuarioUseCase atualizarUsuarioUseCase, BuscarUsuariosPorFiltroUseCase buscarUsuarioPorFiltroUseCase, AutenticarUsuarioUseCase autenticarUsuarioUseCase, UsuarioRepositoryGateway usuarioRepositoryGateway) {
         this.adicionarUsuarioUseCase = adicionarUsuarioUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
         this.buscarUsuarioPorIdUseCase = buscarUsuarioPorIdUseCase;
@@ -36,6 +41,7 @@ public class UsuarioController {
         this.atualizarUsuarioUseCase = atualizarUsuarioUseCase;
         this.buscarUsuarioPorFiltroUseCase = buscarUsuarioPorFiltroUseCase;
         this.autenticarUsuarioUseCase = autenticarUsuarioUseCase;
+        this.usuarioRepositoryGateway = usuarioRepositoryGateway;
     }
 
 
@@ -129,11 +135,13 @@ public class UsuarioController {
             @ApiResponse(responseCode = "401", description = "E-mail ou senha inválidos", content = @Content()),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content())
     })
-    public ResponseEntity<List<UsuarioResponseDTO>> listarUsuariosPorNome(
-            @RequestBody UsuarioFiltroDTO usuarioFiltroDTO) {
-
+    public ResponseEntity<PaginacaoResponse<UsuarioResponseDTO>> listarUsuariosPorNome(@RequestBody UsuarioFiltroDTO usuarioFiltroDTO) {
         List<UsuarioResponseDTO> usuarios = buscarUsuarioPorFiltroUseCase.execute(usuarioFiltroDTO);
-        return ResponseEntity.ok(usuarios);
+        int totalItems = usuarioRepositoryGateway.listarUsuarios().size();
+
+        PaginacaoResponse<UsuarioResponseDTO> response = new PaginacaoResponse<>(usuarios, usuarioFiltroDTO.offset(), usuarioFiltroDTO.limit(), totalItems);
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")

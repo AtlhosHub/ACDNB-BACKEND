@@ -7,13 +7,15 @@ import com.teste.acdnb.infrastructure.dto.aluno.AlunoAniversarioDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoComprovanteDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoDTO;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoInfoDTO;
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
+import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +33,9 @@ public class AlunoController {
     private final QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase;
     private final ListarAlunosMensalidades listarAlunosMensalidades;
 
-    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades) {
+    private final MensalidadeRepository mensalidadeRepository;
+
+    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades, VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase, MensalidadeRepository mensalidadeRepository) {
         this.adicionarAlunoUseCase = adicionarAlunoUseCase;
         this.listarAlunosUseCase = listarAlunosUseCase;
         this.buscarAlunoPorIdUseCase = buscarAlunoPorIdUseCase;
@@ -40,6 +44,8 @@ public class AlunoController {
         this.listarAniversariosUseCase = listarAniversariosUseCase;
         this.qtdAlunosAtivosUseCase = qtdAlunosAtivosUseCase;
         this.listarAlunosMensalidades = listarAlunosMensalidades;
+        this.verificarEmailCadastradoUseCase = verificarEmailCadastradoUseCase;
+        this.mensalidadeRepository = mensalidadeRepository;
     }
 
     @PostMapping
@@ -84,11 +90,11 @@ public class AlunoController {
     }
 
     @PostMapping("/comprovantes")
-    public ResponseEntity<PaginacaoResponse<AlunoComprovanteDTO>> listarAlunosComComprovantes(@RequestBody AlunoFilter filtro) {
+    public ResponseEntity<PaginacaoResponse<AlunoComprovanteDTO>> listarAlunosComComprovantes(@RequestBody ListarAlunosMensalidadeFilter filtro) {
         List<AlunoComprovanteDTO> alunosComComprovantes = listarAlunosMensalidades.execute(filtro);
-        int qtdAlunos = listarAlunosUseCase.execute().size();
+        long totalItems = mensalidadeRepository.countAlunosComMensalidade(filtro.status(), filtro.nome(),LocalDate.parse(filtro.dataEnvioFrom()), LocalDate.parse(filtro.dataEnvioTo()));
 
-        PaginacaoResponse<AlunoComprovanteDTO> response = new PaginacaoResponse<>(alunosComComprovantes, filtro.offset(), filtro.limit(), qtdAlunos);
+        PaginacaoResponse<AlunoComprovanteDTO> response = new PaginacaoResponse<>(alunosComComprovantes, filtro.offset(), filtro.limit(), totalItems);
 
         return ResponseEntity.ok(response);
     }

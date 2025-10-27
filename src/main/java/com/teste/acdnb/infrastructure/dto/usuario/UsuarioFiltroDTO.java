@@ -1,6 +1,8 @@
 package com.teste.acdnb.infrastructure.dto.usuario;
 
 public record UsuarioFiltroDTO(
-        String nome
+        String nome,
+        int offset,
+        int limit
 ) {
 }

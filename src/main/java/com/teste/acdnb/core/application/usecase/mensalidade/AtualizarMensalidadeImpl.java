@@ -4,6 +4,7 @@ import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
+import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.infrastructure.dto.PagamentoManualDTO;
 
 import java.util.List;
@@ -19,24 +20,27 @@ public class AtualizarMensalidadeImpl implements AtualizarMensalidade {
 
     @Override
     public Mensalidade execute(Long id, PagamentoManualDTO dto){
-        ValorMensalidade valor = valorMensalidadeGateway
-                .buscarValorMensalidadePorValorEManual(dto.valorPago(), true)
-                .orElseGet(() -> {
-                    ValorMensalidade novoValor = new ValorMensalidade();
-                    novoValor.setValor(dto.valorPago());
-                    novoValor.setManual(true);
+        Mensalidade mensalidade = mensalidadeGateway.buscarMensalidadePorId(id).orElseThrow(() -> new RuntimeException("Mensalidade não encontrada"));
+        mensalidade.setStatusPagamento(dto.status());
+        mensalidade.setFormaPagamento(dto.formaPagamento());
+        mensalidade.setDataPagamento(dto.dataPagamento());
 
-                    return valorMensalidadeGateway.adicionarValorMensalidade(novoValor);
-                });
+        if(dto.status() != StatusPagamento.PAGO) {
+            mensalidade.setValor(valorMensalidadeGateway.buscarValorMensalidadeAtual());
+        } else {
+            ValorMensalidade valor = valorMensalidadeGateway
+                    .buscarValorMensalidadePorValorEManual(dto.valorPago(), true)
+                    .orElseGet(() -> {
+                        ValorMensalidade novoValor = new ValorMensalidade();
+                        novoValor.setValor(dto.valorPago());
+                        novoValor.setManual(true);
 
-        return mensalidadeGateway.buscarMensalidadePorId(id)
-                .map(m -> {
-                    m.setStatusPagamento(dto.status());
-                    m.setDataPagamento(dto.dataPagamento());
-                    m.setValor(valor);
-                    m.setFormaPagamento(dto.formaPagamento());
-                    return mensalidadeGateway.salvar(m);
-                })
-                .orElseThrow(() -> new RuntimeException("Mensalidade não encontrada"));
+                        return valorMensalidadeGateway.adicionarValorMensalidade(novoValor);
+                    });
+
+            mensalidade.setValor(valor);
+        }
+
+        return mensalidadeGateway.salvar(mensalidade);
     }
 }

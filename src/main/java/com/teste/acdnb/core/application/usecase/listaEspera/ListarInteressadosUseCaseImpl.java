@@ -16,6 +16,6 @@ public class ListarInteressadosUseCaseImpl implements ListarInteressadosUseCase 
 
     @Override
     public List<ListaEspera> execute(InteressadosFilter interessadosFilter) {
-        return listaEsperaGateway.listarTodos(interessadosFilter);
+        return listaEsperaGateway.listarFiltro(interessadosFilter);
     }
 }

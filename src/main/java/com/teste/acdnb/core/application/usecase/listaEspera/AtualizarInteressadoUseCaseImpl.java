@@ -48,9 +48,9 @@ public class AtualizarInteressadoUseCaseImpl implements AtualizarInteressadoUseC
         interessado.setEmail(dto.email() != null ? Email.of(dto.email()) : interessado.getEmail());
         interessado.setDataInteresse(dto.dataInteresse() != null ? DataInclusao.of(DateParser.parse(dto.dataInteresse())) : interessado.getDataInteresse());
         interessado.setCelular(dto.celular() != null ? Celular.of(dto.celular()) : interessado.getCelular());
-        interessado.setNomeSocial(dto.nomeSocial() != null ? Nome.of(dto.nomeSocial()) : interessado.getNomeSocial());
+        interessado.setNomeSocial(dto.nomeSocial() != null ? NomeSocial.of(dto.nomeSocial(), dto.nome()) : interessado.getNomeSocial());
         interessado.setGenero(dto.genero() != null ? dto.genero() : interessado.getGenero());
-        interessado.setDataNascimento(dto.dataNascimento() != null ? DataInclusao.of(DateParser.parse(dto.dataNascimento())) : interessado.getDataNascimento());
+        interessado.setDataNascimento(dto.dataNascimento() != null ? DataNascimento.of(dto.dataNascimento()) : interessado.getDataNascimento());
         interessado.setTelefone(dto.telefone() != null ? Telefone.of(dto.telefone()) : interessado.getTelefone());
         interessado.setDataInclusao(dto.dataInclusao() != null ? DataInclusao.of(DateParser.parse(dto.dataInclusao())) : interessado.getDataInclusao());
 
