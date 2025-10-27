@@ -22,7 +22,7 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
     @Override
     public Optional<ValorMensalidade> buscarValorMensalidadePorValorEManual(BigDecimal valor, boolean manual) {
         List<ValorMensalidadeEntity> valorMensalidade = valorMensalidadeRepository.findByValorAndManual(valor, manual);
-        return Optional.ofNullable(ValorMensalidadeEntityMapper.toDomain(valorMensalidade.get(0)));
+        return valorMensalidade.isEmpty() ? Optional.empty() : Optional.ofNullable(ValorMensalidadeEntityMapper.toDomain(valorMensalidade.get(0)));
     }
 
     @Override

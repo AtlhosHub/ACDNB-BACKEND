@@ -3,7 +3,7 @@ package com.teste.acdnb.core.application.gateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +21,7 @@ public interface AlunoGateway {
 
     List<Aluno> listarAlunos();
 
-    List<Aluno> listarAlunosFiltro(AlunoFilter filter);
+    List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter);
 
     boolean existsById(int id);
 
@@ -38,4 +38,6 @@ public interface AlunoGateway {
     List<Aluno> listarAniversariantes();
 
     int qtdAlunosAtivos();
+
+    Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email);
 }

@@ -1,6 +1,7 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.usuario;
 
 import com.teste.acdnb.core.domain.usuario.Usuario;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,5 +17,5 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     List<UsuarioEntity> findByUsuarioInclusaoId(int id);
 
-    List<UsuarioEntity> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nome);
+    List<UsuarioEntity> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 }

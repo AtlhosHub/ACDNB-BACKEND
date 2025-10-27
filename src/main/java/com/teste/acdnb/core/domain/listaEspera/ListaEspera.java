@@ -10,9 +10,9 @@ public class ListaEspera {
     private Email email;
     private DataInclusao dataInteresse;
     private Celular celular;
-    private Nome nomeSocial;
+    private NomeSocial nomeSocial;
     private String genero;
-    private DataInclusao dataNascimento;
+    private DataNascimento dataNascimento;
     private Telefone telefone;
     private DataInclusao dataInclusao;
     private Usuario usuarioInclusao;
@@ -21,7 +21,7 @@ public class ListaEspera {
     public ListaEspera() {
     }
 
-    public ListaEspera(int id, Nome nome, Email email, DataInclusao dataInteresse, Celular celular, Nome nomeSocial, String genero, DataInclusao dataNascimento, Telefone telefone, DataInclusao dataInclusao, Usuario usuarioInclusao, HorarioPreferencia horarioPref) {
+    public ListaEspera(int id, Nome nome, Email email, DataInclusao dataInteresse, Celular celular, NomeSocial nomeSocial, String genero, DataNascimento dataNascimento, Telefone telefone, DataInclusao dataInclusao, Usuario usuarioInclusao, HorarioPreferencia horarioPref) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -77,11 +77,11 @@ public class ListaEspera {
         this.celular = celular;
     }
 
-    public Nome getNomeSocial() {
+    public NomeSocial getNomeSocial() {
         return nomeSocial;
     }
 
-    public void setNomeSocial(Nome nomeSocial) {
+    public void setNomeSocial(NomeSocial nomeSocial) {
         this.nomeSocial = nomeSocial;
     }
 
@@ -93,11 +93,11 @@ public class ListaEspera {
         this.genero = genero;
     }
 
-    public DataInclusao getDataNascimento() {
+    public DataNascimento getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(DataInclusao dataNascimento) {
+    public void setDataNascimento(DataNascimento dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 

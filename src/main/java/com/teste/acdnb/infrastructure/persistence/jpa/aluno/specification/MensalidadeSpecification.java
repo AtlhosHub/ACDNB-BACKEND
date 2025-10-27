@@ -1,7 +1,7 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification;
 
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -15,11 +15,11 @@ public class MensalidadeSpecification {
 
     private MensalidadeSpecification() {}
 
-    public static Specification<MensalidadeEntity> filtrarPor(AlunoFilter alunoFilter) {
-        return hasStatusIn(alunoFilter.status()).and(
-                hasDataEnvioFrom(alunoFilter.dataEnvioFrom())
+    public static Specification<MensalidadeEntity> filtrarPor(ListarAlunosMensalidadeFilter listarAlunosMensalidadeFilter) {
+        return hasStatusIn(listarAlunosMensalidadeFilter.status()).and(
+                hasDataEnvioFrom(listarAlunosMensalidadeFilter.dataEnvioFrom())
         ).and(
-                hasDataEnvioTo(alunoFilter.dataEnvioTo())
+                hasDataEnvioTo(listarAlunosMensalidadeFilter.dataEnvioTo())
         );
     }
 

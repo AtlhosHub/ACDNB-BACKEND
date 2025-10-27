@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface ListaEsperaGateway {
     ListaEspera adicionarInteressado(ListaEspera listaEspera);
-    List<ListaEspera> listarTodos(InteressadosFilter interessadosFilter);
+    List<ListaEspera> listarFiltro(InteressadosFilter interessadosFilter);
+    List<ListaEspera> listarTodos();
     ListaEspera buscarPorId(int id);
     void deletarInteressado(int id);
     ListaEspera atualizarInteressado(ListaEspera listaEspera);

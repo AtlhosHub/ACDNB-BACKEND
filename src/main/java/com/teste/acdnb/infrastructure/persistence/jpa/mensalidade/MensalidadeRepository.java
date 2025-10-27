@@ -9,12 +9,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, Integer> {
-    List<Mensalidade> findByStatusPagamentoAndDataVencimentoBefore(StatusPagamento status, LocalDate data);
+public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, Integer>{
 
     @Query("""
         SELECT new com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade(
@@ -33,7 +34,29 @@ public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, 
 
     @Query("SELECT COUNT(m) FROM MensalidadeEntity m JOIN m.valor v WHERE m.statusPagamento = 'PAGO' AND YEAR(m.dataPagamento) = YEAR(CURRENT_DATE)  AND v.desconto = true")
     int countMensalidadeComDesconto();
+
     long countByAlunoAndStatusPagamentoIn(AlunoEntity aluno, List<StatusPagamento> status);
 
     List<MensalidadeEntity> findAll(@Nullable Specification<MensalidadeEntity> spec, Sort sort);
+
+    List<MensalidadeEntity> findByAlunoAndStatusPagamentoInOrderByDataVencimentoAsc(
+            AlunoEntity aluno,
+            List<StatusPagamento> statusPagamento
+    );
+
+    @Query("""
+        SELECT COUNT(DISTINCT m.aluno.id)
+        FROM MensalidadeEntity m
+        JOIN m.valor v
+        WHERE (:status IS NULL OR m.statusPagamento IN :status)
+          AND (:nomeAluno IS NULL OR LOWER(m.aluno.nome) LIKE LOWER(CONCAT('%', :nomeAluno, '%')))
+          AND (:dataFrom IS NULL OR m.dataVencimento >= :dataFrom)
+          AND (:dataTo IS NULL OR m.dataVencimento <= :dataTo)
+    """)
+    long countAlunosComMensalidade(
+            @Param("status") List<String> status,
+            @Param("nomeAluno") String nomeAluno,
+            @Param("dataFrom") LocalDate dataFrom,
+            @Param("dataTo") LocalDate dataTo
+    );
 }
