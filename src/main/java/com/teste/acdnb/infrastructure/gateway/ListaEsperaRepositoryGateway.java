@@ -35,10 +35,10 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
     }
 
     @Override
-    public List<ListaEspera> listarFiltro(InteressadosFilter interessadosFitler) {
+    public List<ListaEspera> listarFiltro(InteressadosFilter interessadosFilter) {
         Pageable pageable = PageRequest.of(
-                interessadosFitler.offset() / interessadosFitler.limit(),
-                interessadosFitler.limit(),
+                interessadosFilter.offset() / interessadosFilter.limit(),
+                interessadosFilter.limit(),
                 Sort.by(Sort.Order.desc("dataInclusao"))
         );
 
