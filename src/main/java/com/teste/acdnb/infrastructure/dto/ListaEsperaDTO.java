@@ -1,12 +1,15 @@
 package com.teste.acdnb.infrastructure.dto;
 
-public record ListaEsperaDTO(String nome,
+import java.time.LocalDate;
+
+public record ListaEsperaDTO(
+    String nome,
     String email,
     String dataInteresse,
     String celular,
     String nomeSocial,
     String genero,
-    String dataNascimento,
+    LocalDate dataNascimento,
     String telefone,
     String dataInclusao,
     Integer usuarioInclusao,

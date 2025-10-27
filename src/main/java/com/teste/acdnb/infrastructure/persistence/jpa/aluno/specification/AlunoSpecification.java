@@ -1,6 +1,6 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification;
 
-import com.teste.acdnb.infrastructure.filter.AlunoFilter;
+import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -10,8 +10,8 @@ public class AlunoSpecification {
 
     private AlunoSpecification() {}
 
-    public static Specification<AlunoEntity> filtrarPor(AlunoFilter alunoFilter){
-        return hasNomeLike(alunoFilter.nome()).or(hasNomeSocialLike(alunoFilter.nome())).and(hasPresenteEqual(alunoFilter.ativo()));
+    public static Specification<AlunoEntity> filtrarPor(ListarAlunosMensalidadeFilter listarAlunosMensalidadeFilter){
+        return hasNomeLike(listarAlunosMensalidadeFilter.nome()).or(hasNomeSocialLike(listarAlunosMensalidadeFilter.nome())).and(hasPresenteEqual(listarAlunosMensalidadeFilter.ativo()));
     }
 
     private static Specification<AlunoEntity> hasNomeLike(String nome) {

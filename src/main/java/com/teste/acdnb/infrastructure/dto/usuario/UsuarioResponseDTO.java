@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Schema(description = "DTO que representa informações detalhadas de um usuário")
 public class UsuarioResponseDTO {
+    @Schema(description = "Id do usuário", example = "1")
+    private Integer id;
+
     @Schema(description = "Nome completo do usuário", example = "João Silva")
     private String nome;
 

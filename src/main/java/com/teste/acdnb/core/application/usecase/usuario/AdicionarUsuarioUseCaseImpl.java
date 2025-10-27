@@ -53,13 +53,14 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
         Usuario usuarioCadastrado = usuarioGateway.adicionarUsuario(usuarioParaRegistrar);
 
         return new UsuarioResponseDTO(
+                usuarioCadastrado.getId(),
                 usuarioCadastrado.getNome().getValue(),
                 usuarioCadastrado.getEmail().getValue(),
-                usuarioCadastrado.getCelular().getValue(),
+                usuarioCadastrado.getCelular() != null ? usuarioCadastrado.getCelular().getValue() : null,
                 usuarioCadastrado.getDataNascimento().getValue(),
-                usuarioCadastrado.getNomeSocial().getValue(),
+                usuarioCadastrado.getNomeSocial() != null ? usuarioCadastrado.getNomeSocial().getValue() : null,
                 usuarioCadastrado.getGenero(),
-                usuarioCadastrado.getTelefone().getValue(),
+                usuarioCadastrado.getTelefone() != null ? usuarioCadastrado.getTelefone().getValue(): null,
                 usuarioCadastrado.getCargo()
         );
     }

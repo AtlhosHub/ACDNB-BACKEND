@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -40,7 +41,7 @@ public class ListaEsperaEntity {
     @NotNull(message = "A data de nascimento deve ser preenchida")
     @Past(message = "A data deve ser uma data passada")
     @Schema(description = "Data de nascimento do usuário", example = "1990-05-15")
-    private LocalDateTime dataNascimento;
+    private LocalDate dataNascimento;
 
     @Schema(description = "Nome social do usuário, caso aplicável", example = "Joana Silva")
     private String nomeSocial;
@@ -61,7 +62,6 @@ public class ListaEsperaEntity {
     @ManyToOne
     @JoinColumn(name = "horario_preferencia_id")
     private HorarioPreferenciaEntity horarioPreferencia;
-
 
     @ManyToOne
     @JoinColumn(name = "usuario_inclusao_id")

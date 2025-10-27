@@ -1,5 +1,6 @@
 package com.teste.acdnb.infrastructure.web;
 
+import com.teste.acdnb.core.application.gateway.ListaEsperaGateway;
 import com.teste.acdnb.core.application.usecase.listaEspera.*;
 import com.teste.acdnb.core.domain.listaEspera.ListaEspera;
 import com.teste.acdnb.infrastructure.dto.ListaEsperaDTO;
@@ -21,20 +22,21 @@ public class ListaEsperaController {
     private final BuscarInteressadoUseCase buscarInteressadoUseCase;
     private final DeletarInteressadoUseCase deletarInteressadoUseCase;
     private final AtualizarInteressadoUseCase atualizarInteressadoUseCase;
-
+    private final ListaEsperaGateway listaEsperaGateway;
 
     public ListaEsperaController(
             AdicionarInteressadoUseCase adicionarInteressadoUseCase,
             ListarInteressadosUseCase listarInteressadosUseCase,
             BuscarInteressadoUseCase buscarInteressadoUseCase,
             DeletarInteressadoUseCase deletarInteressadoUseCase,
-            AtualizarInteressadoUseCase atualizarInteressadoUseCase
-    ) {
+            AtualizarInteressadoUseCase atualizarInteressadoUseCase,
+            ListaEsperaGateway listaEsperaGateway) {
         this.adicionarInteressadoUseCase = adicionarInteressadoUseCase;
         this.listarInteressadosUseCase = listarInteressadosUseCase;
         this.buscarInteressadoUseCase = buscarInteressadoUseCase;
         this.deletarInteressadoUseCase = deletarInteressadoUseCase;
         this.atualizarInteressadoUseCase = atualizarInteressadoUseCase;
+        this.listaEsperaGateway = listaEsperaGateway;
     }
 
     @PostMapping("/adicionar")
@@ -46,7 +48,7 @@ public class ListaEsperaController {
     @PostMapping
     public ResponseEntity<PaginacaoResponse<ListaEspera>> listarTodosInteressados(@RequestBody InteressadosFilter filtro) {
         List<ListaEspera> interessados = listarInteressadosUseCase.execute(filtro);
-        int qtdInteressados = interessados.size();
+        int qtdInteressados = listaEsperaGateway.listarTodos().size();
 
         PaginacaoResponse<ListaEspera> response = new PaginacaoResponse<>(interessados, filtro.offset(), filtro.limit(), qtdInteressados);
 
