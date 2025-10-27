@@ -143,4 +143,10 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     public int qtdAlunosAtivos(){
         return (int) alunoRepository.countByAtivo(true);
     }
+
+    @Override
+    public Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email) {
+        return alunoRepository.findByEmailOrEmailResponsavel(email)
+                .map(AlunoEntityMapper::toDomain);
+    }
 }

@@ -10,12 +10,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, Integer>{
-    List<Mensalidade> findByStatusPagamentoAndDataVencimentoBefore(StatusPagamento status, LocalDate data);
 
     @Query("""
         SELECT new com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade(
@@ -38,6 +38,11 @@ public interface MensalidadeRepository extends JpaRepository<MensalidadeEntity, 
     long countByAlunoAndStatusPagamentoIn(AlunoEntity aluno, List<StatusPagamento> status);
 
     List<MensalidadeEntity> findAll(@Nullable Specification<MensalidadeEntity> spec, Sort sort);
+
+    List<MensalidadeEntity> findByAlunoAndStatusPagamentoInOrderByDataVencimentoAsc(
+            AlunoEntity aluno,
+            List<StatusPagamento> statusPagamento
+    );
 
     @Query("""
         SELECT COUNT(DISTINCT m.aluno.id)

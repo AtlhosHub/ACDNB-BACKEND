@@ -38,4 +38,6 @@ public interface AlunoGateway {
     List<Aluno> listarAniversariantes();
 
     int qtdAlunosAtivos();
+
+    Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email);
 }

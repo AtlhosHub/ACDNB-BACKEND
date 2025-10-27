@@ -35,7 +35,7 @@ public class AlunoController {
 
     private final MensalidadeRepository mensalidadeRepository;
 
-    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades, VerificarEmailCadastradoUseCase verificarEmailCadastradoUseCase, MensalidadeRepository mensalidadeRepository) {
+    public AlunoController(AdicionarAlunoUseCase adicionarAlunoUseCase, ListarAlunosUseCase listarAlunosUseCase, BuscarAlunoPorIdUseCase buscarAlunoPorIdUseCase, AtualizarAlunoUseCase atualizarAlunoUseCase, DeletarAlunoUseCase deletarAlunoUseCase, ListarAniversariosUseCase listarAniversariosUseCase, QtdAlunosAtivosUseCase qtdAlunosAtivosUseCase, ListarAlunosMensalidades listarAlunosMensalidades, MensalidadeRepository mensalidadeRepository) {
         this.adicionarAlunoUseCase = adicionarAlunoUseCase;
         this.listarAlunosUseCase = listarAlunosUseCase;
         this.buscarAlunoPorIdUseCase = buscarAlunoPorIdUseCase;
@@ -44,7 +44,6 @@ public class AlunoController {
         this.listarAniversariosUseCase = listarAniversariosUseCase;
         this.qtdAlunosAtivosUseCase = qtdAlunosAtivosUseCase;
         this.listarAlunosMensalidades = listarAlunosMensalidades;
-        this.verificarEmailCadastradoUseCase = verificarEmailCadastradoUseCase;
         this.mensalidadeRepository = mensalidadeRepository;
     }
 

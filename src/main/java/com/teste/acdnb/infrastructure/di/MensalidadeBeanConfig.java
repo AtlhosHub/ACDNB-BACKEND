@@ -1,5 +1,7 @@
 package com.teste.acdnb.infrastructure.di;
 
+import com.teste.acdnb.core.application.gateway.AlunoGateway;
+import com.teste.acdnb.core.application.gateway.mensalidade.ComprovanteGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.MensalidadeGateway;
 import com.teste.acdnb.core.application.gateway.mensalidade.ValorMensalidadeGateway;
 import com.teste.acdnb.core.application.usecase.mensalidade.*;
@@ -7,8 +9,10 @@ import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensal
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidadeImpl;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.core.Queue;
 
 @Configuration
 public class MensalidadeBeanConfig {
@@ -35,5 +39,20 @@ public class MensalidadeBeanConfig {
     @Bean
     public AdicionarValorMensalidade adicionarValorMensalidade(ValorMensalidadeGateway valorMensalidadeGateway){
         return new AdicionarValorMensalidadeImpl(valorMensalidadeGateway);
+    }
+
+    @Value("${app.rabbitmq.queue.comprovante:fila-comprovante-processado}")
+    private String queueName;
+
+    @Bean
+    public Queue comprovanteQueue() {
+        return new Queue(queueName, true);
+    }
+
+    @Bean
+    public ProcessarPagamentoUseCase processarPagamentoUseCase(AlunoGateway alunoGateway,
+                                                 MensalidadeGateway mensalidadeGateway,
+                                                 ComprovanteGateway comprovanteGateway) {
+        return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway);
     }
 }
