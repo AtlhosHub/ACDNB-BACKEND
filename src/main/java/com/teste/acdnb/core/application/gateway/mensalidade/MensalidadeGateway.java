@@ -17,6 +17,6 @@ public interface MensalidadeGateway {
 
     Mensalidade salvar(Mensalidade mensalidade);
     void salvarTodas(List<Mensalidade> mensalidade);
-
+    List<Mensalidade> buscarMensalidadesPendentesOuAtrasadasPorAluno(Aluno aluno);
     List<Mensalidade> listarMensalidadesFiltro(AlunoFilter filter);
 }
