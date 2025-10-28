@@ -1,7 +1,140 @@
+-- DROP DATABASE IF EXISTS smashDB;
+CREATE DATABASE acdnbDB;
+
+USE acdnbDB;
+
+CREATE TABLE usuario(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    celular VARCHAR(14),
+    data_nascimento DATE NOT NULL,
+    nome_social VARCHAR(100),
+    genero VARCHAR(20),
+    telefone VARCHAR(14),
+    cargo VARCHAR(50),
+    data_inclusao DATE NOT NULL,
+    usuario_inclusao_id INT,
+    FOREIGN KEY (usuario_inclusao_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE endereco(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    logradouro VARCHAR(100) NOT NULL,
+    num_log VARCHAR(4) NOT NULL,
+    bairro VARCHAR(50) NOT NULL,
+    cidade VARCHAR(50) NOT NULL,
+    estado VARCHAR(2) NOT NULL,
+    cep VARCHAR(9) NOT NULL
+);
+
+CREATE TABLE responsavel(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf CHAR(11) NOT NULL,
+    celular VARCHAR(14) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    rg VARCHAR(20) NOT NULL,
+    telefone VARCHAR(14),
+    nome_social VARCHAR(100),
+    genero VARCHAR(20),
+    profissao VARCHAR(50)
+);
+
+CREATE TABLE aluno(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
+    data_nascimento DATE NOT NULL,
+    cpf CHAR(11),
+    rg VARCHAR(20),
+    nome_social VARCHAR(100),
+    genero VARCHAR(20),
+    celular VARCHAR(14),
+    telefone VARCHAR(14),
+    nacionalidade VARCHAR(50),
+    naturalidade VARCHAR(50),
+    profissao VARCHAR(50),
+    deficiencia VARCHAR(100),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    atestado BOOLEAN NOT NULL DEFAULT FALSE,
+    autorizado BOOLEAN NOT NULL DEFAULT FALSE,
+    data_inclusao DATE NOT NULL,
+    endereco_id INT,
+    usuario_inclusao_id INT,
+    FOREIGN KEY (endereco_id) REFERENCES endereco(id),
+    FOREIGN KEY (usuario_inclusao_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE responsavel_aluno(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_responsavel INT,
+    id_aluno INT,
+    FOREIGN KEY (id_responsavel) REFERENCES responsavel(id),
+    FOREIGN KEY (id_aluno) REFERENCES aluno(id)
+);
+
+CREATE TABLE horario_preferencia(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    horario_aula_inicio TIME NOT NULL,
+    horario_aula_fim TIME NOT NULL,
+    data_inclusao DATE NOT NULL
+);
+
+CREATE TABLE lista_espera(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    celular VARCHAR(14) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    nome_social VARCHAR(100),
+    genero VARCHAR(20),
+    telefone VARCHAR(14),
+    data_inclusao DATE NOT NULL,
+    data_interesse DATE NOT NULL,
+    horario_preferencia_id INT,
+    usuario_inclusao_id INT,
+    FOREIGN KEY (horario_preferencia_id) REFERENCES horario_preferencia(id),
+    FOREIGN KEY (usuario_inclusao_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE valor_mensalidade(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    valor DECIMAL(10, 2) NOT NULL,
+    manual BOOLEAN NOT NULL DEFAULT FALSE,
+    desconto BOOLEAN NOT NULL DEFAULT FALSE,
+    data_inclusao DATE NOT NULL
+);
+
+CREATE TABLE comprovante(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_remetente VARCHAR(100) NOT NULL,
+    banco_origem VARCHAR(50) NOT NULL,
+    data_envio DATE NOT NULL,
+    conta_destino VARCHAR(20) NOT NULL,
+    banco_destino VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE mensalidade(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data_vencimento DATE NOT NULL,
+    data_pagamento DATE,
+    status_pagamento ENUM('PENDENTE', 'PAGO', 'ATRASADO') NOT NULL DEFAULT 'PENDENTE',
+    alteracao_automatica BOOLEAN NOT NULL DEFAULT FALSE,
+    forma_pagamento ENUM('DINHEIRO', 'CARTAO', 'PIX'),
+    aluno_id INT,
+    valor_mensalidade_id INT,
+    comprovante_id INT,
+    FOREIGN KEY (aluno_id) REFERENCES aluno(id),
+    FOREIGN KEY (valor_mensalidade_id) REFERENCES valor_mensalidade(id),
+    FOREIGN KEY (comprovante_id) REFERENCES comprovante(id)
+);
+
 insert into usuario
-    (nome, email, senha, celular, data_nascimento)
+    (nome, email, senha, celular, data_nascimento, data_inclusao)
 values
-    ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11) 99999-9999', '1990-01-01');
+    ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11)99999-9999', '1990-01-01', now());
 
 insert into valor_mensalidade
     (data_inclusao, valor, desconto, manual)
@@ -46,16 +179,16 @@ VALUES
 INSERT INTO aluno
     (nome, email, data_nascimento, cpf, rg, genero, celular, nacionalidade, naturalidade, telefone, profissao, ativo, atestado, deficiencia, autorizado, endereco_id, data_inclusao)
 VALUES
-    ('Giovanna Julia Assis', 'giovanna-assis81@gmail.com', '1979-06-09', '14389008803', '10.036.757-4', 'Feminino', '(17) 98171-3456', 'Brasileira', 'Bebedouro', null, 'Engenheira de Software', true, true, 'Daltonismo', true, 1, '2025-06-01 09:00:00'),
-    ('Yuri Enrico Thales Duarte', 'yuri_duarte@gmail.com', '1989-03-17', '08582254849', '11.874.451-3', 'Masculino', '(11) 98755-1988', 'Brasileira', 'São Paulo', '(11) 2635-2938', 'Técnico de Enfermagem', true, true, null, true, 2, '2025-06-01 09:00:00'),
-    ('Lucca Raimundo dos Santos', 'lucca.raimundo.dossantos@outlook.com', '1999-06-02', '08499656838', '26.150.856-8', 'Masculino', '(11) 99574-1639', 'Brasileira', 'Itapevi', '(11) 2783-6298', 'Marceneiro', true, true, null, true, 3, '2025-06-01 09:00:00'),
-    ('Sérgio Manuel Márcio da Mata', 'sergio_damata@hotmail.com', '1997-08-25', '18053949835', '48.206.398-1', 'Masculino', '(14) 99518-6976', 'Brasileira', 'Bauru', '(14) 3630-6113', 'Estagiário', true, true, null, true, 4, '2025-06-01 09:00:00'),
-    ('Carlos Eduardo Iago Ramos', 'carloseduardoramos@outlook.com', '1960-07-02', '07195674835', '15.526.220-8', 'Masculino', '(11) 99788-5434', 'Brasileira', 'São Paulo', null, 'Designer Gráfico', true, true,'Perda auditiva parcial', true, 5, '2025-06-01 09:00:00'),
-    ('Bruna Stefany Almeida', 'bruna.stefany.almeida@gmail.com', '1990-02-06', '63192900806', '48.688.760-1', 'Feminino', '(15) 98726-7162', 'Brasileira', 'Sorocaba', '(15) 2625-4607', 'Pintora', true, true, null, true, 6, '2025-06-01 09:00:00'),
-    ('Osvaldo Joaquim Julio Lopes', 'osvaldojoaquimlopes@hotmail.com', '2002-06-06', '58373390863', '22.492.238-5', 'Masculino', '(11) 98748-1114', 'Brasileira', 'São Paulo', '(11) 2534-6517', 'Professor', true, true, 'Baixa visão', true, 7, '2025-06-01 09:00:00'),
-    ('Lorena Rebeca Eliane Monteiro', 'lorena.rebeca.monteiro@hotmail.com', '1967-04-07', '39173602841', '33.813.771-3', 'Feminino', '(11) 98619-7210', 'Brasileira', 'São Paulo', '(11) 2653-5312', 'Arquiteta', true, true, null, true, 8, '2025-06-01 09:00:00'),
-    ('Julio Thomas Peixoto', 'julio_thomas_peixoto@gmail.com', '1974-06-12', '38544057829', '27.755.336-2', 'Masculino', '(15) 99812-7129', 'Brasileira', 'Itapetininga', '(15) 3610-5532', 'Chef de Cozinha', true, true, null, true, 9, '2025-06-01 09:00:00'),
-    ('Samuel Martin Fogaça', 'samuel.martin.fogaca@outlook.com', '1965-03-26', '39023853830', '42.596.317-2', 'Masculino', '(16) 99122-7178', 'Brasileira', 'São Carlos', null, 'Analista de Dados', true, true, null, true, 10, '2025-06-01 09:00:00');
+    ('Giovanna Julia Assis', 'giovanna-assis81@gmail.com', '1979-06-09', '14389008803', '10.036.757-4', 'Feminino', '(17)98171-3456', 'Brasileira', 'Bebedouro', null, 'Engenheira de Software', true, true, 'Daltonismo', true, 1, '2025-06-01 09:00:00'),
+    ('Yuri Enrico Thales Duarte', 'yuri_duarte@gmail.com', '1989-03-17', '08582254849', '11.874.451-3', 'Masculino', '(11)98755-1988', 'Brasileira', 'São Paulo', '(11) 2635-2938', 'Técnico de Enfermagem', true, true, null, true, 2, '2025-06-01 09:00:00'),
+    ('Lucca Raimundo dos Santos', 'lucca.raimundo.dossantos@outlook.com', '1999-06-02', '08499656838', '26.150.856-8', 'Masculino', '(11)99574-1639', 'Brasileira', 'Itapevi', '(11) 2783-6298', 'Marceneiro', true, true, null, true, 3, '2025-06-01 09:00:00'),
+    ('Sérgio Manuel Márcio da Mata', 'sergio_damata@hotmail.com', '1997-08-25', '18053949835', '48.206.398-1', 'Masculino', '(14)99518-6976', 'Brasileira', 'Bauru', '(14) 3630-6113', 'Estagiário', true, true, null, true, 4, '2025-06-01 09:00:00'),
+    ('Carlos Eduardo Iago Ramos', 'carloseduardoramos@outlook.com', '1960-07-02', '07195674835', '15.526.220-8', 'Masculino', '(11)99788-5434', 'Brasileira', 'São Paulo', null, 'Designer Gráfico', true, true,'Perda auditiva parcial', true, 5, '2025-06-01 09:00:00'),
+    ('Bruna Stefany Almeida', 'bruna.stefany.almeida@gmail.com', '1990-02-06', '63192900806', '48.688.760-1', 'Feminino', '(15)98726-7162', 'Brasileira', 'Sorocaba', '(15) 2625-4607', 'Pintora', true, true, null, true, 6, '2025-06-01 09:00:00'),
+    ('Osvaldo Joaquim Julio Lopes', 'osvaldojoaquimlopes@hotmail.com', '2002-06-06', '58373390863', '22.492.238-5', 'Masculino', '(11)98748-1114', 'Brasileira', 'São Paulo', '(11) 2534-6517', 'Professor', true, true, 'Baixa visão', true, 7, '2025-06-01 09:00:00'),
+    ('Lorena Rebeca Eliane Monteiro', 'lorena.rebeca.monteiro@hotmail.com', '1967-04-07', '39173602841', '33.813.771-3', 'Feminino', '(11)98619-7210', 'Brasileira', 'São Paulo', '(11) 2653-5312', 'Arquiteta', true, true, null, true, 8, '2025-06-01 09:00:00'),
+    ('Julio Thomas Peixoto', 'julio_thomas_peixoto@gmail.com', '1974-06-12', '38544057829', '27.755.336-2', 'Masculino', '(15)99812-7129', 'Brasileira', 'Itapetininga', '(15) 3610-5532', 'Chef de Cozinha', true, true, null, true, 9, '2025-06-01 09:00:00'),
+    ('Samuel Martin Fogaça', 'samuel.martin.fogaca@outlook.com', '1965-03-26', '39023853830', '42.596.317-2', 'Masculino', '(16)99122-7178', 'Brasileira', 'São Carlos', null, 'Analista de Dados', true, true, null, true, 10, '2025-06-01 09:00:00');
 --
 
 -- Aluno ID 1
