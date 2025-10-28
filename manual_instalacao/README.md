@@ -177,8 +177,7 @@ Para testar os endpoints, use ferramentas como **Postman** ou **Insomnia**.
 ## 🧩 Estrutura de Pastas
 
 ```
-![Imagem do manual](img.png)
-
+![Imagem do manual](/img.png)
 
 ```
 
