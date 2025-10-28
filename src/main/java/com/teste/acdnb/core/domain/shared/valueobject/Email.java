@@ -12,7 +12,11 @@ public class Email {
     }
 
     public static Email of(String value) {
-        if(value == null || !pattern.matcher(value).matches()) {
+        return of(value, true);
+    }
+
+    public static Email of(String value, boolean isMenor) {
+        if((!isMenor && value == null) || (value != null && !pattern.matcher(value).matches())) {
             throw new InvalidDataException("E-mail inválido");
         }
 

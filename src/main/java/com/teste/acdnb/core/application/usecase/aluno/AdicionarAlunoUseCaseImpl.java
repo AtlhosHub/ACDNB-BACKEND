@@ -80,8 +80,8 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
         var aluno = new Aluno();
 
         aluno.setNome(Nome.of(alunoDTO.nome()));
-        aluno.setEmail(Email.of(alunoDTO.email()));
         aluno.setDataNascimento(DataNascimento.of(alunoDTO.dataNascimento()));
+        aluno.setEmail(Email.of(alunoDTO.email(), aluno.isMenor()));
         aluno.setCpf(Cpf.of(alunoDTO.cpf()));
         aluno.setRg(alunoDTO.rg());
         aluno.setNomeSocial(NomeSocial.of(alunoDTO.nomeSocial(), alunoDTO.nome()));
