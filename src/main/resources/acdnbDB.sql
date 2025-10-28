@@ -102,7 +102,7 @@ CREATE TABLE lista_espera(
 CREATE TABLE valor_mensalidade(
     id INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10, 2) NOT NULL,
-    manual BOOLEAN NOT NULL DEFAULT FALSE,
+    `manual` BOOLEAN NOT NULL DEFAULT FALSE,
     desconto BOOLEAN NOT NULL DEFAULT FALSE,
     data_inclusao DATE NOT NULL
 );
@@ -137,7 +137,7 @@ values
     ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11)99999-9999', '1990-01-01', now());
 
 insert into valor_mensalidade
-    (data_inclusao, valor, desconto, manual)
+    (data_inclusao, valor, desconto, `manual`)
 values
     (now(), 120.00, false, false);
 
