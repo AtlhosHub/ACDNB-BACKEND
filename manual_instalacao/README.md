@@ -177,7 +177,8 @@ Para testar os endpoints, use ferramentas como **Postman** ou **Insomnia**.
 ## 🧩 Estrutura de Pastas
 
 ```
-/ACDNB-BACKEND/manual_instalacao/img.png
+![Imagem do manual](img.png)
+
 
 ```
 
