@@ -174,10 +174,25 @@ Para testar os endpoints, use ferramentas como **Postman** ou **Insomnia**.
 
 ---
 
-## 🧩 Estrutura de Pastas
+## Estrutura de Pastas do Projeto
 
-```
-![Imagem do manual](/img.png)
+| Pasta / Arquivo | Descrição |
+|-----------------|-----------|
+| `.idea/` | Configurações do projeto no IntelliJ IDEA |
+| `.mvn/` | Arquivos do Maven Wrapper |
+| `manual_instalacao/` | Manual de instalação do sistema |
+| `src/main/java/com/teste/acdnb/core/application/` | Camada de aplicação (Use Cases, Services) |
+| `src/main/java/com/teste/acdnb/core/domain/` | Camada de domínio (Entidades, Regras de Negócio) |
+| `src/main/java/com/teste/acdnb/infrastructure/di/` | Configuração de injeção de dependências |
+| `src/main/java/com/teste/acdnb/infrastructure/dto/` | Objetos de transferência de dados (DTOs) |
+| `src/main/java/com/teste/acdnb/infrastructure/filter/` | Filtros (Ex: autenticação, logging) |
+| `src/main/java/com/teste/acdnb/infrastructure/gateway/` | Implementação de gateways (API externas, serviços) |
+| `src/main/java/com/teste/acdnb/infrastructure/persistence/` | Persistência de dados (Repositórios, JPA) |
+| `src/main/java/com/teste/acdnb/infrastructure/security/` | Configurações de segurança |
+| `src/main/java/com/teste/acdnb/infrastructure/util/` | Utilitários e helpers |
+| `src/main/java/com/teste/acdnb/infrastructure/web/` | Controladores e recursos web |
+| `src/main/java/com/teste/acdnb/AcdnbApplication.java` | Classe principal do Spring Boot |
+| `src/main/resources/` | Recursos da aplicação (application.properties, templates, etc) |
 
 ```
 
