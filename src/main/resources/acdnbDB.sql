@@ -102,7 +102,7 @@ CREATE TABLE lista_espera(
 CREATE TABLE valor_mensalidade(
     id INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10, 2) NOT NULL,
-    manualFlag BOOLEAN NOT NULL DEFAULT FALSE,
+    manual_flag BOOLEAN NOT NULL DEFAULT FALSE,
     desconto BOOLEAN NOT NULL DEFAULT FALSE,
     data_inclusao DATE NOT NULL
 );
@@ -137,7 +137,7 @@ values
     ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11)99999-9999', '1990-01-01', now());
 
 insert into valor_mensalidade
-    (data_inclusao, valor, desconto, manualFlag)
+    (data_inclusao, valor, desconto, manual_flag)
 values
     (now(), 120.00, false, false);
 
@@ -273,7 +273,7 @@ INSERT INTO mensalidade (aluno_id, valor_mensalidade_id, data_vencimento, status
 
 
 -- insert into valor_mensalidade
---     (data_inclusao, valor, desconto, manualFlag)
+--     (data_inclusao, valor, desconto, manual_flag)
 -- values
 --     (now(), 110.00, true, false);
 
