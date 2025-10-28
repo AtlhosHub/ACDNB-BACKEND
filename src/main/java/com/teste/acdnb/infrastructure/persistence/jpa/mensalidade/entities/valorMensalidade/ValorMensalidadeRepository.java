@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ValorMensalidadeRepository extends JpaRepository<ValorMensalidadeEntity, Integer> {
-    List<ValorMensalidadeEntity> findByValorAndManual(BigDecimal valor, Boolean manual);
+    List<ValorMensalidadeEntity> findByValorAndManualFlag(BigDecimal valor, Boolean manualFlag);
 
     ValorMensalidadeEntity findFirstByManualFalseAndDescontoFalseOrderByDataInclusaoDesc();
 }

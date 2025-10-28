@@ -20,8 +20,8 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
     }
 
     @Override
-    public Optional<ValorMensalidade> buscarValorMensalidadePorValorEManual(BigDecimal valor, boolean manual) {
-        List<ValorMensalidadeEntity> valorMensalidade = valorMensalidadeRepository.findByValorAndManual(valor, manual);
+    public Optional<ValorMensalidade> buscarValorMensalidadePorValorEManualFlag(BigDecimal valor, boolean manualFlag) {
+        List<ValorMensalidadeEntity> valorMensalidade = valorMensalidadeRepository.findByValorAndManualFlag(valor, manualFlag);
         return valorMensalidade.isEmpty() ? Optional.empty() : Optional.ofNullable(ValorMensalidadeEntityMapper.toDomain(valorMensalidade.get(0)));
     }
 

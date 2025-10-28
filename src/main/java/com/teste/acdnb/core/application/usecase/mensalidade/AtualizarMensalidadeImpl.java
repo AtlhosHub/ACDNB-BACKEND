@@ -7,8 +7,6 @@ import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMe
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.infrastructure.dto.PagamentoManualDTO;
 
-import java.util.List;
-
 public class AtualizarMensalidadeImpl implements AtualizarMensalidade {
     ValorMensalidadeGateway valorMensalidadeGateway;
     MensalidadeGateway mensalidadeGateway;
@@ -33,7 +31,7 @@ public class AtualizarMensalidadeImpl implements AtualizarMensalidade {
                     .orElseGet(() -> {
                         ValorMensalidade novoValor = new ValorMensalidade();
                         novoValor.setValor(dto.valorPago());
-                        novoValor.setManual(true);
+                        novoValor.setManualFlag(true);
 
                         return valorMensalidadeGateway.adicionarValorMensalidade(novoValor);
                     });

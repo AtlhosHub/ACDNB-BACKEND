@@ -44,11 +44,11 @@ public class AtualizarUsuarioUseCaseImpl implements AtualizarUsuarioUseCase {
                 usuarioAtualizado.getId(),
                 usuarioAtualizado.getNome().getValue(),
                 usuarioAtualizado.getEmail().getValue(),
-                usuarioAtualizado.getCelular().getValue(),
+                usuarioAtualizado.getCelular().getValue() != null ? usuarioAtualizado.getCelular().getValue() : null,
                 usuarioAtualizado.getDataNascimento().getValue(),
-                usuarioAtualizado.getNomeSocial().getValue(),
+                usuarioAtualizado.getNomeSocial().getValue() != null ? usuarioAtualizado.getNomeSocial().getValue() : null,
                 usuarioAtualizado.getGenero(),
-                usuarioAtualizado.getTelefone().getValue(),
+                usuarioAtualizado.getTelefone().getValue() != null ? usuarioAtualizado.getTelefone().getValue() : null,
                 usuarioAtualizado.getCargo()
         );
     }

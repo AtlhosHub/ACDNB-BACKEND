@@ -33,7 +33,7 @@ CREATE TABLE responsavel(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) NOT NULL,
-    celular VARCHAR(14) NOT NULL,
+    celular VARCHAR(14),
     email VARCHAR(100) NOT NULL,
     rg VARCHAR(20) NOT NULL,
     telefone VARCHAR(14),
@@ -102,7 +102,7 @@ CREATE TABLE lista_espera(
 CREATE TABLE valor_mensalidade(
     id INT AUTO_INCREMENT PRIMARY KEY,
     valor DECIMAL(10, 2) NOT NULL,
-    `manual` BOOLEAN NOT NULL DEFAULT FALSE,
+    manualFlag BOOLEAN NOT NULL DEFAULT FALSE,
     desconto BOOLEAN NOT NULL DEFAULT FALSE,
     data_inclusao DATE NOT NULL
 );
@@ -137,16 +137,16 @@ values
     ('User', 'user@adm.com', '$2a$10$UM8lVJYL2yz5nhvlcD6Oh.vQkGEl/klH..96PzoVwd3HYXzvD33k.', '(11)99999-9999', '1990-01-01', now());
 
 insert into valor_mensalidade
-    (data_inclusao, valor, desconto, `manual`)
+    (data_inclusao, valor, desconto, manualFlag)
 values
     (now(), 120.00, false, false);
 
--- insert into horario_pref
---     (horario_aula_inicio, horario_aula_fim, data_inclusao)
--- values
---     ('14:00', '17:00', now()),
---     ('18:00', '20:00', now()),
---     ('20:00', '22:00', now());
+insert into horario_pref
+    (horario_aula_inicio, horario_aula_fim, data_inclusao)
+values
+    ('14:00', '17:00', now()),
+    ('18:00', '20:00', now()),
+    ('20:00', '22:00', now());
 --
 -- insert into usuario
 --     (nome, email, senha, celular, data_nascimento, genero, deletado, usuario_inclusao_id, data_inclusao)
@@ -273,7 +273,7 @@ INSERT INTO mensalidade (aluno_id, valor_mensalidade_id, data_vencimento, status
 
 
 -- insert into valor_mensalidade
---     (data_inclusao, valor, desconto, manual)
+--     (data_inclusao, valor, desconto, manualFlag)
 -- values
 --     (now(), 110.00, true, false);
 

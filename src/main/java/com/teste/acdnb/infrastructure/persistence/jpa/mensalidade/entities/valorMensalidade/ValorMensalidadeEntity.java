@@ -29,7 +29,7 @@ public class ValorMensalidadeEntity {
     private BigDecimal valor;
 
     @Schema(description = "Valor inserido para pagamentos manuais", example = "false")
-    private boolean manual = false;
+    private boolean manualFlag = false;
 
     @Schema(description = "Valor inserido para pagamentos com desconto", example = "false")
     private boolean desconto = false;

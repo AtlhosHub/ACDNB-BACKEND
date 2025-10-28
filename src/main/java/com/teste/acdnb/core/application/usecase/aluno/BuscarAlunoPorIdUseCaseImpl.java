@@ -34,7 +34,7 @@ public class BuscarAlunoPorIdUseCaseImpl implements BuscarAlunoPorIdUseCase{
                 aluno.getRg(),
                 aluno.getNomeSocialValue(),
                 aluno.getGenero(),
-                aluno.getCelular().getValue(),
+                aluno.getCelularValue(),
                 aluno.getNacionalidade(),
                 aluno.getNaturalidade(),
                 aluno.getTelefoneValue(),
