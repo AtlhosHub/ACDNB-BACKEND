@@ -27,7 +27,7 @@ public class AtualizarMensalidadeImpl implements AtualizarMensalidade {
             mensalidade.setValor(valorMensalidadeGateway.buscarValorMensalidadeAtual());
         } else {
             ValorMensalidade valor = valorMensalidadeGateway
-                    .buscarValorMensalidadePorValorEManual(dto.valorPago(), true)
+                    .buscarValorMensalidadePorValorEManualFlag(dto.valorPago(), true)
                     .orElseGet(() -> {
                         ValorMensalidade novoValor = new ValorMensalidade();
                         novoValor.setValor(dto.valorPago());

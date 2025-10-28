@@ -9,5 +9,5 @@ import java.util.List;
 public interface ValorMensalidadeRepository extends JpaRepository<ValorMensalidadeEntity, Integer> {
     List<ValorMensalidadeEntity> findByValorAndManualFlag(BigDecimal valor, Boolean manualFlag);
 
-    ValorMensalidadeEntity findFirstByManualFalseAndDescontoFalseOrderByDataInclusaoDesc();
+    ValorMensalidadeEntity findFirstByManualFlagFalseAndDescontoFalseOrderByDataInclusaoDesc();
 }

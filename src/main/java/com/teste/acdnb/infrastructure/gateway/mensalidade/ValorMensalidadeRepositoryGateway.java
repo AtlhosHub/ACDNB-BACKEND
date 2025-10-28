@@ -35,7 +35,7 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
 
     @Override
     public ValorMensalidade buscarValorMensalidadeAtual() {
-        ValorMensalidadeEntity valorMensalidadeEntity = valorMensalidadeRepository.findFirstByManualFalseAndDescontoFalseOrderByDataInclusaoDesc();
+        ValorMensalidadeEntity valorMensalidadeEntity = valorMensalidadeRepository.findFirstByManualFlagFalseAndDescontoFalseOrderByDataInclusaoDesc();
         return ValorMensalidadeEntityMapper.toDomain(valorMensalidadeEntity);
     }
 }
