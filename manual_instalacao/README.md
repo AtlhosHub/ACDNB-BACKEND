@@ -1,6 +1,6 @@
 # 🧩 ACDNB-BACKEND
 
-Sistema backend do projeto **SMASH**, responsável pela gestão de pagamentos, controle de usuários, integração com APIs externas e comunicação com o serviço de e-mails.
+Sistema backend do projeto **ACDNB**, responsável pela gestão de pagamentos, controle de usuários, integração com APIs externas e comunicação com o serviço de e-mails.
 
 ---
 
