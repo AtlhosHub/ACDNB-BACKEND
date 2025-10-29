@@ -11,10 +11,16 @@ public class ProdutorMensagem{
     }
 
     public void ProduzirMensagem(EmailContatoDTO emailContatoDTO) {
-        rabbitTemplate.convertAndSend(
-                RabbitMQConfig.EXCHANGE_ALUNOS,
-                RabbitMQConfig.ROUTING_KEY_ALUNO,
-                emailContatoDTO
-        );
+        try {
+            rabbitTemplate.convertAndSend(
+                    RabbitMQConfig.EXCHANGE_ALUNOS,
+                    RabbitMQConfig.ROUTING_KEY_ALUNO,
+                    emailContatoDTO
+            );
+            System.out.println("📨 Mensagem enviada para RabbitMQ: {}"+ emailContatoDTO);
+        } catch (Exception e) {
+            System.out.println("❌ Erro ao enviar mensagem para RabbitMQ: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
