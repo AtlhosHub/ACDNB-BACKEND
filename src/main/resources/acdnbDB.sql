@@ -141,7 +141,7 @@ insert into valor_mensalidade
 values
     (now(), 120.00, false, false);
 
-insert into horario_pref
+insert into horario_preferencia
     (horario_aula_inicio, horario_aula_fim, data_inclusao)
 values
     ('14:00', '17:00', now()),
