@@ -9,6 +9,7 @@ import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensal
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidadeImpl;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
+import com.teste.acdnb.infrastructure.filter.FiltroMensalidadeDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,11 @@ public class MensalidadeBeanConfig {
     @Bean
     public GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes(MensalidadeGateway mensalidadeGateway) {
         return new GerarRelatorioMensalidadePorMesImpl(mensalidadeGateway);
+    }
+
+    @Bean
+    public BuscarHistoricoMensalidade buscarHistoricoMensalidade(MensalidadeGateway mensalidadeGateway) {
+        return new BuscarHistoricoMensalidadeImpl(mensalidadeGateway);
     }
 
     @Bean

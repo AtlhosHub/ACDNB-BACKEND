@@ -1,6 +1,7 @@
 package com.teste.acdnb.infrastructure.web;
 
 import com.teste.acdnb.core.application.usecase.mensalidade.AtualizarMensalidade;
+import com.teste.acdnb.core.application.usecase.mensalidade.BuscarHistoricoMensalidade;
 import com.teste.acdnb.core.application.usecase.mensalidade.ContarMensalidadeComDesconto;
 import com.teste.acdnb.core.application.usecase.mensalidade.GerarRelatorioMensalidadePorMes;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
@@ -10,6 +11,7 @@ import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
 import com.teste.acdnb.infrastructure.dto.PagamentoManualDTO;
 import com.teste.acdnb.infrastructure.dto.mensaldiade.NovoValorMensalidadeDTO;
+import com.teste.acdnb.infrastructure.filter.FiltroMensalidadeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,20 +31,22 @@ public class MensalidadeController {
     private final AtualizarMensalidade atualizarMensalidade;
     private final BuscarValorMensalidadeAtual buscarValorMensalidadeAtual;
     private final AdicionarValorMensalidade adicionarValorMensalidade;
+    private final BuscarHistoricoMensalidade buscarHistoricoMensalidade;
 
     public MensalidadeController(
             GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes,
             ContarMensalidadeComDesconto contarMensalidadeComDesconto,
             AtualizarMensalidade atualizarMensalidade,
             BuscarValorMensalidadeAtual buscarValorMensalidadeAtual,
-            AdicionarValorMensalidade adicionarValorMensalidade
-
+            AdicionarValorMensalidade adicionarValorMensalidade,
+            BuscarHistoricoMensalidade buscarHistoricoMensalidade
     ) {
         this.gerarRelatorioMensalidadePorMes = gerarRelatorioMensalidadePorMes;
         this.contarMensalidadeComDesconto = contarMensalidadeComDesconto;
         this.atualizarMensalidade = atualizarMensalidade;
         this.buscarValorMensalidadeAtual = buscarValorMensalidadeAtual;
         this.adicionarValorMensalidade = adicionarValorMensalidade;
+        this.buscarHistoricoMensalidade = buscarHistoricoMensalidade;
     }
 
     @GetMapping("/grafico")
@@ -82,5 +86,13 @@ public class MensalidadeController {
         ValorMensalidade novoValorMensalidade = adicionarValorMensalidade.execute(novoValor);
 
         return ResponseEntity.ok(novoValorMensalidade);
+    }
+
+    @PostMapping("/historicoMensalidade")
+    @Operation(summary = "Busca histórico de mensalidades", description="Busca histórico de mensalidades de um determinado aluno a partir de um ID.")
+    public ResponseEntity<List<Mensalidade>> buscarHistoricoMensalidade(@RequestBody FiltroMensalidadeDTO payload){
+        List<Mensalidade> listaMensalidade = buscarHistoricoMensalidade.execute(payload);
+
+        return ResponseEntity.ok(listaMensalidade);
     }
 }
