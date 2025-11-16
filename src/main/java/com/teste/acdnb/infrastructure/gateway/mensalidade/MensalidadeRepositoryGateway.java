@@ -17,6 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +100,15 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     @Override
     public List<Mensalidade> buscarMensalidadePorIdEVencimento(FiltroMensalidadeDTO payload) {
         Specification<MensalidadeEntity> spec = MensalidadeSpecification.hasAlunoIdAndDataBetween(payload.idAluno(), payload.dateFrom(), payload.dateTo());
+        return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
+    }
+
+    @Override
+    public List<Mensalidade> buscarTodasMensalidadesFutura() {
+        LocalDate hoje = LocalDate.now();
+        String dataVencimento = hoje.withMonth(hoje.getMonthValue() + 1).withDayOfMonth(1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+        Specification<MensalidadeEntity> spec = MensalidadeSpecification.hasDataPagamentoGreatherThan(dataVencimento);
         return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
     }
 }

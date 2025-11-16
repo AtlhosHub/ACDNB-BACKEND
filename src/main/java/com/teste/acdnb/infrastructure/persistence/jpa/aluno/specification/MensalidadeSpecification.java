@@ -46,4 +46,11 @@ public class MensalidadeSpecification {
     private static Specification<MensalidadeEntity> hasDataEnvioTo(String dataEnvioTo) {
         return ((root, query, cb) -> (dataEnvioTo == null || dataEnvioTo.isEmpty()) ? cb.conjunction() : cb.lessThanOrEqualTo(root.get(DATA_VENCIMENTO), LocalDate.parse(dataEnvioTo)));
     }
+
+    public static Specification<MensalidadeEntity> hasDataPagamentoGreatherThan(String dataPagamento) {
+        return ((root, query, cb) ->
+                (dataPagamento == null || dataPagamento.isEmpty())
+                        ? cb.conjunction()
+                        : cb.greaterThan(root.get(DATA_VENCIMENTO), LocalDate.parse(dataPagamento)));
+    }
 }

@@ -185,8 +185,8 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
     }
 
     /**
-     * Calcula o valor da mensalidade com desconto se aplicável
-     */
+        Calcula o valor da mensalidade com desconto se aplicável
+    */
     private BigDecimal calcularValorComDesconto(Mensalidade mensalidade, LocalDate dataPagamento) {
         BigDecimal valorOriginal = mensalidade.getValor().getValor();
 
@@ -208,13 +208,14 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
     /**
      * Aplica o pagamento na mensalidade considerando possível desconto
      * @return true se foi aplicado desconto, false caso contrário
-     */
+    */
     private boolean aplicarPagamentoMensalidadeComDesconto(Mensalidade mensalidade, Comprovante comprovante, BigDecimal valorPago) {
         boolean teveDesconto = deveAplicarDesconto(mensalidade, comprovante.getDataEnvio().toLocalDate());
 
         mensalidade.setStatusPagamento(StatusPagamento.PAGO);
         mensalidade.setFormaPagamento(FormaPagamento.PIX);
         mensalidade.setDataPagamento(comprovante.getDataEnvio());
+        mensalidade.setAlteracaoAutomatica(true);
         mensalidade.setComprovante(comprovante);
 
         if (teveDesconto) {
