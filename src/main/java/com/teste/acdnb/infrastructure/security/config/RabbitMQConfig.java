@@ -23,6 +23,11 @@ public class RabbitMQConfig {
     public static final String ROUTING_KEY_COMPROVANTE = "comprovante.processado";
     public static final String QUEUE_COMPROVANTE_PROCESSADO = "fila-comprovante-processado";
 
+    // ---- RETORNO DE PAGAMENTO ----
+    public static final String EXCHANGE_PAGAMENTO_RETORNO = "exchange-pagamento-retorno";
+    public static final String ROUTING_KEY_PAGAMENTO_RETORNO = "pagamento.retorno";
+    public static final String QUEUE_PAGAMENTO_RETORNO = "fila-pagamento-retorno";
+
     @Bean
     public TopicExchange exchangeAlunos() {
         return new TopicExchange(EXCHANGE_ALUNOS);
@@ -70,4 +75,23 @@ public class RabbitMQConfig {
         template.setMessageConverter(converterMensagem());
         return template;
     }
+
+    @Bean
+    public TopicExchange exchangePagamentoRetorno() {
+        return new TopicExchange(EXCHANGE_PAGAMENTO_RETORNO);
+    }
+
+    @Bean
+    public Queue filaPagamentoRetorno() {
+        return new Queue(QUEUE_PAGAMENTO_RETORNO, true);
+    }
+
+    @Bean
+    public Binding bindingPagamentoRetorno() {
+        return BindingBuilder
+                .bind(filaPagamentoRetorno())
+                .to(exchangePagamentoRetorno())
+                .with(ROUTING_KEY_PAGAMENTO_RETORNO);
+    }
+
 }

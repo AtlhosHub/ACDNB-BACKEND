@@ -3,6 +3,7 @@ package com.teste.acdnb.core.application.gateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
+import com.teste.acdnb.core.domain.shared.valueobject.Email;
 import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 
 import java.util.List;
@@ -39,5 +40,5 @@ public interface AlunoGateway {
 
     int qtdAlunosAtivos();
 
-    Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email);
+    Optional<Aluno> buscarPorEmailOuEmailResponsavel(Email email);
 }

@@ -2,6 +2,9 @@ package com.teste.acdnb.core.domain.shared.valueobject;
 
 import com.teste.acdnb.core.application.exception.InvalidDataException;
 import java.util.regex.Pattern;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 
 public class Email {
     private String value;
@@ -11,6 +14,7 @@ public class Email {
         this.value = value;
     }
 
+    @JsonCreator
     public static Email of(String value) {
         if(value == null || !pattern.matcher(value).matches()) {
             throw new InvalidDataException("E-mail inválido");
@@ -19,6 +23,7 @@ public class Email {
         return new Email(value);
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

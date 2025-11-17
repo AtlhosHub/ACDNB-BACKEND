@@ -9,6 +9,7 @@ import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensal
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.AdicionarValorMensalidadeImpl;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
+import com.teste.acdnb.infrastructure.security.PagamentoRetornoProdutor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,8 +52,9 @@ public class MensalidadeBeanConfig {
 
     @Bean
     public ProcessarPagamentoUseCase processarPagamentoUseCase(AlunoGateway alunoGateway,
-                                                 MensalidadeGateway mensalidadeGateway,
-                                                 ComprovanteGateway comprovanteGateway) {
-        return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway);
+                                                               MensalidadeGateway mensalidadeGateway,
+                                                               ComprovanteGateway comprovanteGateway,
+                                                               PagamentoRetornoProdutor pagamentoRetornoProdutor) {
+        return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway, pagamentoRetornoProdutor);
     }
 }

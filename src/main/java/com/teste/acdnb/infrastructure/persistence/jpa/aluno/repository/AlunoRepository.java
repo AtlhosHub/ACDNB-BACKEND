@@ -1,5 +1,6 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository;
 
+import com.teste.acdnb.core.domain.shared.valueobject.Email;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Sort;
@@ -37,5 +38,5 @@ public interface AlunoRepository extends JpaRepository<AlunoEntity, Integer>, Jp
         WHERE LOWER(a.email) = LOWER(:email)
            OR LOWER(r.email) = LOWER(:email)
         """)
-    Optional<AlunoEntity> findByEmailOrEmailResponsavel(String email);
+    Optional<AlunoEntity> findByEmailOrEmailResponsavel(Email email);
 }

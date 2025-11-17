@@ -9,8 +9,12 @@ import com.teste.acdnb.core.domain.mensalidade.entities.Comprovante;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.valueobject.ValoresComprovante;
 import com.teste.acdnb.core.domain.mensalidade.enums.FormaPagamento;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
+import com.teste.acdnb.core.domain.mensalidade.enums.TipoRetornoPagamento;
+import com.teste.acdnb.core.domain.shared.valueobject.Email;
 import com.teste.acdnb.core.domain.shared.valueobject.Nome;
+import com.teste.acdnb.infrastructure.dto.RespostaPagementoDTO;
 import com.teste.acdnb.infrastructure.dto.mensaldiade.ComprovanteDTO;
+import com.teste.acdnb.infrastructure.security.PagamentoRetornoProdutor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,15 +27,19 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
     private final AlunoGateway alunoGateway;
     private final MensalidadeGateway mensalidadeGateway;
     private final ComprovanteGateway comprovanteGateway;
+    private final PagamentoRetornoProdutor produtorMensagem;
+
 
     private static final BigDecimal DESCONTO_ANTECIPADO = new BigDecimal("10.00");
 
     public ProcessarPagamentoUseCaseImpl(AlunoGateway alunoGateway,
                                          MensalidadeGateway mensalidadeGateway,
-                                         ComprovanteGateway comprovanteGateway) {
+                                         ComprovanteGateway comprovanteGateway,
+                                         PagamentoRetornoProdutor produtorMensagem) {
         this.alunoGateway = alunoGateway;
         this.mensalidadeGateway = mensalidadeGateway;
         this.comprovanteGateway = comprovanteGateway;
+        this.produtorMensagem = produtorMensagem;
     }
 
     @Override
@@ -43,8 +51,8 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
             System.out.println("✅ Aluno encontrado: " + aluno.getNome());
 
             Comprovante comprovante = converterParaComprovante(comprovanteDTO, aluno);
-
             Comprovante comprovanteSalvo = comprovanteGateway.salvar(comprovante);
+
             System.out.println("✅ Comprovante salvo com ID: " + comprovanteSalvo.getId());
 
             processarMensalidades(aluno, comprovanteSalvo);
@@ -53,17 +61,39 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
 
         } catch (Exception e) {
             System.err.println("❌ Erro ao processar pagamento: " + e.getMessage());
-            e.printStackTrace();
-            throw new RuntimeException("Falha ao processar pagamento", e);
+            produtorMensagem.enviarMensagem(
+                    new RespostaPagementoDTO(
+                            comprovanteDTO.emailDestinatario(),
+                            TipoRetornoPagamento.ERRO_DESCONHECIDO,
+                            e.getMessage(),
+                            null,
+                            null,
+                            null,
+                            List.of(),
+                            List.of()
+                    )
+            );
         }
     }
 
-    private Aluno buscarAlunoPorEmail(String emailDestinatario) {
+    private Aluno buscarAlunoPorEmail(Email emailDestinatario) {
         System.out.println("🔍 Buscando aluno pelo email: " + emailDestinatario);
         return alunoGateway.buscarPorEmailOuEmailResponsavel(emailDestinatario)
-                .orElseThrow(() -> new RuntimeException(
-                        "Aluno não encontrado para o email: " + emailDestinatario
-                ));
+                .orElseThrow(() -> {
+                    produtorMensagem.enviarMensagem(
+                            new RespostaPagementoDTO(
+                                    emailDestinatario,
+                                    TipoRetornoPagamento.ALUNO_NAO_ENCONTRADO,
+                                    "Aluno não encontrado para o email informado",
+                                    null,
+                                    null,
+                                    null,
+                                    List.of(),
+                                    List.of()
+                            )
+                    );
+                    return new IllegalArgumentException("Aluno não encontrado");
+                });
     }
 
     private Comprovante converterParaComprovante(ComprovanteDTO dto, Aluno aluno) {
@@ -86,9 +116,19 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
     private void processarMensalidades(Aluno aluno, Comprovante comprovante) {
         List<Mensalidade> mensalidadesPendentes = mensalidadeGateway
                 .buscarMensalidadesPendentesOuAtrasadasPorAluno(aluno);
-
         if (mensalidadesPendentes.isEmpty()) {
             System.out.println("⚠️ Nenhuma mensalidade pendente encontrada para o aluno");
+            produtorMensagem.enviarMensagem(
+                    new RespostaPagementoDTO(
+                            aluno.getEmail(),
+                            TipoRetornoPagamento.NENHUMA_MENSALIDADE_ENCONTRADA,
+                            "Nenhuma mensalidade pendente ou atrasada foi encontrada.",
+                            comprovante.getValores().getValorCheio(),
+                            null, null,
+                            List.of(),
+                            List.of()
+                    )
+            );
             return;
         }
 
@@ -111,6 +151,18 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
         System.out.println("🎯 Valor total com descontos aplicáveis: " + valorTotalComDesconto);
 
         if (!isValorSuficienteParaUmaMensalidadeComDesconto(valorRecebido, mensalidadesOrdenadas, comprovante.getDataEnvio().toLocalDate())) {
+            produtorMensagem.enviarMensagem(
+                    new RespostaPagementoDTO(
+                            comprovante.getAluno().getEmail(),
+                            TipoRetornoPagamento.VALOR_INSUFICIENTE,
+                            "Valor insuficiente para pagar a menor mensalidade.",
+                            valorRecebido,
+                            valorRecebido,
+                            BigDecimal.ZERO,
+                            List.of(),
+                            List.of()
+                    )
+            );
             throw new RuntimeException("Valor recebido R$ " + valorRecebido + " é insuficiente para pagar qualquer mensalidade, mesmo com descontos");
         }
 
@@ -149,9 +201,11 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
         return isSuficiente;
     }
 
-    private List<Mensalidade> aplicarPagamentoComDescontoProporcional(List<Mensalidade> mensalidadesOrdenadas,
-                                                                      Comprovante comprovante,
-                                                                      BigDecimal valorRecebido) {
+    private List<Mensalidade> aplicarPagamentoComDescontoProporcional(
+            List<Mensalidade> mensalidadesOrdenadas,
+            Comprovante comprovante,
+            BigDecimal valorRecebido
+    ) {
         List<Mensalidade> mensalidadesProcessadas = new ArrayList<>();
         BigDecimal valorRestante = valorRecebido;
         LocalDate dataPagamento = comprovante.getDataEnvio().toLocalDate();
@@ -164,21 +218,39 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
             BigDecimal valorMensalidadeComDesconto = calcularValorComDesconto(mensalidade, dataPagamento);
 
             if (valorRestante.compareTo(valorMensalidadeComDesconto) >= 0) {
-                boolean teveDesconto = aplicarPagamentoMensalidadeComDesconto(mensalidade, comprovante, valorMensalidadeComDesconto);
+                boolean teveDesconto = aplicarPagamentoMensalidadeComDesconto(
+                        mensalidade, comprovante, valorMensalidadeComDesconto
+                );
+
                 mensalidadesProcessadas.add(mensalidade);
                 valorRestante = valorRestante.subtract(valorMensalidadeComDesconto);
 
-                String descontoInfo = teveDesconto ? " (com desconto de R$ 10,00)" : "";
-                System.out.println("✅ Mensalidade " + mensalidade.getId() + " paga por R$ " + valorMensalidadeComDesconto + descontoInfo + ". Valor restante: R$ " + valorRestante);
+                System.out.println("✅ Mensalidade " + mensalidade.getId() + " paga. Restante: R$ " + valorRestante);
+
             } else {
-                System.out.println("⏭️  Valor insuficiente para mensalidade " + mensalidade.getId() +
-                        ". Valor necessário: R$ " + valorMensalidadeComDesconto +
-                        ", Valor restante: R$ " + valorRestante);
+                System.out.println("⏭️ Valor insuficiente para mensalidade " + mensalidade.getId());
             }
         }
 
-        if (valorRestante.compareTo(BigDecimal.ZERO) > 0) {
-            System.out.println("💡 Valor excedente de R$ " + valorRestante + " será ignorado");
+        if (!mensalidadesProcessadas.isEmpty() &&
+                mensalidadesProcessadas.size() < mensalidadesOrdenadas.size()) {
+
+            System.out.println("🟡 PAGAMENTO PARCIAL DETECTADO");
+
+            produtorMensagem.enviarMensagem(
+                    new RespostaPagementoDTO(
+                            comprovante.getAluno().getEmail(),
+                            TipoRetornoPagamento.PAGAMENTO_PARCIAL,
+                            "Pagamento parcial realizado.",
+                            valorRecebido,
+                            valorRestante,
+                            BigDecimal.ZERO,
+                            mensalidadesProcessadas.stream()
+                                    .map(m -> Long.valueOf(m.getId()))
+                                    .toList(),
+                            List.of()
+                    )
+            );
         }
 
         return mensalidadesProcessadas;
@@ -214,6 +286,7 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase{
 
         mensalidade.setStatusPagamento(StatusPagamento.PAGO);
         mensalidade.setFormaPagamento(FormaPagamento.PIX);
+        mensalidade.setAlteracaoAutomatica(true);
         mensalidade.setDataPagamento(comprovante.getDataEnvio());
         mensalidade.setComprovante(comprovante);
 

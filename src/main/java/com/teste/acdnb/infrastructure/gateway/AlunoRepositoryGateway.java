@@ -4,6 +4,7 @@ import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
+import com.teste.acdnb.core.domain.shared.valueobject.Email;
 import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entity.AlunoEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
@@ -145,7 +146,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email) {
+    public Optional<Aluno> buscarPorEmailOuEmailResponsavel(Email email) {
         return alunoRepository.findByEmailOrEmailResponsavel(email)
                 .map(AlunoEntityMapper::toDomain);
     }
