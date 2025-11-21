@@ -38,5 +38,5 @@ public interface AlunoRepository extends JpaRepository<AlunoEntity, Integer>, Jp
         WHERE LOWER(a.email) = LOWER(:email)
            OR LOWER(r.email) = LOWER(:email)
         """)
-    Optional<AlunoEntity> findByEmailOrEmailResponsavel(Email email);
+    Optional<AlunoEntity> findByEmailOrEmailResponsavel(String email);
 }

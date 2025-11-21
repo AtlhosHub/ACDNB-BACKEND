@@ -12,5 +12,5 @@ public record ComprovanteDTO(
         String tipo,
         String bancoOrigem,
         String bancoDestino,
-        Email emailDestinatario
+        String emailDestinatario
 ) {}

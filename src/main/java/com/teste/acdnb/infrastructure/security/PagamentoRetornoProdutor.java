@@ -20,6 +20,7 @@ public class PagamentoRetornoProdutor {
                 RabbitMQConfig.ROUTING_KEY_PAGAMENTO_RETORNO,
                 dto
         );
+        System.out.println("📤 JSON ENVIADO PARA O RABBIT: " + dto);
     }
 }
 

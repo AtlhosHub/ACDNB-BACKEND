@@ -40,5 +40,5 @@ public interface AlunoGateway {
 
     int qtdAlunosAtivos();
 
-    Optional<Aluno> buscarPorEmailOuEmailResponsavel(Email email);
+    Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email);
 }

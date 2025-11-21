@@ -146,7 +146,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public Optional<Aluno> buscarPorEmailOuEmailResponsavel(Email email) {
+    public Optional<Aluno> buscarPorEmailOuEmailResponsavel(String email) {
         return alunoRepository.findByEmailOrEmailResponsavel(email)
                 .map(AlunoEntityMapper::toDomain);
     }
