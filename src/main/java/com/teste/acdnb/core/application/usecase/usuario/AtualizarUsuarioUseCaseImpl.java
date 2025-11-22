@@ -28,7 +28,6 @@ public class AtualizarUsuarioUseCaseImpl implements AtualizarUsuarioUseCase {
 
         usuarioExistente.setNome(Nome.of(usuarioEditado.nome()));
         usuarioExistente.setEmail(Email.of(usuarioEditado.email()));
-        usuarioExistente.setSenha(Senha.of(usuarioEditado.senha()));
         usuarioExistente.setCelular(Celular.of(usuarioEditado.celular()));
         usuarioExistente.setDataNascimento(DataNascimento.of(usuarioEditado.dataNascimento()));
         usuarioExistente.setNomeSocial(NomeSocial.of(usuarioEditado.nomeSocial(), usuarioEditado.nome()));
@@ -44,11 +43,11 @@ public class AtualizarUsuarioUseCaseImpl implements AtualizarUsuarioUseCase {
                 usuarioAtualizado.getId(),
                 usuarioAtualizado.getNome().getValue(),
                 usuarioAtualizado.getEmail().getValue(),
-                usuarioAtualizado.getCelular().getValue() != null ? usuarioAtualizado.getCelular().getValue() : null,
+                usuarioAtualizado.getCelular() != null ? usuarioAtualizado.getCelular().getValue() : null,
                 usuarioAtualizado.getDataNascimento().getValue(),
-                usuarioAtualizado.getNomeSocial().getValue() != null ? usuarioAtualizado.getNomeSocial().getValue() : null,
+                usuarioAtualizado.getNomeSocial() != null ? usuarioAtualizado.getNomeSocial().getValue() : null,
                 usuarioAtualizado.getGenero(),
-                usuarioAtualizado.getTelefone().getValue() != null ? usuarioAtualizado.getTelefone().getValue() : null,
+                usuarioAtualizado.getTelefone() != null ? usuarioAtualizado.getTelefone().getValue() : null,
                 usuarioAtualizado.getCargo()
         );
     }
