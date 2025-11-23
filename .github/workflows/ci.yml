@@ -24,7 +24,7 @@ jobs:
 
       # Build + testes
       - name: Build with Maven
-        run: mvn -B packages -DskipTests
+        run: mvn -B package -DskipTests
 
       # Gera artifact (jar)
       - name: Upload JAR artifact
