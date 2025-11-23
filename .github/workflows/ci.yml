@@ -1,8 +1,8 @@
 name: ACDNB CI
 
 on:
-    push:
-    branches: [ "develop" ] 
+  push:
+    branches: [ "develop" ]
   #workflow_dispatch:  # <-- Permite rodar manualmente
 
 jobs:
@@ -44,7 +44,7 @@ jobs:
           name: spring-boot-app
           path: target/*.jar
 
-tests:
+  tests:
     runs-on: ubuntu-latest
 
     needs: build   # Aguarda o build terminar antes de iniciar
@@ -77,3 +77,30 @@ tests:
         with:
           name: test-reports
           path: target/surefire-reports/*
+
+  docker:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - tests
+    steps:
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .                         # onde está o projeto
+          file: ./Dockerfile.ci 
+          push: true
+          tags: murakamijuliana/imagem-backend:v1
