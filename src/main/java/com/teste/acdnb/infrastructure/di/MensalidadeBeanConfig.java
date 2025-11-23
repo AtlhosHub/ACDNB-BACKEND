@@ -10,6 +10,7 @@ import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensal
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtual;
 import com.teste.acdnb.core.application.usecase.mensalidade.entities.valorMensalidade.BuscarValorMensalidadeAtualImpl;
 import com.teste.acdnb.infrastructure.filter.FiltroMensalidadeDTO;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,22 +19,22 @@ import org.springframework.amqp.core.Queue;
 @Configuration
 public class MensalidadeBeanConfig {
     @Bean
-    public GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes(MensalidadeGateway mensalidadeGateway) {
+    public GerarRelatorioMensalidadePorMes gerarRelatorioMensalidadePorMes(@Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway) {
         return new GerarRelatorioMensalidadePorMesImpl(mensalidadeGateway);
     }
 
     @Bean
-    public BuscarHistoricoMensalidade buscarHistoricoMensalidade(MensalidadeGateway mensalidadeGateway) {
+    public BuscarHistoricoMensalidade buscarHistoricoMensalidade(@Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway) {
         return new BuscarHistoricoMensalidadeImpl(mensalidadeGateway);
     }
 
     @Bean
-    public ContarMensalidadeComDesconto contarMensalidadeComDesconto(MensalidadeGateway mensalidadeGateway) {
+    public ContarMensalidadeComDesconto contarMensalidadeComDesconto(@Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway) {
         return new ContarMensalidadeComDescontoImpl(mensalidadeGateway);
     }
 
     @Bean
-    public AtualizarMensalidade atualizarMensalidade(MensalidadeGateway mensalidadeGateway, ValorMensalidadeGateway valorMensalidadeGateway) {
+    public AtualizarMensalidade atualizarMensalidade(@Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway, ValorMensalidadeGateway valorMensalidadeGateway) {
         return new AtualizarMensalidadeImpl(valorMensalidadeGateway, mensalidadeGateway);
     }
 
@@ -56,9 +57,9 @@ public class MensalidadeBeanConfig {
     }
 
     @Bean
-    public ProcessarPagamentoUseCase processarPagamentoUseCase(AlunoGateway alunoGateway,
-                                                 MensalidadeGateway mensalidadeGateway,
-                                                 ComprovanteGateway comprovanteGateway) {
+    public ProcessarPagamentoUseCase processarPagamentoUseCase(@Qualifier("alunoRepositoryGateway") AlunoGateway alunoGateway,
+                                                               @Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway,
+                                                               ComprovanteGateway comprovanteGateway) {
         return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway);
     }
 }

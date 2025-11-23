@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Component("mensalidadeRepositoryGateway")
 public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     private final MensalidadeRepository mensalidadeRepository;
     private final MensalidadeEntityMapper mensalidadeEntityMapper;
@@ -43,6 +43,12 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
         MensalidadeEntity novaMensalidade = mensalidadeRepository.save(mensalidadeEntity);
 
         return mensalidadeEntityMapper.toDomain(novaMensalidade);
+    }
+
+    @Override
+    public List<Mensalidade> listarMensalidadesFiltro(ListarAlunosMensalidadeFilter filter){
+        Specification<MensalidadeEntity> spec = MensalidadeSpecification.filtrarPor(filter);
+        return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
     }
 
     @Override
@@ -78,12 +84,6 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
 
         return mensalidade.map(MensalidadeEntityMapper::toDomain);
     };
-
-    @Override
-    public List<Mensalidade> listarMensalidadesFiltro(ListarAlunosMensalidadeFilter filter){
-        Specification<MensalidadeEntity> spec = MensalidadeSpecification.filtrarPor(filter);
-        return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
-    }
 
     @Override
     public List<Mensalidade> buscarMensalidadesPendentesOuAtrasadasPorAluno(Aluno aluno) {

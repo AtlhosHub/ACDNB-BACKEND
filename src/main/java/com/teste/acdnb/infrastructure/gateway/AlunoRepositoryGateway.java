@@ -14,9 +14,6 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.AlunoRepo
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.EnderecoRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.ResponsavelRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.AlunoSpecification;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -60,6 +57,18 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
+        Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
+
+        List<AlunoEntity> lista = alunoRepository.findAll(
+                spec,
+                Sort.by(Sort.Order.asc("nome").ignoreCase())
+        );
+
+        return AlunoMapperUtil.toDomainList(lista, alunoEntityMapper);
+    }
+
+    @Override
     public Optional<Endereco> findEndereco(Endereco endereco){
         return enderecoRepository.findByLogradouroAndNumLogAndBairroAndCidadeAndCepAndEstado(
                 endereco.getLogradouro(),
@@ -89,18 +98,6 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     @Override
     public List<Aluno> listarAlunos(){
         return AlunoMapperUtil.toDomainList(alunoRepository.findAll(Sort.by(Sort.Order.asc("nome").ignoreCase())), alunoEntityMapper);
-    }
-
-    @Override
-    public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
-        Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
-
-        List<AlunoEntity> lista = alunoRepository.findAll(
-                spec,
-                Sort.by(Sort.Order.asc("nome").ignoreCase())
-        );
-
-        return AlunoMapperUtil.toDomainList(lista, alunoEntityMapper);
     }
 
     @Override
