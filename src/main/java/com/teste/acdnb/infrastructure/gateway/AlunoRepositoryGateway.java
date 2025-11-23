@@ -14,6 +14,9 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.AlunoRepo
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.EnderecoRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.ResponsavelRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.AlunoSpecification;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -38,6 +41,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    @CacheEvict(cacheNames={"alunosGateway", "mensalidadeGateway"}, allEntries=true)
     public Aluno salvarAluno(Aluno aluno){
         return AlunoEntityMapper.toDomain(
                 alunoRepository.save(
@@ -57,6 +61,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    @Cacheable(cacheNames="alunosGateway")
     public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
         Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
 
@@ -106,6 +111,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    @CacheEvict(cacheNames= {"alunosGateway", "mensalidadeGateway"}, allEntries = true)
     public void deletarAluno(int id){
         alunoRepository.deleteById(id);
     }

@@ -1,6 +1,7 @@
 package com.teste.acdnb.core.domain.aluno;
 
 // import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.Usuario;
@@ -10,6 +11,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Aluno {
     private int id;
     private Nome nome;

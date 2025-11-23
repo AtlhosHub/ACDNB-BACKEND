@@ -12,6 +12,8 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.Mensal
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -33,11 +35,13 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     }
 
     @Override
+    @CacheEvict(cacheNames="mensalidadeGateway", allEntries=true)
     public void salvarTodas(List<Mensalidade> mensalidades) {
         mensalidadeRepository.saveAll(MensalidadeEntityMapper.toEntityList(mensalidades));
     }
 
     @Override
+    @CacheEvict(cacheNames="mensalidadeGateway", allEntries=true)
     public Mensalidade salvar(Mensalidade mensalidade) {
         MensalidadeEntity mensalidadeEntity = mensalidadeEntityMapper.toEntity(mensalidade);
         MensalidadeEntity novaMensalidade = mensalidadeRepository.save(mensalidadeEntity);
@@ -46,6 +50,7 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
     }
 
     @Override
+    @Cacheable(cacheNames="mensalidadeGateway")
     public List<Mensalidade> listarMensalidadesFiltro(ListarAlunosMensalidadeFilter filter){
         Specification<MensalidadeEntity> spec = MensalidadeSpecification.filtrarPor(filter);
         return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));

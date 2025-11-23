@@ -1,5 +1,8 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.regex.Pattern;
 
 public class Cpf {
@@ -10,7 +13,8 @@ public class Cpf {
         this.value = value;
     }
 
-    public static Cpf of(String value) {
+    @JsonCreator
+    public static Cpf of(@JsonProperty("value") String value) {
         if(value == null || !pattern.matcher(value).matches()) {
             throw new IllegalArgumentException("CPF inválido");
         }

@@ -54,13 +54,11 @@ services:
     image: redis/redisinsight:latest
     container_name: redisinsight
     ports:
-      - "5540:5540"
+      - "5540:8001"
     depends_on:
       - redis
     networks:
       - redis-net
-    volumes:
-      - redisinsight_data:/data
 
 volumes:
   mysql_data:
