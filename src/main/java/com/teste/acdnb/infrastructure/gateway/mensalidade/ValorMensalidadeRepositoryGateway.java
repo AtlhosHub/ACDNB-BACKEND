@@ -9,6 +9,7 @@ import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeRep
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeEntity;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade.ValorMensalidadeRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
     private final ValorMensalidadeRepository valorMensalidadeRepository;
     private final MensalidadeGateway mensalidadeGateway;
 
-    public ValorMensalidadeRepositoryGateway(ValorMensalidadeRepository valorMensalidadeRepository, MensalidadeGateway mensalidadeGateway) {
+    public ValorMensalidadeRepositoryGateway(ValorMensalidadeRepository valorMensalidadeRepository, @Qualifier("mensalidadeRepositoryGateway") MensalidadeGateway mensalidadeGateway) {
         this.valorMensalidadeRepository = valorMensalidadeRepository;
         this.mensalidadeGateway = mensalidadeGateway;
     }

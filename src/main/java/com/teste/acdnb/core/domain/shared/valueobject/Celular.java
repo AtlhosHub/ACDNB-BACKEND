@@ -1,5 +1,7 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teste.acdnb.core.application.exception.InvalidDataException;
 
 import java.util.regex.Pattern;
@@ -12,7 +14,8 @@ public class Celular {
         this.value = value;
     }
 
-    public static Celular of(String value) {
+    @JsonCreator
+    public static Celular of(@JsonProperty("value") String value) {
         if (value == null) {
             return null;
         }

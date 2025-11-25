@@ -26,6 +26,7 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
     private final MensalidadeGateway mensalidadeGateway;
     private final int NUMERO_PARCELAS = 12;
     private final LocalDate DATA_REFERENCIA = LocalDate.now().withDayOfMonth(5);
+
     public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway, ProdutorMensagem produtorMensagem) {
         this.alunoGateway = alunoGateway;
         this.valorMensalidadeGateway = valorMensalidadeGateway;
