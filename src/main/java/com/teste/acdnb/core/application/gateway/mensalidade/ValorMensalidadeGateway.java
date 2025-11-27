@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 public interface ValorMensalidadeGateway {
-    Optional<ValorMensalidade> buscarValorMensalidadePorValorEManual(BigDecimal valor, boolean manual);
+    Optional<ValorMensalidade> buscarValorMensalidadePorValorEManualFlag(BigDecimal valor, boolean manualFlag);
     ValorMensalidade adicionarValorMensalidade(ValorMensalidade valorMensalidade);
     ValorMensalidade buscarValorMensalidadeAtual();
 }

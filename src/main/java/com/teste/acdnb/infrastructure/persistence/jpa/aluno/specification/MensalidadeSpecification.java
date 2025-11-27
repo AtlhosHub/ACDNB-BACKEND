@@ -23,8 +23,20 @@ public class MensalidadeSpecification {
         );
     }
 
+    public static Specification<MensalidadeEntity> hasAlunoIdAndDataBetween(Long alunoId, String dataEnvioFrom, String dataEnvioTo) {
+        return hasAlunoId(alunoId)
+                .and(hasDataEnvioFrom(dataEnvioFrom))
+                .and(hasDataEnvioTo(dataEnvioTo));
+    }
+
     private static Specification<MensalidadeEntity> hasStatusIn(List<String> status) {
         return ((root, query, cb) -> (status == null || status.isEmpty()) ? root.get(STATUS).in(TODOS_STATUS) : root.get(STATUS).in(status));
+    }
+
+    private static Specification<MensalidadeEntity> hasAlunoId(Long alunoId) {
+        return (root, query, cb) -> (alunoId == null)
+                ? cb.conjunction()
+                : cb.equal(root.get("aluno").get("id"), alunoId);
     }
 
     private static Specification<MensalidadeEntity> hasDataEnvioFrom(String dataEnvioFrom) {

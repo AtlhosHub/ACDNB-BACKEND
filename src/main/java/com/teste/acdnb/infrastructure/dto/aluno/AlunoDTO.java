@@ -15,7 +15,6 @@ public record AlunoDTO (
         @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ\\s]+$", message = "Nome deve conter apenas letras e espaços")
         String nome,
 
-        @NotBlank(message = "Email não pode ser vazio")
         @Email(message = "Email deve ser válido (contém @ e domínio)")
         String email,
 

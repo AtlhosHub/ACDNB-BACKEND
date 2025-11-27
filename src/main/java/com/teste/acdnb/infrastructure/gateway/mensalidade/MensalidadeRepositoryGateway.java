@@ -92,4 +92,10 @@ public class MensalidadeRepositoryGateway implements MensalidadeGateway {
                 .map(MensalidadeEntityMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public List<Mensalidade> buscarMensalidadePorIdEVencimento(FiltroMensalidadeDTO payload) {
+        Specification<MensalidadeEntity> spec = MensalidadeSpecification.hasAlunoIdAndDataBetween(payload.idAluno(), payload.dateFrom(), payload.dateTo());
+        return MensalidadeEntityMapper.toDomainList(mensalidadeRepository.findAll(spec, Sort.by(Sort.Order.asc("dataVencimento"))));
+    }
 }

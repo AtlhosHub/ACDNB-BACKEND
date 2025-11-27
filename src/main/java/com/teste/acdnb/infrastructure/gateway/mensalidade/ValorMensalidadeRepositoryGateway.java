@@ -20,8 +20,8 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
     }
 
     @Override
-    public Optional<ValorMensalidade> buscarValorMensalidadePorValorEManual(BigDecimal valor, boolean manual) {
-        List<ValorMensalidadeEntity> valorMensalidade = valorMensalidadeRepository.findByValorAndManual(valor, manual);
+    public Optional<ValorMensalidade> buscarValorMensalidadePorValorEManualFlag(BigDecimal valor, boolean manual) {
+        List<ValorMensalidadeEntity> valorMensalidade = valorMensalidadeRepository.findByValorAndManualFlag(valor, manual);
         return valorMensalidade.isEmpty() ? Optional.empty() : Optional.ofNullable(ValorMensalidadeEntityMapper.toDomain(valorMensalidade.get(0)));
     }
 
@@ -35,7 +35,7 @@ public class ValorMensalidadeRepositoryGateway implements ValorMensalidadeGatewa
 
     @Override
     public ValorMensalidade buscarValorMensalidadeAtual() {
-        ValorMensalidadeEntity valorMensalidadeEntity = valorMensalidadeRepository.findFirstByManualFalseAndDescontoFalseOrderByDataInclusaoDesc();
+        ValorMensalidadeEntity valorMensalidadeEntity = valorMensalidadeRepository.findFirstByManualFlagFalseAndDescontoFalseOrderByDataInclusaoDesc();
         return ValorMensalidadeEntityMapper.toDomain(valorMensalidadeEntity);
     }
 }

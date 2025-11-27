@@ -10,7 +10,7 @@ public class ValorMensalidadeEntityMapper {
         return new ValorMensalidadeEntity(
                 valorMensalidade.getId(),
                 valorMensalidade.getValor(),
-                valorMensalidade.isManual(),
+                valorMensalidade.isManualFlag(),
                 valorMensalidade.isDesconto(),
                 valorMensalidade.getDataInclusao()
         );
@@ -21,7 +21,7 @@ public class ValorMensalidadeEntityMapper {
         return new ValorMensalidade(
                 valorMensalidadeEntity.getId(),
                 valorMensalidadeEntity.getValor(),
-                valorMensalidadeEntity.isManual(),
+                valorMensalidadeEntity.isManualFlag(),
                 valorMensalidadeEntity.isDesconto()
         );
     }

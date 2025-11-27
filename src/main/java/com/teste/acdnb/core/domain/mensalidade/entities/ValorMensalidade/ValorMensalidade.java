@@ -6,20 +6,20 @@ import java.time.LocalDateTime;
 public class ValorMensalidade {
     private int id;
     private BigDecimal valor;
-    private boolean manual = false;
+    private boolean manualFlag = false;
     private boolean desconto = false;
     private LocalDateTime dataInclusao;
 
     public ValorMensalidade() {}
 
-    public ValorMensalidade(int id, BigDecimal valor, boolean manual, boolean desconto) {
+    public ValorMensalidade(int id, BigDecimal valor, boolean manualFlag, boolean desconto) {
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0.0) {
             throw new IllegalArgumentException("Valor da mensalidade inválido!");
         }
 
         this.id = id;
         this.valor = valor;
-        this.manual = manual;
+        this.manualFlag = manualFlag;
         this.desconto = desconto;
         this.dataInclusao = LocalDateTime.now();
     }
@@ -40,12 +40,12 @@ public class ValorMensalidade {
         this.valor = valor;
     }
 
-    public boolean isManual() {
-        return manual;
+    public boolean isManualFlag() {
+        return manualFlag;
     }
 
-    public void setManual(boolean manual) {
-        this.manual = manual;
+    public void setManualFlag(boolean manualFlag) {
+        this.manualFlag = manualFlag;
     }
 
     public boolean isDesconto() {
