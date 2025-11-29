@@ -1,0 +1,13 @@
+package com.teste.acdnb.core.domain.mensalidade.enums;
+
+public enum TipoRetornoPagamento {
+    PAGAMENTO_PROCESSADO,
+    VALOR_INSUFICIENTE,
+    NENHUMA_MENSALIDADE_ENCONTRADA,
+    ALUNO_NAO_ENCONTRADO,
+    ERRO_DESCONHECIDO,
+    DESCONTO_APLICADO,
+    PAGAMENTO_PARCIAL,
+    PAGAMENTO_TOTAL,
+    VALOR_EXCEDENTE
+}

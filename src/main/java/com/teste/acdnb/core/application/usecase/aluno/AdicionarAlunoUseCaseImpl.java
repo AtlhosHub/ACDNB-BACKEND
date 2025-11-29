@@ -72,8 +72,12 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
         mensalidadeGateway.salvarTodas(mensalidades);
 
         String emailContato = alunoCadastrado.getResponsaveis()!= null && !alunoCadastrado.getResponsaveis().isEmpty()
-                ?alunoCadastrado.getResponsaveis().get(0).getEmail().getValue():alunoCadastrado.getEmail().getValue();
-        produtorMensagem.ProduzirMensagem(new EmailContatoDTO(alunoCadastrado.getNome().getValue(), emailContato));
+                ?alunoCadastrado.getResponsaveis().getFirst().getEmail().getValue():alunoCadastrado.getEmail().getValue();
+        produtorMensagem.enviarAlunoCriado(
+                (long) alunoCadastrado.getId(),
+                alunoCadastrado.getNome().getValue(),
+                emailContato
+        );
         return alunoCadastrado;
     }
 
