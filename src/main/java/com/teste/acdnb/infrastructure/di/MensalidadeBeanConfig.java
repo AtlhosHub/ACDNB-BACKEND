@@ -57,4 +57,9 @@ public class MensalidadeBeanConfig {
                                                                PagamentoRetornoProdutor pagamentoRetornoProdutor) {
         return new ProcessarPagamentoUseCaseImpl(alunoGateway, mensalidadeGateway, comprovanteGateway, pagamentoRetornoProdutor);
     }
+
+    @Bean
+    public BuscarHistoricoMensalidade buscarHistoricoMensalidade(MensalidadeGateway mensalidadeGateway) {
+        return new BuscarHistoricoMensalidadeImpl(mensalidadeGateway);
+    }
 }

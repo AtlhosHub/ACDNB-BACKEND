@@ -1,6 +1,9 @@
 package com.teste.acdnb.infrastructure.dto;
 
 public record EmailContatoDTO (
-         String nome,
-         String email){
+        Long id,
+        String nome,
+        String email,
+        String operacao,
+        String emailAntigo){
 }

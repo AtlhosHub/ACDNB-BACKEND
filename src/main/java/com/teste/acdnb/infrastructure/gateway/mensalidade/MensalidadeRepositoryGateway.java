@@ -5,6 +5,7 @@ import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.core.application.usecase.mensalidade.dto.RelatorioMensalidade;
+import com.teste.acdnb.infrastructure.filter.FiltroMensalidadeDTO;
 import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.entityMapper.AlunoEntityMapper;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.MensalidadeSpecification;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 

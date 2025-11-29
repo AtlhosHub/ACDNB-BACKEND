@@ -61,7 +61,7 @@ public class ProcessarPagamentoUseCaseImpl implements ProcessarPagamentoUseCase 
     }
 
     // ============================================================
-    //   MÉTODO PRINCIPAL - CORRIGIDO
+    //   MÉTODO PRINCIPAL
     // ============================================================
 
     @Override

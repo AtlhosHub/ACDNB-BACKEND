@@ -1,8 +1,6 @@
 package com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.entities.valorMensalidade;
 
-import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.entities.ValorMensalidade.ValorMensalidade;
-import com.teste.acdnb.infrastructure.persistence.jpa.mensalidade.MensalidadeEntity;
 
 public class ValorMensalidadeEntityMapper {
     public static ValorMensalidadeEntity toEntity(ValorMensalidade valorMensalidade) {

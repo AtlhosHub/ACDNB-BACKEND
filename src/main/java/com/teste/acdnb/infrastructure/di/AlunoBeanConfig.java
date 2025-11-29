@@ -38,8 +38,10 @@ public class AlunoBeanConfig {
     }
 
     @Bean
-    public AtualizarAlunoUseCase atualizarAlunoUseCase(AlunoGateway alunoGateway) {
-        return new AtualizarAlunoUseCaseImpl(alunoGateway);
+    public AtualizarAlunoUseCase atualizarAlunoUseCase(
+            AlunoGateway alunoGateway,
+            ProdutorMensagem produtorMensagem) {
+        return new AtualizarAlunoUseCaseImpl(alunoGateway, produtorMensagem);
     }
 
     @Bean

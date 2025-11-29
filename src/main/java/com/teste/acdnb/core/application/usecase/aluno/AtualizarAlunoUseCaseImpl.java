@@ -6,6 +6,7 @@ import com.teste.acdnb.core.application.gateway.AlunoGateway;
 import com.teste.acdnb.core.domain.aluno.Aluno;
 import com.teste.acdnb.core.domain.aluno.Endereco;
 import com.teste.acdnb.core.domain.aluno.Responsavel;
+import com.teste.acdnb.infrastructure.security.ProdutorMensagem;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 
 public class AtualizarAlunoUseCaseImpl implements AtualizarAlunoUseCase{
     private final AlunoGateway alunoGateway;
+    private final ProdutorMensagem produtorMensagem;
 
-    public AtualizarAlunoUseCaseImpl(AlunoGateway alunoGateway) {
+    public AtualizarAlunoUseCaseImpl(AlunoGateway alunoGateway, ProdutorMensagem produtorMensagem) {
         this.alunoGateway = alunoGateway;
+        this.produtorMensagem = produtorMensagem;
     }
 
     @Override
@@ -23,6 +26,9 @@ public class AtualizarAlunoUseCaseImpl implements AtualizarAlunoUseCase{
         if(!alunoGateway.existsById(id)){
             throw new ResourceNotFoundException("Aluno não encontrado");
         }
+
+        Aluno alunoExistente = alunoGateway.buscarAlunoPorId(id);
+        String emailAntigo = alunoExistente.getEmail().getValue();
 
         if(
                 (!alunoAtualizado.isMenor() && alunoGateway.existsByEmailIgnoreCaseAndIdIsNot(alunoAtualizado.getEmail().getValue(), id)) ||
@@ -72,6 +78,23 @@ public class AtualizarAlunoUseCaseImpl implements AtualizarAlunoUseCase{
             aluno.setResponsaveis(responsaveisAtualizados);
         }else{
             aluno.setResponsaveis(List.of());
+        }
+
+        Aluno alunoAtualizadoSalvo = alunoGateway.salvarAluno(alunoExistente);
+
+        String novoEmail = alunoAtualizadoSalvo.getEmail().getValue();
+
+        if (!novoEmail.equals(emailAntigo)) {
+            String emailContato = alunoAtualizadoSalvo.getResponsaveis() != null && !alunoAtualizadoSalvo.getResponsaveis().isEmpty()
+                    ? alunoAtualizadoSalvo.getResponsaveis().getFirst().getEmail().getValue()
+                    : novoEmail;
+
+            produtorMensagem.enviarAlunoAtualizado(
+                    (long)alunoAtualizadoSalvo.getId(),
+                    alunoAtualizadoSalvo.getNome().getValue(),
+                    emailContato,
+                    emailAntigo
+            );
         }
 
         return alunoGateway.salvarAluno(aluno);
