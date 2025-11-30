@@ -80,4 +80,4 @@ jobs:
           context: .
           file: ./Dockerfile.ci
           push: true
-          tags: murakamijuliana/imagem-backend:v1
+          tags: murakamijuliana/imagem-backend:latest
