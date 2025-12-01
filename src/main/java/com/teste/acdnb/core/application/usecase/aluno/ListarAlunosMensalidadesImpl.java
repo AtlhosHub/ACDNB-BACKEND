@@ -7,6 +7,7 @@ import com.teste.acdnb.core.domain.mensalidade.Mensalidade;
 import com.teste.acdnb.core.domain.mensalidade.enums.StatusPagamento;
 import com.teste.acdnb.infrastructure.dto.aluno.AlunoComprovanteDTO;
 import com.teste.acdnb.infrastructure.filter.ListarAlunosMensalidadeFilter;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.ArrayList;
 import java.util.List;

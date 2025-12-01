@@ -26,6 +26,7 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
     private final MensalidadeGateway mensalidadeGateway;
     private final int NUMERO_PARCELAS = 12;
     private final LocalDate DATA_REFERENCIA = LocalDate.now().withDayOfMonth(5);
+
     public AdicionarAlunoUseCaseImpl(AlunoGateway alunoGateway, ValorMensalidadeGateway valorMensalidadeGateway, MensalidadeFactory mensalidadeFactory, MensalidadeGateway mensalidadeGateway, ProdutorMensagem produtorMensagem) {
         this.alunoGateway = alunoGateway;
         this.valorMensalidadeGateway = valorMensalidadeGateway;
@@ -71,8 +72,12 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
         mensalidadeGateway.salvarTodas(mensalidades);
 
         String emailContato = alunoCadastrado.getResponsaveis()!= null && !alunoCadastrado.getResponsaveis().isEmpty()
-                ?alunoCadastrado.getResponsaveis().get(0).getEmail().getValue():alunoCadastrado.getEmail().getValue();
-        produtorMensagem.ProduzirMensagem(new EmailContatoDTO(alunoCadastrado.getNome().getValue(), emailContato));
+                ?alunoCadastrado.getResponsaveis().getFirst().getEmail().getValue():alunoCadastrado.getEmail().getValue();
+        produtorMensagem.enviarAlunoCriado(
+                (long) alunoCadastrado.getId(),
+                alunoCadastrado.getNome().getValue(),
+                emailContato
+        );
         return alunoCadastrado;
     }
 

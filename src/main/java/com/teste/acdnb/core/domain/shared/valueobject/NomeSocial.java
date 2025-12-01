@@ -1,5 +1,7 @@
 package com.teste.acdnb.core.domain.shared.valueobject;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.teste.acdnb.core.application.exception.InvalidDataException;
 
 import java.util.regex.Pattern;
@@ -11,7 +13,8 @@ public class NomeSocial {
 
     private NomeSocial(String value) { this.value = value; }
 
-    public static NomeSocial of(String value, String nome) {
+    @JsonCreator
+    public static NomeSocial of(@JsonProperty("value") String value, @JsonProperty("nome") String nome) {
         if(value==null || value.isBlank()) {
             return null;
         }

@@ -14,9 +14,9 @@ import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.AlunoRepo
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.EnderecoRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.repository.ResponsavelRepository;
 import com.teste.acdnb.infrastructure.persistence.jpa.aluno.specification.AlunoSpecification;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -41,6 +41,7 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
+    @CacheEvict(cacheNames={"alunosGateway", "mensalidadeGateway"}, allEntries=true)
     public Aluno salvarAluno(Aluno aluno){
         return AlunoEntityMapper.toDomain(
                 alunoRepository.save(
@@ -57,6 +58,19 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     @Override
     public boolean existsByCpfOrRg(String cpf, String rg){
         return alunoRepository.existsByCpfOrRg(cpf, rg);
+    }
+
+    @Override
+    @Cacheable(cacheNames="alunosGateway")
+    public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
+        Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
+
+        List<AlunoEntity> lista = alunoRepository.findAll(
+                spec,
+                Sort.by(Sort.Order.asc("nome").ignoreCase())
+        );
+
+        return AlunoMapperUtil.toDomainList(lista, alunoEntityMapper);
     }
 
     @Override
@@ -92,23 +106,12 @@ public class AlunoRepositoryGateway implements AlunoGateway {
     }
 
     @Override
-    public List<Aluno> listarAlunosFiltro(ListarAlunosMensalidadeFilter filter) {
-        Specification<AlunoEntity> spec = AlunoSpecification.filtrarPor(filter);
-
-        List<AlunoEntity> lista = alunoRepository.findAll(
-                spec,
-                Sort.by(Sort.Order.asc("nome").ignoreCase())
-        );
-
-        return AlunoMapperUtil.toDomainList(lista, alunoEntityMapper);
-    }
-
-    @Override
     public boolean existsById(int id){
         return alunoRepository.existsById(id);
     }
 
     @Override
+    @CacheEvict(cacheNames= {"alunosGateway", "mensalidadeGateway"}, allEntries = true)
     public void deletarAluno(int id){
         alunoRepository.deleteById(id);
     }
