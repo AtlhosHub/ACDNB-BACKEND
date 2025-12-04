@@ -1,13 +1,14 @@
 package com.teste.acdnb.infrastructure.web;
 
+import com.teste.acdnb.core.application.exception.DataConflictException;
 import com.teste.acdnb.core.application.usecase.usuario.*;
+import com.teste.acdnb.core.domain.shared.valueobject.DataNascimento;
 import com.teste.acdnb.core.domain.shared.valueobject.Email;
 import com.teste.acdnb.core.domain.shared.valueobject.Nome;
 import com.teste.acdnb.core.domain.usuario.Usuario;
 import com.teste.acdnb.infrastructure.dto.PaginacaoResponse;
 import com.teste.acdnb.infrastructure.dto.usuario.*;
 import com.teste.acdnb.infrastructure.gateway.UsuarioRepositoryGateway;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,6 +78,31 @@ class UsuarioControllerTest {
         verify(adicionarUsuarioUseCase, times(1)).execute(requestDTO);
     }
 
+    @Test
+    @DisplayName("POST /usuarios - Should return 400 when request data is invalid")
+    void testAdicionarUsuarioBadRequest() {
+        UsuarioRequestDTO requestDTO = criarUsuarioRequest("", "invalid-email", ""); // Invalid data
+        when(adicionarUsuarioUseCase.execute(requestDTO))
+                .thenThrow(new IllegalArgumentException("Dados inválidos"));
+
+        assertThrows(IllegalArgumentException.class, () -> controller.adicionarUsuario(requestDTO));
+
+        verify(adicionarUsuarioUseCase, times(1)).execute(requestDTO);
+    }
+
+    @Test
+    @DisplayName("POST /usuarios - Should propagate exception when email already exists")
+    void testAdicionarUsuarioEmailConflict() {
+        UsuarioRequestDTO requestDTO = criarUsuarioRequest("João Silva", "joao@test.com", "senha123");
+
+        when(adicionarUsuarioUseCase.execute(requestDTO))
+                .thenThrow(new DataConflictException("E-mail de usuário já cadastrado"));
+
+        assertThrows(DataConflictException.class, () -> controller.adicionarUsuario(requestDTO));
+
+        verify(adicionarUsuarioUseCase, times(1)).execute(requestDTO);
+    }
+
     // ==================== LISTAR USUARIOS ====================
 
     @Test
@@ -114,23 +140,23 @@ class UsuarioControllerTest {
 
     // ==================== BUSCAR USUARIO POR ID ====================
 
-//    @Test
-//    @DisplayName("GET /usuarios/{id} - Should return 200 and usuario when found")
-//    void testBuscarUsuarioPorIdSuccess() {
-//        Usuario usuario = criarUsuario(1, "João Silva", "joao@test.com");
-//
-//        when(buscarUsuarioPorIdUseCase.execute(1)).thenReturn(usuario);
-//
-//        ResponseEntity<UsuarioResponseDTO> response = controller.buscarUsuarioPorId(1);
-//
-//        assertNotNull(response);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertNotNull(response.getBody());
-//        assertEquals(1, response.getBody().getId());
-//        assertEquals("João Silva", response.getBody().getNome());
-//
-//        verify(buscarUsuarioPorIdUseCase, times(1)).execute(1);
-//    }
+    @Test
+    @DisplayName("GET /usuarios/{id} - Should return 200 and usuario when found")
+    void testBuscarUsuarioPorIdSuccess() {
+        Usuario usuario = criarUsuario(1, "João Silva", "joao@test.com");
+
+        when(buscarUsuarioPorIdUseCase.execute(1)).thenReturn(usuario);
+
+        ResponseEntity<UsuarioResponseDTO> response = controller.buscarUsuarioPorId(1);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getId());
+        assertEquals("João Silva", response.getBody().getNome());
+
+        verify(buscarUsuarioPorIdUseCase, times(1)).execute(1);
+    }
 
     @Test
     @DisplayName("GET /usuarios/{id} - Should return 404 when usuario not found")
@@ -144,6 +170,56 @@ class UsuarioControllerTest {
         assertNull(response.getBody());
 
         verify(buscarUsuarioPorIdUseCase, times(1)).execute(999);
+    }
+
+    // ==================== BUSCAR USUARIO POR NOME ====================
+
+    @Test
+    @DisplayName("POST /usuarios/filtro")
+    void testBuscarUsuariosPorFiltroSuccess() {
+        UsuarioFiltroDTO filtroDTO = new UsuarioFiltroDTO("Maria", 0, 10);
+
+        UsuarioResponseDTO usuarioResponse2 = criarUsuarioResponse(2, "Maria Santos", "maria@test.com");
+        UsuarioResponseDTO usuarioResponse3 = criarUsuarioResponse(3, "Ana Maria", "ana@test.com");
+
+        Usuario usuario1 = criarUsuario(1, "João Silva", "joao@test.com");
+        Usuario usuario2 = criarUsuario(2, "Maria Santos", "maria@test.com");
+        Usuario usuario3 = criarUsuario(3, "Ana Maria", "ana@test.com");
+
+        List<UsuarioResponseDTO> usuariosResponse = List.of(usuarioResponse2, usuarioResponse3);
+        List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3);
+
+        when(buscarUsuarioPorFiltroUseCase.execute(filtroDTO)).thenReturn(usuariosResponse);
+        when(usuarioRepositoryGateway.listarUsuarios()).thenReturn(usuarios);
+
+        ResponseEntity<PaginacaoResponse<UsuarioResponseDTO>> response = controller.listarUsuariosPorNome(filtroDTO);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().content().size());
+        assertEquals("Ana Maria", response.getBody().content().get(1).getNome());
+
+        verify(buscarUsuarioPorFiltroUseCase, times(1)).execute(filtroDTO);
+    }
+
+    @Test
+    @DisplayName("POST /usuarios/filtro - Should return empty list when no usuarios match filter")
+    void testBuscarUsuariosPorFiltroEmpty() {
+        UsuarioFiltroDTO filtroDTO = new UsuarioFiltroDTO("NãoExistente", 0, 10);
+
+        when(buscarUsuarioPorFiltroUseCase.execute(filtroDTO)).thenReturn(List.of());
+        when(usuarioRepositoryGateway.listarUsuarios()).thenReturn(List.of());
+
+        ResponseEntity<PaginacaoResponse<UsuarioResponseDTO>> response = controller.listarUsuariosPorNome(filtroDTO);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().content().isEmpty());
+        assertEquals(0, response.getBody().total());
+
+        verify(buscarUsuarioPorFiltroUseCase, times(1)).execute(filtroDTO);
     }
 
     // ==================== DELETAR USUARIO ====================
@@ -205,6 +281,30 @@ class UsuarioControllerTest {
         verify(atualizarUsuarioUseCase, times(1)).execute(999, requestDTO);
     }
 
+    @Test
+    @DisplayName("PUT /usuarios/{id} - Should propagate exception when email already exists")
+    void testAtualizarUsuarioEmailConflict() {
+        UsuarioRequestDTO requestDTO = criarUsuarioRequest("João Silva", "joao@test.com", "senha123");
+
+        when(atualizarUsuarioUseCase.execute(1, requestDTO))
+                .thenThrow(new DataConflictException("E-mail de usuário já cadastrado"));
+
+        assertThrows(DataConflictException.class, () -> controller.atualizarUsuario(1, requestDTO));
+
+        verify(atualizarUsuarioUseCase, times(1)).execute(1, requestDTO);
+    }
+
+    @Test
+    @DisplayName("PUT /usuarios/{id} - Should return 400 when request data is invalid")
+    void testAtualizarUsuarioBadRequest() {
+        UsuarioRequestDTO requestDTO = criarUsuarioRequest("", "invalid-email", ""); // Invalid data
+        when(atualizarUsuarioUseCase.execute(1, requestDTO))
+                .thenThrow(new IllegalArgumentException("Dados inválidos"));
+
+        assertThrows(IllegalArgumentException.class, () -> controller.atualizarUsuario(1, requestDTO));
+
+        verify(atualizarUsuarioUseCase, times(1)).execute(1, requestDTO);
+    }
 
     // ==================== HELPER METHODS ====================
 
@@ -230,6 +330,7 @@ class UsuarioControllerTest {
         dto.setNome(nome);
         dto.setEmail(email);
         dto.setCargo("USER");
+        dto.setDataNascimento(LocalDate.of(1990, 1, 1));
         return dto;
     }
 
@@ -239,6 +340,7 @@ class UsuarioControllerTest {
         usuario.setNome(Nome.of(nome));
         usuario.setEmail(Email.of(email));
         usuario.setCargo("USER");
+        usuario.setDataNascimento(DataNascimento.of(LocalDate.of(1990, 1, 1)));
         return usuario;
     }
 }
