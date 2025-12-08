@@ -39,7 +39,7 @@ public class ListaEsperaRepositoryGateway implements ListaEsperaGateway {
         Pageable pageable = PageRequest.of(
                 interessadosFitler.offset() / interessadosFitler.limit(),
                 interessadosFitler.limit(),
-                Sort.by(Sort.Order.desc("dataInclusao"))
+                Sort.by(Sort.Order.desc("dataInteresse"))
         );
 
         return listaEsperaRepository.findAll(pageable)
