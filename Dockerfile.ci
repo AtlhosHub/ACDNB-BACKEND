@@ -1,0 +1,25 @@
+FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
+WORKDIR /app
+
+# Copia pom.xml e baixa dependências — cache eficiente para CI
+COPY pom.xml .
+RUN mvn -B dependency:go-offline
+
+# Copia o código fonte
+COPY src ./src
+
+# Builda o jar (sem testes, pois já rodam no GitHub Actions)
+RUN mvn -B clean package -DskipTests
+
+FROM eclipse-temurin:21-jdk-alpine
+
+WORKDIR /app
+
+# Copia o jar do stage anterior
+COPY --from=builder /app/target/*.jar app.jar
+
+# Porta padrão do Spring Boot
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]
