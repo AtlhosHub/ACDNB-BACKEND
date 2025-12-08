@@ -2,6 +2,7 @@ package com.teste.acdnb.core.domain.usuario;
 import com.teste.acdnb.core.domain.shared.valueobject.*;
 import com.teste.acdnb.core.domain.usuario.valueobject.Senha;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +18,15 @@ public class Usuario{
     private Telefone telefone;
     private String cargo;
     private DataInclusao dataInclusao;
-    private Usuario usuarioInclusao;
-//    private List<Usuario> usuariosCadastrados = new ArrayList<>();
-//    private List<Aluno> alunos = new ArrayList<>();
-//    private List<ListaEspera> interessados = new ArrayList<>();
-
+   // private Usuario usuarioInclusao;
+    private String tokenRecuperacaoSenha;
+    private LocalDateTime tokenExpiracao;
 
     public Usuario() {
     }
 
-    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataNascimento dataNascimento, NomeSocial nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao, Usuario usuarioInclusao) {
+    public Usuario(int id, Nome nome, Email email, Senha senha, Celular celular, DataNascimento dataNascimento, NomeSocial nomeSocial, String genero, Telefone telefone, String cargo, DataInclusao dataInclusao,String tokenRecuperacaoSenha,
+                   LocalDateTime tokenExpiracao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -38,8 +38,9 @@ public class Usuario{
         this.telefone = telefone;
         this.cargo = cargo;
         this.dataInclusao = dataInclusao;
-        this.usuarioInclusao = usuarioInclusao;
-//        this.usuariosCadastrados = usuariosCadastrados;
+      //  this.usuarioInclusao = usuarioInclusao;
+        this.tokenRecuperacaoSenha = tokenRecuperacaoSenha;
+        this.tokenExpiracao = tokenExpiracao;
     }
 
     public int getId() {
@@ -130,11 +131,27 @@ public class Usuario{
         this.dataInclusao = dataInclusao;
     }
 
-    public Usuario getUsuarioInclusao() {
-        return usuarioInclusao;
+//    public Usuario getUsuarioInclusao() {
+//        return usuarioInclusao;
+//    }
+//    public void setUsuarioInclusao(Usuario usuarioInclusao) {
+//        this.usuarioInclusao = usuarioInclusao;
+//    }
+
+    public String getTokenRecuperacaoSenha() {
+        return tokenRecuperacaoSenha;
     }
-    public void setUsuarioInclusao(Usuario usuarioInclusao) {
-        this.usuarioInclusao = usuarioInclusao;
+
+    public void setTokenRecuperacaoSenha(String tokenRecuperacaoSenha) {
+        this.tokenRecuperacaoSenha = tokenRecuperacaoSenha;
+    }
+
+    public LocalDateTime getTokenExpiracao() {
+        return tokenExpiracao;
+    }
+
+    public void setTokenExpiracao(LocalDateTime tokenExpiracao) {
+        this.tokenExpiracao = tokenExpiracao;
     }
 //
 //    public List<Usuario> getUsuariosCadastrados() {

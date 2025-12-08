@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,13 +64,13 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
         return usuarioEntityMapper.toDomain(atualizado);
     }
 
-    @Override
-    public List<Usuario> buscarUsuariosPorUsuarioInclusao(Usuario usuario) {
-        return usuarioRepository.findByUsuarioInclusaoId(usuario.getId())
-                .stream()
-                .map(usuarioEntityMapper::toDomain)
-                .toList();
-    }
+//    @Override
+//    public List<Usuario> buscarUsuariosPorUsuarioInclusao(Usuario usuario) {
+//        return usuarioRepository.findByUsuarioInclusaoId(usuario.getId())
+//                .stream()
+//                .map(usuarioEntityMapper::toDomain)
+//                .toList();
+//    }
 
     @Override
     public List<Usuario> buscarUsuariosPorNome(UsuarioFiltroDTO usuarioFiltroDTO) {
@@ -86,4 +87,21 @@ public class UsuarioRepositoryGateway implements UsuarioGateway {
                 .toList();
     }
 
+    @Override
+    public Optional<Usuario> buscarPorTokenRecuperacao(String token) {
+        return usuarioRepository.findByTokenRecuperacaoSenha(token)
+                .map(usuarioEntityMapper::toDomain);
+    }
+
+    @Override
+    public void atualizarTokenRecuperacao(String email, String token, LocalDateTime expiracao) {
+        UsuarioEntity entity = usuarioRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        entity.setTokenRecuperacaoSenha(token);
+        entity.setTokenExpiracao(expiracao);
+
+        usuarioRepository.save(entity);
+        System.out.println("✅ Token salvo no banco para email: " + email);
+    }
 }
