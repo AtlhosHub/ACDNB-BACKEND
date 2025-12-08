@@ -1,6 +1,7 @@
 package com.teste.acdnb.infrastructure.security;
 
 import com.teste.acdnb.infrastructure.dto.EmailContatoDTO;
+import com.teste.acdnb.infrastructure.dto.usuario.EmailRecuperacaoSenhaDTO;
 import com.teste.acdnb.infrastructure.security.config.RabbitMQConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
@@ -25,6 +26,14 @@ public class ProdutorMensagem {
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE_ALUNOS,
                 RabbitMQConfig.ROUTING_KEY_ALUNO,
+                dto
+        );
+    }
+
+    public void enviarEmailRecuperacaoSenha(EmailRecuperacaoSenhaDTO dto) {
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.EXCHANGE_EMAIL,
+                RabbitMQConfig.ROUTING_KEY_EMAIL_RECUPERACAO,
                 dto
         );
     }

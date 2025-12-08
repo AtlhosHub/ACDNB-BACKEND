@@ -3,10 +3,13 @@ package com.teste.acdnb.infrastructure.di;
 import com.teste.acdnb.core.application.gateway.UsuarioGateway;
 import com.teste.acdnb.core.application.usecase.usuario.*;
 import com.teste.acdnb.infrastructure.security.AutenticacaoService;
+import com.teste.acdnb.infrastructure.security.ProdutorMensagem;
 import com.teste.acdnb.infrastructure.security.config.GerenciadorTokenJWT;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -50,4 +53,13 @@ public class UsuarioBeanConfig {
     @Bean AutenticarUsuarioUseCase autenticarUsuarioUseCase(UsuarioGateway usuarioGateway) {
         return new AutenticarUsuarioUseCaseImpl(usuarioGateway, authenticationManager, gerenciadorTokenJWT );
     }
+
+    @Bean
+    public RecuperarSenhaUseCase recuperarSenhaUseCase(
+            UsuarioGateway usuarioGateway,
+            ProdutorMensagem produtorMensagem,
+            PasswordEncoder passwordEncoder) {
+        return new RecuperarSenhaUseCaseImpl(usuarioGateway, produtorMensagem, passwordEncoder);
+    }
+
 }

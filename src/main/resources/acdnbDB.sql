@@ -16,7 +16,9 @@ CREATE TABLE usuario(
     cargo VARCHAR(50),
     data_inclusao DATE NOT NULL,
     usuario_inclusao_id INT,
-    FOREIGN KEY (usuario_inclusao_id) REFERENCES usuario(id)
+    FOREIGN KEY (usuario_inclusao_id) REFERENCES usuario(id),
+    token_recuperacao_senha VARCHAR(255),
+    token_expiracao DATETIME
 );
 
 CREATE TABLE endereco(

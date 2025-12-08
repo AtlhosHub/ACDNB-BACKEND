@@ -66,9 +66,17 @@ public class UsuarioEntity {
     @Schema(description = "Data de inclusão do usuário no sistema", example = "2025-04-21T10:15:30")
     private LocalDateTime dataInclusao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_inclusao_id")
-    private UsuarioEntity usuarioInclusao;
+    @Column(name = "token_recuperacao_senha")
+    @Schema(description = "Token para recuperação de senha")
+    private String tokenRecuperacaoSenha;
+
+    @Column(name = "token_expiracao")
+    @Schema(description = "Data e hora de expiração do token de recuperação")
+    private LocalDateTime tokenExpiracao;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "usuario_inclusao_id")
+//    private UsuarioEntity usuarioInclusao;
 
 //    @ManyToOne
 //    @JoinColumn(name = "usuario_inclusao_id")
