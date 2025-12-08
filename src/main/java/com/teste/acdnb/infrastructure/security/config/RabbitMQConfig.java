@@ -28,6 +28,11 @@ public class RabbitMQConfig {
     public static final String ROUTING_KEY_PAGAMENTO_RETORNO = "pagamento.retorno";
     public static final String QUEUE_PAGAMENTO_RETORNO = "fila-pagamento-retorno";
 
+    // ---- EMAIL RECUPERAÇÃO SENHA ----
+    public static final String EXCHANGE_EMAIL = "exchange-email";
+    public static final String ROUTING_KEY_EMAIL_RECUPERACAO = "email.recuperacao-senha";
+    public static final String QUEUE_EMAIL_RECUPERACAO = "fila-email-recuperacao-senha";
+
     @Bean
     public TopicExchange exchangeAlunos() {
         return new TopicExchange(EXCHANGE_ALUNOS);
@@ -92,5 +97,23 @@ public class RabbitMQConfig {
                 .bind(filaPagamentoRetorno())
                 .to(exchangePagamentoRetorno())
                 .with(ROUTING_KEY_PAGAMENTO_RETORNO);
+    }
+
+    @Bean
+    public TopicExchange exchangeEmail() {
+        return new TopicExchange(EXCHANGE_EMAIL);
+    }
+
+    @Bean
+    public Queue filaEmailRecuperacaoSenha() {
+        return new Queue(QUEUE_EMAIL_RECUPERACAO, true);
+    }
+
+    @Bean
+    public Binding bindingEmailRecuperacao() {
+        return BindingBuilder
+                .bind(filaEmailRecuperacaoSenha())
+                .to(exchangeEmail())
+                .with(ROUTING_KEY_EMAIL_RECUPERACAO);
     }
 }

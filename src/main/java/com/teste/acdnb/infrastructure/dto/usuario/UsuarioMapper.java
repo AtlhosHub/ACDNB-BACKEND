@@ -24,7 +24,7 @@ public class UsuarioMapper {
         usuarioTokenDto.setEmail(usuario.getEmail().getValue());
         usuarioTokenDto.setNome((usuario.getNomeSocial() == null || usuario.getNomeSocial().getValue().trim().isEmpty()) ? usuario.getNome().getValue() : usuario.getNomeSocial().getValue());
         usuarioTokenDto.setToken(token);
-        usuarioTokenDto.setUsuarioInclusao(usuario.getUsuarioInclusao() != null ? usuario.getUsuarioInclusao().getId() : null);
+      //  usuarioTokenDto.setUsuarioInclusao(usuario.getUsuarioInclusao() != null ? usuario.getUsuarioInclusao().getId() : null);
 
         return usuarioTokenDto;
     }

@@ -23,12 +23,14 @@ public class UsuarioEntityMapper {
         entity.setTelefone(usuario.getTelefone() != null ? usuario.getTelefone().getValue() : null);
         entity.setCargo(usuario.getCargo());
         entity.setDataInclusao(usuario.getDataInclusao() != null ? usuario.getDataInclusao().getValue() : null);
+        entity.setTokenRecuperacaoSenha(entity.getTokenRecuperacaoSenha() != null ? entity.getTokenRecuperacaoSenha() : null);
+        entity.setTokenExpiracao(entity.getTokenExpiracao() != null ? entity.getTokenExpiracao() : null);
 
-        if (usuario.getUsuarioInclusao() != null) {
-            UsuarioEntity usuarioInclusaoEntity = new UsuarioEntity();
-            usuarioInclusaoEntity.setId(usuario.getUsuarioInclusao().getId());
-            entity.setUsuarioInclusao(usuarioInclusaoEntity);
-        }
+//        if (usuario.getUsuarioInclusao() != null) {
+//            UsuarioEntity usuarioInclusaoEntity = new UsuarioEntity();
+//            usuarioInclusaoEntity.setId(usuario.getUsuarioInclusao().getId());
+//         //   entity.setUsuarioInclusao(usuarioInclusaoEntity);
+//        }
 
         return entity;
     }
@@ -54,7 +56,9 @@ public class UsuarioEntityMapper {
                 entity.getTelefone() != null ? Telefone.of(entity.getTelefone()) : null,
                 entity.getCargo(),
                 entity.getDataInclusao() != null ? DataInclusao.of(entity.getDataInclusao()) : null,
-                entity.getUsuarioInclusao() != null ? toDomain(entity.getUsuarioInclusao()) : null
+                //entity.getUsuarioInclusao() != null ? toDomain(entity.getUsuarioInclusao()) : null,
+                entity.getTokenRecuperacaoSenha() != null ? entity.getTokenRecuperacaoSenha() : null,
+                entity.getTokenExpiracao() != null ? entity.getTokenExpiracao() : null
         );
     }
 

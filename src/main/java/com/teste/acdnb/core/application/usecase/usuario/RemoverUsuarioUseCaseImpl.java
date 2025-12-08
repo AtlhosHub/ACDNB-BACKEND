@@ -16,12 +16,12 @@ public class RemoverUsuarioUseCaseImpl implements RemoverUsuarioUseCase {
     public void execute(int id) {
         Usuario usuario = usuarioGateway.buscarUsuarioPorId(id) .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-        List<Usuario> usuariosIncluidos = usuarioGateway.buscarUsuariosPorUsuarioInclusao(usuario);
+       // List<Usuario> usuariosIncluidos = usuarioGateway.buscarUsuariosPorUsuarioInclusao(usuario);
 
-        usuariosIncluidos.forEach(usuarioIncluido -> {
-            usuarioIncluido.setUsuarioInclusao(null);
-            usuarioGateway.atualizarUsuario(usuarioIncluido);
-        });
+//        usuariosIncluidos.forEach(usuarioIncluido -> {
+//            usuarioIncluido.setUsuarioInclusao(null);
+//            usuarioGateway.atualizarUsuario(usuarioIncluido);
+//        });
 
         usuarioGateway.removerUsuarioPorId(id);
     }

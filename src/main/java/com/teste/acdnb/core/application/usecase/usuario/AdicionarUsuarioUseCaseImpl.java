@@ -48,7 +48,7 @@ public class AdicionarUsuarioUseCaseImpl implements AdicionarUsuarioUseCase {
         usuarioParaRegistrar.setTelefone(Telefone.of(usuarioRequestDTO.telefone()));
         usuarioParaRegistrar.setCargo(usuarioRequestDTO.cargo());
         usuarioParaRegistrar.setDataInclusao(DataInclusao.of(usuarioRequestDTO.dataInclusao()));
-        usuarioParaRegistrar.setUsuarioInclusao(usuarioInclusao);
+       // usuarioParaRegistrar.setUsuarioInclusao(usuarioInclusao);
 
         Usuario usuarioCadastrado = usuarioGateway.adicionarUsuario(usuarioParaRegistrar);
 
